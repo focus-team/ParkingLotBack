@@ -1,4 +1,4 @@
-package com.oocl.web.sampleWebApp;
+package com.oocl.web.parkingLot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
