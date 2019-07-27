@@ -9,10 +9,10 @@ server:
   port: 8090
 spring:
   datasource:
-    url:  jdbc:h2:file:./h2/org
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test
+    username:
+    password:
   jpa:
     hibernate:
       ddl-auto: update
-  h2:
-    console:
-      enabled: true
