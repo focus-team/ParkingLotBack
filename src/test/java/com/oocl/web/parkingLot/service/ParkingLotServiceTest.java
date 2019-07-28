@@ -27,11 +27,11 @@ class ParkingLotServiceTest {
     @Test
     void saveParkingLotTest() {
 
-        ParkingLot parkingLot = new ParkingLot("foucusTeam_1",10,2);
+        ParkingLot parkingLot = new ParkingLot("foucusTeam_111",10,2);
 
         ParkingLot result = parkingLotService.saveParkingLot(parkingLot);
 
-        Assertions.assertEquals(result.getName(),result.getName());
+        Assertions.assertEquals(result.getName(),parkingLot.getName());
     }
 
     @Test
@@ -39,22 +39,20 @@ class ParkingLotServiceTest {
 
         List<ParkingLot> parkingLots = parkingLotService.findParkingLots();
 
-        Assertions.assertEquals(parkingLots.size(),1);
+        Assertions.assertEquals(parkingLots.size(),11);
 
     }
 
     @Test
     void updateParkingLotTest(){
 
+        ParkingLot parkingLot = new ParkingLot("foucusTeam_121",10,3);
 
-        ParkingLot parkingLot = new ParkingLot("foucusTeam_1",10,2);
-
-        parkingLot.setId(1L);
+        parkingLot.setId(2L);
 
         ParkingLot result = parkingLotService.updateParkingLot(parkingLot);
 
         Assertions.assertEquals(result.getName(),parkingLot.getName());
-
 
     }
 
@@ -71,6 +69,24 @@ class ParkingLotServiceTest {
         Assertions.assertEquals(temp.size(),0);
 
     }
+
+
+    @Test
+    void findParkingLotsByPageTest(){
+
+        int pageNum = 1;
+        int pageSize = 20;
+
+        List<ParkingLot> parkingLots = parkingLotService.findParkingLotsByPage(pageNum,pageSize);
+
+        Assertions.assertEquals(parkingLots.size(),11);
+
+    }
+
+
+
+
+
 
 
 
