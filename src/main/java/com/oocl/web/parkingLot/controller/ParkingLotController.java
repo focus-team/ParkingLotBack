@@ -5,6 +5,8 @@ import com.oocl.web.parkingLot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created with IDEA
  *
@@ -41,6 +43,10 @@ public class ParkingLotController {
     }
 
 
+    @GetMapping(params = {"pageNum","pageSize"})
+    public List<ParkingLot> findParkingLotsByPage(@RequestParam int pageNum, @RequestParam int pageSize){
+        return parkingLotService.findParkingLotsByPage(pageNum,pageSize);
+    }
 
 
 
