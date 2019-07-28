@@ -2,7 +2,6 @@ package com.oocl.web.parkingLot.controller;
 
 
 import com.oocl.web.parkingLot.entity.ParkingBoy;
-import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
