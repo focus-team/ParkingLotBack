@@ -48,7 +48,7 @@ public class ParkingBoyControllerTest {
 
     @After
     public void clear(){
-        parkingBoyRepository.deleteAll();
+//        parkingBoyRepository.deleteAll();
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ParkingBoyControllerTest {
 
         //when
         parkingBoy.setAge(89);
-        MvcResult mvcResult = this.mockMvc.perform(put("/parkingboy/" + parkingBoySaved.getLong("id"))
+        MvcResult mvcResult = this.mockMvc.perform(patch("/parkingboy/" + parkingBoySaved.getLong("id"))
                 .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(parkingBoy))).andReturn();
 
         //then
