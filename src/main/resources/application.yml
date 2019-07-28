@@ -6,14 +6,14 @@ logging:
           web: DEBUG
         hibernate: DEBUG
 server:
-#  port: 8080
-  port: 8090
+  port: 8080
+#  port: 8090
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/test
-    username: root
-    password: oocl
+    username: 123456
+    password:
   jpa:
     hibernate:
       ddl-auto: update
