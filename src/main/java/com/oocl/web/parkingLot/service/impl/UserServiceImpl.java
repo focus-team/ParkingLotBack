@@ -15,7 +15,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findRightUser(String username, String password) {
-        return userRepository.findRightUser(username, password);
+//        return userRepository.findRightUser(username, password);
+        return null;
     }
 
     @Override
