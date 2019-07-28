@@ -7,8 +7,9 @@ import com.oocl.web.parkingLot.service.ParkingBoyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,8 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     @Override
     public Page<ParkingBoy> getByPage(int page, int pageSize) {
 
-        return parkingBoyRepository.findAll(PageRequest.of(page-1,pageSize));
+        Pageable pageable  = PageRequest.of(page - 1,pageSize);
+        return parkingBoyRepository.findAll(pageable);
     }
 
     @Override

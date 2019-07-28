@@ -12,7 +12,7 @@ public class IdentifyVerifycation {
      * @param key
      * @return null if current session does not store use info, or return current login user info.
      */
-    public User verify(HttpSession httpSession, String key){
+    public static User verify(HttpSession httpSession, String key){
         return (User) httpSession.getAttribute(key);
     }
 }
