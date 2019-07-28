@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,13 +18,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -34,134 +37,119 @@ public class ParkingBoyControllerTest {
     @Autowired
     private ParkingBoyRepository parkingBoyRepository;
 
-
     @Before
-    public void init(){
+    public void init() throws Exception{
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingLot initParkingLot = new ParkingLot("AA",18,"AA");
+        parkingLots.add(initParkingLot);
+        ParkingBoy initParkingBoy = new ParkingBoy("Tom", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        parkingBoyRepository.save(initParkingBoy);
+    }
+
+    @After
+    public void clear(){
         parkingBoyRepository.deleteAll();
     }
 
     @Test
     public void should_return_ok_when_add_a_parkingLOt() throws Exception{
-        ParkingBoy parkingBoy = new ParkingBoy("Tom", "123454778", 18, "male", "busy", "VIP", new List<ParkingLot>() {
-            @Override
-            public int size() {
-                return 0;
-            }
 
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Jemmy", "123454778", 18, "male", "busy", "VIP", parkingLots);
 
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<ParkingLot> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(ParkingLot parkingLot) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends ParkingLot> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int index, Collection<? extends ParkingLot> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public ParkingLot get(int index) {
-                return null;
-            }
-
-            @Override
-            public ParkingLot set(int index, ParkingLot element) {
-                return null;
-            }
-
-            @Override
-            public void add(int index, ParkingLot element) {
-
-            }
-
-            @Override
-            public ParkingLot remove(int index) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<ParkingLot> listIterator() {
-                return null;
-            }
-
-            @Override
-            public ListIterator<ParkingLot> listIterator(int index) {
-                return null;
-            }
-
-            @Override
-            public List<ParkingLot> subList(int fromIndex, int toIndex) {
-                return null;
-            }
-        });
-
+        //when
+        //then
         MvcResult mvcResult = this.mockMvc.perform(post("/parkingboy").contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(parkingBoy)))
                 .andExpect(status().isCreated()).andReturn();
+    }
+
+    @Test
+    public void should_return_parkinglot_page_when_select_by_page() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy1 = new ParkingBoy("Mike", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy2 = new ParkingBoy("yamy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy3 = new ParkingBoy("Coko", "123454778", 18, "male", "busy", "VIP", parkingLots);
+
+        //when
+        this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy1)));
+        this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy2)));
+        this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy3)));
+
+        //then
+        MvcResult mvcResult = this.mockMvc.perform(get("/parkingboy?page=1&pageSize=2"))
+                .andExpect(status().isOk()).andReturn();
+        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(2,jsonArray.length());
+    }
+
+    @Test
+    public void should_return_parkingboy_when_find_by_id() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+
+        //when
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+        //then
+        MvcResult mvcResult = this.mockMvc.perform(get("/parkingboy/"+ parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        System.out.println("*********************************");
+        System.out.println(JSON.toJSONString(jsonObject));
+        Assertions.assertEquals("male",jsonObject.getString("sex"));
+
+    }
+
+    @Test
+    public void should_update_parking_lot_when_update_by_id() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+
+        //when
+        parkingBoy.setAge(89);
+        MvcResult mvcResult = this.mockMvc.perform(put("/parkingboy/" + parkingBoySaved.getLong("id"))
+                .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(parkingBoy))).andReturn();
+
+        //then
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(89,jsonObject.getLong("age"));
+    }
+
+    @Test
+    public void should_delete_a_parking_boy_when_delete_by_id() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+        //when
+
+        //then
+        this.mockMvc.perform(delete("/parkingboy/"+parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk());
     }
 
 }
