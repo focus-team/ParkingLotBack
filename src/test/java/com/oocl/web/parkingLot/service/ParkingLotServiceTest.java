@@ -43,6 +43,23 @@ class ParkingLotServiceTest {
 
     }
 
+    @Test
+    void updateParkingLotTest(){
+
+
+        ParkingLot parkingLot = new ParkingLot("foucusTeam_0",10,2);
+
+        parkingLot.setId(1L);
+
+        ParkingLot result = parkingLotService.saveParkingLot(parkingLot);
+
+        Assertions.assertEquals(result.getName(),parkingLot.getName());
+
+
+    }
+
+
+
 
 
 

@@ -23,37 +23,22 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     @Autowired
     private ParkingLotRepository parkingLotRepository;
 
-    /**
-     * 添加ParkingLot
-     * @param parkingLot
-     * @return
-     */
+
     @Override
     public ParkingLot saveParkingLot(ParkingLot parkingLot) {
         return parkingLotRepository.save(parkingLot);
     }
 
-
-    /**
-     * 获取所有的ParkingLot
-     * @return
-     */
     @Override
     public List<ParkingLot> findParkingLots(){
         return parkingLotRepository.findAll();
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public ParkingLot updateParkingLot(ParkingLot parkingLot) {
+        return parkingLotRepository.save(parkingLot);
+    }
 
 
 }

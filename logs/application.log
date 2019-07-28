@@ -607,3 +607,11 @@
 2019-07-28 12:50:00.294 DEBUG 33916 --- [RMI TCP Connection(11)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
 2019-07-28 12:50:00.311 DEBUG 33916 --- [RMI TCP Connection(11)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
 2019-07-28 12:50:00.311  INFO 33916 --- [RMI TCP Connection(11)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 17 ms
+2019-07-28 13:18:09.291  INFO 33916 --- [Thread-19] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-07-28 13:18:09.300  INFO 33916 --- [Thread-19] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2019-07-28 13:18:09.302 DEBUG 33916 --- [Thread-19] o.hibernate.internal.SessionFactoryImpl  : HHH000031: Closing
+2019-07-28 13:18:09.312 DEBUG 33916 --- [Thread-19] o.h.type.spi.TypeConfiguration$Scope     : Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@6c5f701] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@2db15f70]
+2019-07-28 13:18:09.333 DEBUG 33916 --- [Thread-19] o.h.s.i.AbstractServiceRegistryImpl      : Implicitly destroying ServiceRegistry on de-registration of all child ServiceRegistries
+2019-07-28 13:18:09.334 DEBUG 33916 --- [Thread-19] o.h.b.r.i.BootstrapServiceRegistryImpl   : Implicitly destroying Boot-strap registry on de-registration of all child ServiceRegistries
+2019-07-28 13:18:09.341  INFO 33916 --- [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-07-28 13:18:09.374  INFO 33916 --- [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

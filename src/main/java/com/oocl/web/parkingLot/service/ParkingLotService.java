@@ -17,12 +17,27 @@ import java.util.List;
 @Service
 public interface ParkingLotService {
 
-
+    /**
+     * 添加ParkingLot
+     * @param parkingLot
+     * @return
+     */
     ParkingLot saveParkingLot(ParkingLot parkingLot);
 
+
+    /**
+     * 获取所有的ParkingLot
+     * @return
+     */
     List<ParkingLot> findParkingLots();
 
-//    ParkingLot updateParkingLto(ParkingLot parkingLot);
+
+    /**
+     * 修改ParkingLot
+     * @param parkingLot
+     * @return
+     */
+    ParkingLot updateParkingLot(ParkingLot parkingLot);
 
 
 }
