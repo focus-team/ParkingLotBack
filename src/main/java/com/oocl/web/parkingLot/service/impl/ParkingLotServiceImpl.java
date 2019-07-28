@@ -6,6 +6,8 @@ import com.oocl.web.parkingLot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created with IDEA
  *
@@ -30,6 +32,20 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     public ParkingLot saveParkingLot(ParkingLot parkingLot) {
         return parkingLotRepository.save(parkingLot);
     }
+
+
+    /**
+     * 获取所有的ParkingLot
+     * @return
+     */
+    @Override
+    public List<ParkingLot> findParkingLots(){
+        return parkingLotRepository.findAll();
+    }
+
+
+
+
 
 
 

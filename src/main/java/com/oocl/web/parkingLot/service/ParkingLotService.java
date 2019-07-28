@@ -3,6 +3,8 @@ package com.oocl.web.parkingLot.service;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created with IDEA
  *
@@ -17,6 +19,10 @@ public interface ParkingLotService {
 
 
     ParkingLot saveParkingLot(ParkingLot parkingLot);
+
+    List<ParkingLot> findParkingLots();
+
+//    ParkingLot updateParkingLto(ParkingLot parkingLot);
 
 
 }

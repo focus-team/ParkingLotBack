@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 
 /**
  * Created with IDEA
@@ -23,15 +25,31 @@ class ParkingLotServiceTest {
     private ParkingLotService parkingLotService;
 
     @Test
-    void saveParkingLot() {
+    void saveParkingLotTest() {
 
         ParkingLot parkingLot = new ParkingLot("foucusTeam_1",10,2);
 
         ParkingLot result = parkingLotService.saveParkingLot(parkingLot);
 
         Assertions.assertEquals(result.getName(),result.getName());
+    }
+
+    @Test
+    void findParkingLotsTest(){
+
+        List<ParkingLot> parkingLots = parkingLotService.findParkingLots();
+
+        Assertions.assertEquals(parkingLots.size(),1);
 
     }
+
+
+
+
+
+
+
+
 
 
 
