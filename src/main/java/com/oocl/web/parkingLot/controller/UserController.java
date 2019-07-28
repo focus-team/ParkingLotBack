@@ -5,6 +5,7 @@ import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins ="*")
 public class UserController {
 
     private static final String CURRENT_USER= "CURRENT_USER";
