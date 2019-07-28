@@ -43,8 +43,7 @@ public class ParkingBoyController {
 
     @DeleteMapping(produces = {"application/json"} ,path="/{id}")
     public ResponseEntity delete(@PathVariable Long id){
-        parkingBoyService.delete(id);
-        return ResponseEntity.ok().build();
+        return parkingBoyService.delete(id);
     }
 
 }
