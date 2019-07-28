@@ -1,7 +1,6 @@
 package com.oocl.web.parkingLot.entity;
 
 import org.hibernate.annotations.Check;
-
 import javax.persistence.*;
 
 @Entity
@@ -19,15 +18,16 @@ public class ParkingLot {
     private Integer capacity;
 
     @Column
-    private String position;
+    private Integer remine ;
 
     public ParkingLot() {
+
     }
 
-    public ParkingLot(String name, Integer capacity, String position) {
+    public ParkingLot(String name, Integer capacity, Integer remine) {
         this.name = name;
         this.capacity = capacity;
-        this.position = position;
+        this.remine = remine;
     }
 
     public Long getId() {
@@ -54,13 +54,11 @@ public class ParkingLot {
         this.capacity = capacity;
     }
 
-    public String getPosition() {
-        return position;
+    public Integer getRemine() {
+        return remine;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setRemine(Integer remine) {
+        this.remine = remine;
     }
-
-
 }

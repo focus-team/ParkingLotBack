@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ParkingBoyService {
+
     ParkingBoy create(ParkingBoy parkingBoy);
 
     Page<ParkingBoy> getByPage(int page, int pageSize);
@@ -17,4 +18,5 @@ public interface ParkingBoyService {
     ParkingBoy update(Long id, ParkingBoy parkingBoy);
 
     void delete(Long id);
+
 }

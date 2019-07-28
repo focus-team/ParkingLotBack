@@ -40,7 +40,7 @@ public class ParkingBoyControllerTest {
     @Before
     public void init() throws Exception{
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingLot initParkingLot = new ParkingLot("AA",18,"AA");
+        ParkingLot initParkingLot = new ParkingLot("AA",18,10);
         parkingLots.add(initParkingLot);
         ParkingBoy initParkingBoy = new ParkingBoy("Tom", "123454778", 18, "male", "busy", "VIP", parkingLots);
         parkingBoyRepository.save(initParkingBoy);

@@ -12,7 +12,8 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/Test
     username: root
-    password: oocl
+#    password: oocl
+    password: 123456
   jpa:
     hibernate:
       ddl-auto: update
