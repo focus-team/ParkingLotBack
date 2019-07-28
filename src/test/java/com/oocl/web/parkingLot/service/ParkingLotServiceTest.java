@@ -47,16 +47,36 @@ class ParkingLotServiceTest {
     void updateParkingLotTest(){
 
 
-        ParkingLot parkingLot = new ParkingLot("foucusTeam_0",10,2);
+        ParkingLot parkingLot = new ParkingLot("foucusTeam_1",10,2);
 
         parkingLot.setId(1L);
 
-        ParkingLot result = parkingLotService.saveParkingLot(parkingLot);
+        ParkingLot result = parkingLotService.updateParkingLot(parkingLot);
 
         Assertions.assertEquals(result.getName(),parkingLot.getName());
 
 
     }
+
+
+    @Test
+    void deleteParkingLotByIdTest(){
+
+        Long id = 1L;
+
+        parkingLotService.deleteParkingLotById(id);
+
+        List<ParkingLot> temp = parkingLotService.findParkingLots();
+
+        Assertions.assertEquals(temp.size(),0);
+
+    }
+
+
+
+
+
+
 
 
 

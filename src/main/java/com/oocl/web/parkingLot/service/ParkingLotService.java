@@ -40,4 +40,11 @@ public interface ParkingLotService {
     ParkingLot updateParkingLot(ParkingLot parkingLot);
 
 
+    /**
+     * 根据id删除ParkingLot
+     * @param id
+     */
+    void deleteParkingLotById(Long id);
+
+
 }

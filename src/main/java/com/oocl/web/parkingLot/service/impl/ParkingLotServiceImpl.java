@@ -41,4 +41,12 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     }
 
 
+    @Override
+    public void deleteParkingLotById(Long id) {
+        parkingLotRepository.deleteById(id);
+    }
+
+
+
+
 }
