@@ -15,4 +15,6 @@ public interface ParkingBoyService {
     ParkingBoy getById(Long id);
 
     ParkingBoy update(Long id, ParkingBoy parkingBoy);
+
+    void delete(Long id);
 }

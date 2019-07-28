@@ -44,4 +44,9 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //        oldParkingBoy.setTag(parkingBoy.getTag());
         return parkingBoyRepository.save(parkingBoy);
     }
+
+    @Override
+    public void delete(Long id) {
+        parkingBoyRepository.deleteById(id);
+    }
 }

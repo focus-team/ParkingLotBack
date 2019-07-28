@@ -41,4 +41,10 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(update);
     }
 
+    @DeleteMapping(path="/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        parkingBoyService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

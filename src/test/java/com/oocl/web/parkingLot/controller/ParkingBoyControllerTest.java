@@ -135,4 +135,21 @@ public class ParkingBoyControllerTest {
         Assertions.assertEquals(89,jsonObject.getLong("age"));
     }
 
+    @Test
+    public void should_delete_a_parking_boy_when_delete_by_id() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+        //when
+
+        //then
+        this.mockMvc.perform(delete("/parkingboy/"+parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk());
+    }
+
 }
