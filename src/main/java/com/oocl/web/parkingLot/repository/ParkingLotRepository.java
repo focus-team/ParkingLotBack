@@ -18,7 +18,7 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot,Long> {
     Page<ParkingLot> findAll(Pageable pageable);
 
 
-    @Query(value = "SELECT * from parking_lot where remine = :remine limit :pageNum,:pageSize",nativeQuery = true)
+    @Query(value = "SELECT * from parking_lot where remine > :remine limit :pageNum,:pageSize",nativeQuery = true)
     List<ParkingLot> findAllByPageableWithRemine(@Param("remine") int remine, @Param("pageNum")int pageNum, @Param("pageSize")int pageSize);
 
 }
