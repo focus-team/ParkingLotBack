@@ -24,4 +24,10 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     public Page<ParkingBoy> getByPage(int page, int pageSize) {
         return parkingBoyRepository.findAll(PageRequest.of(page-1,pageSize));
     }
+
+    @Override
+    public ParkingBoy getById(Long id) {
+
+        return parkingBoyRepository.findById(id).get();
+    }
 }

@@ -5,6 +5,7 @@ import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,5 +92,29 @@ public class ParkingBoyControllerTest {
         JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(2,jsonArray.length());
     }
+
+    @Test
+    public void should_return_parkingboy_when_find_by_id() throws Exception{
+
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+
+        //when
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+        //then
+        MvcResult mvcResult = this.mockMvc.perform(get("/parkingboy/"+ parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        System.out.println("*********************************");
+        System.out.println(JSON.toJSONString(jsonObject));
+        Assertions.assertEquals("male",jsonObject.getString("sex"));
+
+    }
+
+
 
 }

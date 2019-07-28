@@ -29,4 +29,10 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(parkingBoyPage.getContent());
     }
 
+    @GetMapping(path="/{id}")
+    public ResponseEntity getById(@PathVariable Long id){
+        ParkingBoy parkingBoy = parkingBoyService.getById(id);
+        return ResponseEntity.ok().body(parkingBoy);
+    }
+
 }
