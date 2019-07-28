@@ -30,4 +30,18 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 
         return parkingBoyRepository.findById(id).get();
     }
+
+    @Override
+    public ParkingBoy update(Long id, ParkingBoy parkingBoy) {
+//        ParkingBoy oldParkingBoy = this.getById(id);
+//        oldParkingBoy.setAge(parkingBoy.getAge());
+//        oldParkingBoy.setId(parkingBoy.getId());
+//        oldParkingBoy.setName(parkingBoy.getName());
+//        oldParkingBoy.setParkingLots(parkingBoy.getParkingLots());
+//        oldParkingBoy.setPhone(parkingBoy.getPhone());
+//        oldParkingBoy.setSex(parkingBoy.getSex());
+//        oldParkingBoy.setStatus(parkingBoy.getStatus());
+//        oldParkingBoy.setTag(parkingBoy.getTag());
+        return parkingBoyRepository.save(parkingBoy);
+    }
 }

@@ -23,8 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -115,6 +114,25 @@ public class ParkingBoyControllerTest {
 
     }
 
+    @Test
+    public void should_update_parking_lot_when_update_by_id() throws Exception{
 
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSON.toJSONString(parkingBoy))).andReturn();
+        JSONObject parkingBoySaved = new JSONObject(mvcResultSaved.getResponse().getContentAsString());
+
+        //when
+        parkingBoy.setAge(89);
+        MvcResult mvcResult = this.mockMvc.perform(put("/parkingboy/" + parkingBoySaved.getLong("id"))
+                .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(parkingBoy))).andReturn();
+
+        //then
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(89,jsonObject.getLong("age"));
+    }
 
 }

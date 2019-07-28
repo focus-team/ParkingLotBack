@@ -35,4 +35,10 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(parkingBoy);
     }
 
+    @PutMapping(path="/{id}")
+    public ResponseEntity updateById(@PathVariable Long id,@RequestBody ParkingBoy parkingBoy){
+        ParkingBoy update = parkingBoyService.update(id, parkingBoy);
+        return ResponseEntity.ok().body(update);
+    }
+
 }

@@ -13,4 +13,6 @@ public interface ParkingBoyService {
     Page<ParkingBoy> getByPage(int page, int pageSize);
 
     ParkingBoy getById(Long id);
+
+    ParkingBoy update(Long id, ParkingBoy parkingBoy);
 }
