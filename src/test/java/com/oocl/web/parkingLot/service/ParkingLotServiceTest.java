@@ -84,6 +84,21 @@ class ParkingLotServiceTest {
     }
 
 
+    @Test
+    void findParkingLotsByPageWithRemineTest(){
+
+        int remine = 0;
+        int pageNum = 1;
+        int pageSize = 3;
+
+        List<ParkingLot> parkingLots = parkingLotService.findParkingLotsByPageWithRemine(remine,pageNum,pageSize);
+
+        Assertions.assertEquals(parkingLots.size(),3);
+
+
+    }
+
+
 
 
 

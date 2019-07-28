@@ -55,6 +55,15 @@ public interface ParkingLotService {
     List<ParkingLot> findParkingLotsByPage(int pageNum,int pageSize);
 
 
+    /**
+     * 根据页码数和页码长度以remine条件分页获取list
+     * @param remine
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<ParkingLot> findParkingLotsByPageWithRemine(int remine,int pageNum,int pageSize);
+
 
 
 

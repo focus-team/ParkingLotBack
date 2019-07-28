@@ -28,6 +28,7 @@ public class ParkingLotController {
 
     @PostMapping
     public ParkingLot saveParkingLot(@RequestBody ParkingLot parkingLot){
+        parkingLot.setRemine(parkingLot.getCapacity());
         return parkingLotService.saveParkingLot(parkingLot);
     }
 
@@ -48,6 +49,13 @@ public class ParkingLotController {
         return parkingLotService.findParkingLotsByPage(pageNum,pageSize);
     }
 
+
+    @GetMapping(params = {"remine","pageNum","pageSize"})
+    public List<ParkingLot> findParkingLotsByPageAndRemine(@RequestParam int remine, @RequestParam int pageNum, @RequestParam int pageSize){
+
+        return  parkingLotService.findParkingLotsByPageWithRemine(remine,pageNum,pageSize);
+
+    }
 
 
 

@@ -59,5 +59,14 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     }
 
+    @Override
+    public List<ParkingLot> findParkingLotsByPageWithRemine(int remine, int pageNum, int pageSize) {
+
+        pageNum = (pageNum-1)*pageSize;
+
+        return parkingLotRepository.findAllByPageableWithRemine(remine,pageNum,pageSize);
+
+    }
+
 
 }
