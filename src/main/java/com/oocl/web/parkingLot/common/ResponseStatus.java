@@ -3,7 +3,8 @@ package com.oocl.web.parkingLot.common;
 public enum ResponseStatus {
     SUCCESS(200, "SUCCESS"),
     NOT_FOUND(404, "NOT_FOUND"),
-    INVALID_USER(401, "INVALID_USER");
+    INVALID_USER(402, "INVALID_USER"),
+    RELOGIN(401, "RELOGIN");
 
     int statusCode;
     String statusDesc;
