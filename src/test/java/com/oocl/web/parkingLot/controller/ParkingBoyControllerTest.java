@@ -108,8 +108,7 @@ public class ParkingBoyControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(get("/parkingboy/"+ parkingBoySaved.getLong("id")))
                 .andExpect(status().isOk()).andReturn();
         JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-        System.out.println("*********************************");
-        System.out.println(JSON.toJSONString(jsonObject));
+
         Assertions.assertEquals("male",jsonObject.getString("sex"));
 
     }

@@ -47,7 +47,7 @@ dependencies {
 	compile 'org.json:json:20180813'
 	compile 'com.alibaba:fastjson:1.2.47'
 	compile 'mysql:mysql-connector-java'
-
+	compile 'com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.0'
 
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
