@@ -17,6 +17,6 @@ public interface ParkingBoyService {
 
     ParkingBoy update(Long id, ParkingBoy parkingBoy);
 
-    ResponseEntity delete(Long id);
+    void delete(Long id);
 
 }
