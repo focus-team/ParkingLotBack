@@ -2,7 +2,6 @@ package com.oocl.web.parkingLot.service;
 
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -45,6 +44,19 @@ public interface ParkingLotService {
      * @param id
      */
     void deleteParkingLotById(Long id);
+
+
+    /**
+     * 根据页码数和页码长度获取list
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<ParkingLot> findParkingLotsByPage(int pageNum,int pageSize);
+
+
+
+
 
 
 }

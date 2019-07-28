@@ -4,8 +4,10 @@ import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -46,7 +48,16 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         parkingLotRepository.deleteById(id);
     }
 
+    @Override
+    public List<ParkingLot> findParkingLotsByPage(int pageNum, int pageSize) {
 
+        Pageable pageable = PageRequest.of(pageNum - 1,pageSize);
+
+        Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
+
+        return parkingLots.getContent();
+
+    }
 
 
 }
