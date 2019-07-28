@@ -6,8 +6,8 @@ logging:
           web: DEBUG
         hibernate: DEBUG
 server:
-#  port: 8080
-  port: 8090
+  port: 8080
+#  port: 8090
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
