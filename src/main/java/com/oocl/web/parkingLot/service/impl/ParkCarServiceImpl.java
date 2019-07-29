@@ -42,7 +42,7 @@ public class ParkCarServiceImpl implements ParkCarService {
     @Override
     public ResponseEntity park(Long userId) {
         Date date = new Date();
-        ParkingOrder parkingOrder = new ParkingOrder("a", new Date(System.currentTimeMillis()), date, 0, 0L, 0L, userId,0);
+        ParkingOrder parkingOrder = new ParkingOrder("a", new Date(System.currentTimeMillis()), null, 0, 0L, 0L, userId,0);
 
         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
         String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());

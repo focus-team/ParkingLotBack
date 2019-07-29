@@ -61,7 +61,6 @@ public class UserControllerTest {
     public void init() throws Exception{
         parkingOrderRepository.deleteAll();
         parkingBoyRepository.deleteAll();
-        userRepository.deleteAll();
         parkingLotRepository.deleteAll();
 
     }
@@ -114,8 +113,8 @@ public class UserControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(get("/user/park?userId=1"))
                 .andExpect(status().isOk()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
-//        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-//        Assertions.assertEquals(parkingBoyVipFree.getName(),jsonObject.getString("parkingBoyName"));
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(parkingBoyVipFree.getName(),jsonObject.getString("parkingBoyName"));
 
     }
 
