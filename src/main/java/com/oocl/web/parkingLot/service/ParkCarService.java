@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ParkCarService {
-    ResponseEntity create(Long userId);
+    ResponseEntity park(Long userId);
 }

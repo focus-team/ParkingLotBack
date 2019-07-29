@@ -36,6 +36,6 @@ public class UserController {
     @GetMapping(path="/park",produces = {"application/json"},params = {"userId"})
     public ResponseEntity park(@RequestParam Long userId){
 
-        return  parkCarService.create(userId);
+        return  parkCarService.park(userId);
     }
 }
