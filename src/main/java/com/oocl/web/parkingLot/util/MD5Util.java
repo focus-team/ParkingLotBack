@@ -1,4 +1,4 @@
-package com.oocl.web.parkingLot.tool;
+package com.oocl.web.parkingLot.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
