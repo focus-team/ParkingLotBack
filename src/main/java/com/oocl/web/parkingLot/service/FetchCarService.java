@@ -22,10 +22,10 @@ public interface FetchCarService {
      *  1.取车默认是同一个停车员
      *  2.取车时间半小时内
      *  3.计费
-     * @param parkingOrder
+     * @param orderDTO
      * @return
      */
-    OrderDTO uodateParkingOrder(ParkingOrder parkingOrder);
+    OrderDTO uodateParkingOrder(OrderDTO orderDTO);
 
 
 

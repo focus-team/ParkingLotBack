@@ -33,12 +33,25 @@ public class FetchCarServiceImpl implements FetchCarService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * 通过订单预约取车
+     * 1.取车默认是同一个停车员
+     * 2.取车时间半小时内
+     * 3.计费
+     *
+     * @param orderDTO
+     * @return
+     */
     @Override
-    public OrderDTO uodateParkingOrder(ParkingOrder parkingOrder) {
+    public OrderDTO uodateParkingOrder(OrderDTO orderDTO) {
+
+        //通过停车场名字找停车场,剩余空位+1
+
 
 
 
         return null;
+
     }
 }
 
