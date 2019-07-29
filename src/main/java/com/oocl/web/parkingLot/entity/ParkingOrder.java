@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
 
@@ -22,10 +23,12 @@ public class ParkingOrder {
 
     @NotNull
     @ApiModelProperty("开始时间")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
 
     @NotNull
     @ApiModelProperty("结束时间")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date endTime;
 
     @NotNull
