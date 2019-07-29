@@ -1,9 +1,8 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.oocl.web.parkingLot.common.TagConst;
-import com.oocl.web.parkingLot.dto.OrderDTO;
+import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.service.ParkingChargesStrategy;
-
 import java.util.Date;
 
 /**
@@ -25,13 +24,11 @@ public class ConcreteParkingChargesA implements ParkingChargesStrategy {
 
 
     @Override
-    public int ParkingCharges(OrderDTO orderDTO) {
+    public int ParkingCharges(Date start, Date end, ParkingLot parkingLot) {
 
-        Date start = orderDTO.getStartTime();
-        Date end = orderDTO.getEndTime();
         int hours = getHoursByDate(start,end);
 
-        boolean isVip = isVIPparkingLot(orderDTO.getParkingLotName());
+        boolean isVip = isVIPparkingLot(parkingLot.getTag());
 
         if(isVip){
             return hours * VIP_PRICE;
@@ -91,6 +88,7 @@ public class ConcreteParkingChargesA implements ParkingChargesStrategy {
     }
 
     private boolean isVIPparkingLot(String parkingLotName){
+        System.out.println(parkingLotName);
         return parkingLotName.equals(TagConst.VIP);
     }
 

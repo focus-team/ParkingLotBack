@@ -100,13 +100,18 @@ public class FetchCarServiceImpl implements FetchCarService {
 
         //保存订单 - 设置为过期
         ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderDTO.getId());
+        parkingOrder.setEndTime(new Date(endTime));
         parkingOrder.setIsOverDate(1);
-        parkingOrderRepository.save(parkingOrder);
+
 
         //通过orderDTO计费用
         ParkingChargesStrategy parkingChargesStrategy = new ConcreteParkingChargesA();
-        int coast = parkingChargesStrategy.ParkingCharges(orderDTO);
+        int coast = parkingChargesStrategy.ParkingCharges(orderDTO.getStartTime(),orderDTO.getEndTime(),temp);
         orderDTO.setCost(coast);
+
+        //保存订单 - 保存费用
+        parkingOrder.setCost(coast);
+        parkingOrderRepository.save(parkingOrder);
 
         return orderDTO;
 
