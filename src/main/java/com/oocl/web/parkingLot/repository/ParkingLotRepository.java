@@ -22,4 +22,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot,Long> {
     List<ParkingLot> findAllByPageableWithRemine(@Param("remine") int remine, @Param("pageNum")int pageNum, @Param("pageSize")int pageSize);
 
 
+
+
 }
