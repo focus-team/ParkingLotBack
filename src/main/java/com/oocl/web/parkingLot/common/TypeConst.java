@@ -7,7 +7,7 @@ package com.oocl.web.parkingLot.common;
  * Description:
  */
 public interface TypeConst {
-    String MANAGER = "MANAGER";
-    String CUSTOMER = "CUSTOMER";
-    String PARKINGBOY = "PARKINGBOY";
+    int MANAGER = 0;
+    int CUSTOMER = 1;
+    int PARKINGBOY = 2;
 }

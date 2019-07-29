@@ -1,7 +1,10 @@
 package com.oocl.web.parkingLot.service.impl;
 
-import com.oocl.web.parkingLot.entity.ParkingOrder;
+import com.oocl.web.parkingLot.common.TagConst;
+import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.service.ParkingChargesStrategy;
+
+import java.util.Date;
 
 /**
  * Created with IDEA
@@ -17,10 +20,78 @@ import com.oocl.web.parkingLot.service.ParkingChargesStrategy;
  */
 public class ConcreteParkingChargesA implements ParkingChargesStrategy {
 
+    private static int VIP_PRICE = 80;
+    private static int ORDINARY_PRICE = 8;
+
 
     @Override
-    public int ParkingCharges(ParkingOrder parkingOrder) {
-        return 0;
+    public int ParkingCharges(OrderDTO orderDTO) {
+
+        Date start = orderDTO.getStartTime();
+        Date end = orderDTO.getEndTime();
+        int hours = getHoursByDate(start,end);
+
+        boolean isVip = isVIPparkingLot(orderDTO.getParkingLotName());
+
+        if(isVip){
+            return hours * VIP_PRICE;
+        }else {
+            return hours * ORDINARY_PRICE;
+        }
+
+    }
+
+    /**
+     * 通过日期差距获取整型小时
+     * @param start
+     * @param end
+     * @return
+     */
+    private int getHoursByDate(Date start,Date end){
+
+        boolean isWithinHalfHour = isWithinHalfHour(start,end);
+
+        if(isWithinHalfHour){
+            return 0;
+        }
+        else {
+            return getHoursByCalculateDateDictance(start,end);
+        }
+
+    }
+
+    /**
+     * 是否半小时以内
+     * @param start
+     * @param end
+     * @return
+     */
+    private boolean isWithinHalfHour(Date start,Date end){
+
+        Long halfHourMills = 500L * 60 * 60;
+
+        return end.getTime() - start.getTime() <= halfHourMills;
+
+    }
+
+    /**
+     * 通过时间差距计算相差几个小时(向上取整)
+     * @param start
+     * @param end
+     * @return
+     */
+    private int getHoursByCalculateDateDictance(Date start,Date end){
+
+        Double distanceMills = (end.getTime() - start.getTime()) * 1.000;
+
+        int hours = (int) Math.ceil(distanceMills/1000/3600);
+
+        return hours;
+
+    }
+
+    private boolean isVIPparkingLot(String parkingLotName){
+        return parkingLotName.equals(TagConst.VIP);
     }
 
 

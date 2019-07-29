@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,4 +118,24 @@ public class UserControllerTest {
 //        Assertions.assertEquals(parkingBoyVipFree.getName(),jsonObject.getString("parkingBoyName"));
 
     }
+
+    public void should_return_success_when_register_with_correct_user_info() throws Exception{
+        User user = new User();
+        user.setUserName("cus2");
+        user.setPassword("cus3");
+        user.setCarNo("粤MS1221");
+        user.setPhoneNo("13100000000");
+
+        String requestBody = mapper.writeValueAsString(user);
+
+        final RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/register")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+
 }
