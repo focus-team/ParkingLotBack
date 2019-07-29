@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -22,13 +23,13 @@ public class UserController {
     private UserService userServiceImpl;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody User user, HttpSession httpSession) {
+    public ResponseEntity login(@RequestBody User user, HttpServletRequest request) {
         User u =  userServiceImpl.findUserByUserNameAndPassword(user.getUserName(), user.getPassword());
         if(u == null){
             return ResponseEntity.status(ResponseStatus.NOT_FOUND.getStatusCode()).body(ResponseStatus.NOT_FOUND.getStatusDesc());
         }
-        System.out.println("Session: " + httpSession + " store successfully login user.");
-        httpSession.setAttribute(CURRENT_USER, u);
+        System.out.println("Session: " + request.getSession() + " store successfully login user.");
+        request.getSession().setAttribute(CURRENT_USER, u);
         return ResponseEntity.ok(ResponseStatus.SUCCESS.getStatusDesc());
     }
 }
