@@ -2,6 +2,9 @@ package com.oocl.web.parkingLot.controller;
 
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.service.ParkingLotService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,7 @@ import java.util.List;
  */
 
 @RestController
+@Api(value = "ParkinglotsApi",description = "停车管理接口")
 @RequestMapping("/parkinglots")
 @CrossOrigin(origins = "*")
 public class ParkingLotController {
@@ -25,9 +29,10 @@ public class ParkingLotController {
     @Autowired
     private ParkingLotService parkingLotService;
 
-
+    @ApiOperation(value = "停车管理接口: 创建新的停车场(新增)")
     @PostMapping
-    public ParkingLot saveParkingLot(@RequestBody ParkingLot parkingLot){
+    public ParkingLot saveParkingLot(
+            @ApiParam("停车场对象")@RequestBody ParkingLot parkingLot){
         parkingLot.setRemine(parkingLot.getCapacity());
         return parkingLotService.saveParkingLot(parkingLot);
     }
@@ -56,12 +61,6 @@ public class ParkingLotController {
         return  parkingLotService.findParkingLotsByPageWithRemine(remine,pageNum,pageSize);
 
     }
-
-
-
-
-
-
 
 
 }

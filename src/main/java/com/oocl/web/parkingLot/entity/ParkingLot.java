@@ -1,5 +1,6 @@
 package com.oocl.web.parkingLot.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
 import javax.persistence.*;
 
@@ -11,13 +12,16 @@ public class ParkingLot {
     private Long id;
 
     @Column(unique = true)
+    @ApiModelProperty("停车场名字")
     private String name;
 
     @Check(constraints = "capacity>=0")
     @Column
+    @ApiModelProperty("停车场容量")
     private Integer capacity;
 
     @Column
+    @ApiModelProperty("停车场剩余量")
     private Integer remine ;
 
     public ParkingLot() {
