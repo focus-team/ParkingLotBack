@@ -1,10 +1,13 @@
 package com.oocl.web.parkingLot.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.oocl.web.parkingLot.entity.ParkingOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
+import org.springframework.beans.BeanUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -62,6 +65,11 @@ public class OrderDTO {
     @NotNull
     @ApiModelProperty("用户名字")
     private String userName;
+
+
+    public OrderDTO(ParkingOrder parkingOrder){
+        BeanUtils.copyProperties(parkingOrder,this);
+    }
 
 
 
