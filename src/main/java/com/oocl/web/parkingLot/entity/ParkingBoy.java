@@ -39,7 +39,7 @@ public class ParkingBoy {
 
     @NotNull
     @Column
-    @OneToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<ParkingLot> parkingLots;
 
 
