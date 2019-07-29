@@ -17,10 +17,8 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/parkingboy")
-@CrossOrigin(origins = "*")
+@CrossOrigin(allowCredentials = "true")
 public class ParkingBoyController {
-
-    private static final String CURRENT_USER = "CURRENT_USER";
 
     @Autowired
     private ParkingBoyService parkingBoyService;
