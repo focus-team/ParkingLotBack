@@ -16,6 +16,11 @@ import org.springframework.stereotype.Repository;
 public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long> {
 
 
+    ParkingOrder findParkingOrderById(Long id);
+
+
+
+
 
 
 
