@@ -48,20 +48,20 @@ public class OrderDTO {
 
     @NotNull
     @ApiModelProperty("停车员名字")
-    private Long parkingBoyName;
+    private String parkingBoyName;
 
     @NotNull
     @ApiModelProperty("停车员电话")
-    private Long parkingBoyTel;
+    private String parkingBoyTel;
 
 
     @NotNull
     @ApiModelProperty("停车场名字")
-    private Long parkingLotName;
+    private String parkingLotName;
 
     @NotNull
     @ApiModelProperty("用户名字")
-    private Long userName;
+    private String userName;
 
 
 
