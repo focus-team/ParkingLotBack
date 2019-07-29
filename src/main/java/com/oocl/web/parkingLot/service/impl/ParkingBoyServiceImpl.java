@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ParkingBoyServiceImpl implements ParkingBoyService {
 
@@ -22,10 +23,18 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     @Override
     public ParkingBoy create(ParkingBoy parkingBoy) {
 
-        if(parkingBoyRepository.findByName(parkingBoy.getName()).size()>1){
+//        if(parkingBoyRepository.findByName(parkingBoy.getName()).size()>1){
+//            throw new GlobalException(1,"The parkingBoy name has exited!");
+//        }
+        try {
+            ParkingBoy save = parkingBoyRepository.save(parkingBoy);
+            return save;
+        } catch (Exception e) {
+//            e.printStackTrace();
             throw new GlobalException(1,"The parkingBoy name has exited!");
+        } finally {
         }
-        return parkingBoyRepository.save(parkingBoy);
+
     }
 
     @Override
