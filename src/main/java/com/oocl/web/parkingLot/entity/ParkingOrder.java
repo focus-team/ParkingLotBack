@@ -23,7 +23,6 @@ public class ParkingOrder {
 
     @NotNull
     @ApiModelProperty("开始时间")
-
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
 
