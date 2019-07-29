@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
  * @description:
  */
 @Repository
-public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long> {
-    
+public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long> { 
+
 
 
 
