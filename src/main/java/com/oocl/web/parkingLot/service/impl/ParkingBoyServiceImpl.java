@@ -2,6 +2,7 @@ package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     @Override
     public ParkingBoy create(ParkingBoy parkingBoy) {
 
-//        if(parkingBoyRepository.findByName(parkingBoy.getName()).size()>1){
-//            throw new GlobalException(1,"The parkingBoy name has exited!");
-//        }
+        if(parkingBoyRepository.findByName(parkingBoy.getName()).size()>1){
+            throw new GlobalException(1,"The parkingBoy name has exited!");
+        }
         return parkingBoyRepository.save(parkingBoy);
     }
 
