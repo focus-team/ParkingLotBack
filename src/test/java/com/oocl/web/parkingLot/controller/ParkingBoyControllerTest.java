@@ -39,6 +39,7 @@ public class ParkingBoyControllerTest {
 
     @Before
     public void init() throws Exception{
+        parkingBoyRepository.deleteAll();
         List<ParkingLot> parkingLots = new ArrayList<>();
         ParkingLot initParkingLot = new ParkingLot("AA",18,10);
         parkingLots.add(initParkingLot);
@@ -56,7 +57,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Jemmy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Jemmy11", "123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         //then
