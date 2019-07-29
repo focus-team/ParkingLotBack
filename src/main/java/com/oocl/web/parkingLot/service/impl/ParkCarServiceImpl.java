@@ -42,15 +42,17 @@ public class ParkCarServiceImpl implements ParkCarService {
     @Override
     public ResponseEntity park(Long userId) {
         Date date = new Date();
-        ParkingOrder parkingOrder = new ParkingOrder("", new Date(System.currentTimeMillis()), date, 0, 0L, 0L, userId);
+        ParkingOrder parkingOrder = new ParkingOrder("a", new Date(System.currentTimeMillis()), date, 0, 0L, 0L, userId,0);
 
         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
         String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
         savedParkingOrder.setOrderNum(yyyyMMdd + "." + savedParkingOrder.getId().toString());
         try {
             String tag = userRepository.findById(userId).get().getTag();
+            System.out.println("******************************");
+            System.out.println(tag);
             List<ParkingBoy> tagBoysALl = parkingBoyRepository.findAll();
-            List<ParkingBoy> tagBoysVIP = parkingBoyRepository.findAll().stream().filter(item -> item.getTag().endsWith(TagConst.VIP)).collect(Collectors.toList());
+            List<ParkingBoy> tagBoysVIP = parkingBoyRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
 
             List<ParkingBoy> tagBoys = tagBoysVIP.stream().filter(item -> item.getStatus().endsWith(StatusConst.FREE)).collect(Collectors.toList());
 
@@ -87,6 +89,6 @@ public class ParkCarServiceImpl implements ParkCarService {
         } catch (Exception e) {
             throw new GlobalException(2, "There has no right parkingBoy!");
         }
-        return null;
+        return ResponseEntity.ok().body(new GlobalException(3, "There has no right parkingBoy!"));
     }
 }

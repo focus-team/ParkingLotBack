@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -114,7 +115,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 //        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-//        JSONArray jsonObject = new JSONArray(mvcResult.getResponse().getContentAsString());
 //        Assertions.assertEquals(parkingBoyVipFree.getName(),jsonObject.getString("parkingBoyName"));
 
     }
