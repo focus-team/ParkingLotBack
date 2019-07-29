@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oocl.web.parkingLot.common.StatusConst;
 import com.oocl.web.parkingLot.common.TagConst;
+import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
@@ -85,16 +86,28 @@ public class ParkCarServiceImpl implements ParkCarService {
                     ParkingLot parkingLot = parkingLotRepository.findById(itemTag.getId()).get();
                     parkingLot.setRemine(parkingLot.getRemine() -1);
                     parkingLotRepository.save(parkingLot);
+
+
+
+
                     ParkingOrderVo parkingOrderVo = new ParkingOrderVo();
                     parkingOrderVo.setParkingOrder(save);
 
-                    //username   userRepository.
 
-                    parkingOrderVo.setUserName("user");
-                    parkingOrderVo.setParkingLotName(parkingLot.getName());
-                    parkingOrderVo.setParkingBoyName(boy.getName());
+                    OrderDTO orderDTO = new OrderDTO(save);
+                    orderDTO.setParkingBoyName(boy.getName());
+                    orderDTO.setParkingBoyTel(boy.getPhone());
+                    orderDTO.setParkingLotName(parkingLot.getName());
+                    orderDTO.setUserName(userRepository.findById(userId).get().getUserName());
 
-                    return ResponseEntity.ok().body(parkingOrderVo);
+
+//                    //username   userRepository.
+//
+//                    parkingOrderVo.setUserName("user");
+//                    parkingOrderVo.setParkingLotName(parkingLot.getName());
+//                    parkingOrderVo.setParkingBoyName(boy.getName());
+
+                    return ResponseEntity.ok().body(orderDTO);
                 }
             }
         } catch (Exception e) {
