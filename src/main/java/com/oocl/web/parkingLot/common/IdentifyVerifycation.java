@@ -1,4 +1,4 @@
-package com.oocl.web.parkingLot.tool;
+package com.oocl.web.parkingLot.common;
 
 import com.oocl.web.parkingLot.entity.User;
 
