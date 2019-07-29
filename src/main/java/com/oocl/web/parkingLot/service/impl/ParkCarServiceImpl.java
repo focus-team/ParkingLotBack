@@ -43,7 +43,7 @@ public class ParkCarServiceImpl implements ParkCarService {
 
     @Override
     public ResponseEntity park(Long userId,String startTime){
-        startTime = startTime.replace("+"," ");
+        startTime = startTime.replace("?"," ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date startDate = null;
         try {
