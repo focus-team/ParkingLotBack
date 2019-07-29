@@ -1,10 +1,14 @@
 package com.oocl.web.parkingLot.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
 import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class ParkingLot {
 
     @Id
@@ -24,45 +28,16 @@ public class ParkingLot {
     @ApiModelProperty("停车场剩余量")
     private Integer remine ;
 
-    public ParkingLot() {
+    @Column
+    @ApiModelProperty("停车场类型：1.VIP 2.普通")
+    private String tag;
 
-    }
-
-    public ParkingLot(String name, Integer capacity, Integer remine) {
+    public ParkingLot(String name, Integer capacity, Integer remine, String tag) {
         this.name = name;
         this.capacity = capacity;
         this.remine = remine;
+        this.tag = tag;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Integer getRemine() {
-        return remine;
-    }
-
-    public void setRemine(Integer remine) {
-        this.remine = remine;
-    }
 }
