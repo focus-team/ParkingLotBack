@@ -34,12 +34,11 @@ public class OrderDTO {
     private String orderNum;
 
     @NotNull
-
     @ApiModelProperty("开始时间")
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
 
-    @NotNull
+
     @ApiModelProperty("结束时间")
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date endTime;
@@ -65,7 +64,7 @@ public class OrderDTO {
     @NotNull
     @ApiModelProperty("用户名字")
     private String userName;
-
+    
 
     public OrderDTO(ParkingOrder parkingOrder){
         BeanUtils.copyProperties(parkingOrder,this);
