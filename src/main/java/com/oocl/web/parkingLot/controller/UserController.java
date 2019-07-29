@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
@@ -57,10 +58,10 @@ public class UserController {
         return ServerResponse.createBySuccess();
     }
 
-    @GetMapping(path="/park",produces = {"application/json"},params = {"userId"})
-    public ResponseEntity park(@RequestParam Long userId){
+    @GetMapping(path="/park",produces = {"application/json"},params = {"userId","startTime"})
+    public ResponseEntity park(@RequestParam Long userId,@RequestParam String startTime){
 
-        return  parkCarService.park(userId);
+        return  parkCarService.park(userId,startTime);
     }
 
 }

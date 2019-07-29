@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oocl.web.parkingLot.common.StatusConst;
 import com.oocl.web.parkingLot.common.TagConst;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,9 +42,15 @@ public class ParkCarServiceImpl implements ParkCarService {
 
 
     @Override
-    public ResponseEntity park(Long userId) {
-        Date date = new Date();
-        ParkingOrder parkingOrder = new ParkingOrder("a", new Date(System.currentTimeMillis()), date, 0, 0L, 0L, userId,0);
+    public ResponseEntity park(Long userId,String startTime){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date startDate = null;
+        try {
+            startDate = sdf.parse(startTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ParkingOrder parkingOrder = new ParkingOrder("a", startDate, null, 0, 0L, 0L, userId,0);
 
         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
         String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
