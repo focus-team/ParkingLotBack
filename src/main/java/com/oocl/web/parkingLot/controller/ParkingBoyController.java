@@ -26,11 +26,7 @@ public class ParkingBoyController {
     private ParkingBoyService parkingBoyService;
 
     @PostMapping(produces = {"application/json"})
-    private ResponseEntity add(@RequestBody ParkingBoy parkingBoy, HttpServletRequest request){
-        System.out.println("verified session is: " + request.getSession());
-        if(IdentifyVerifycation.verify(request.getSession(), CURRENT_USER) == null){
-            return ResponseEntity.status(ResponseStatus.RELOGIN.getStatusCode()).body(ResponseStatus.RELOGIN.getStatusDesc());
-        }
+    private ResponseEntity add(@RequestBody ParkingBoy parkingBoy){
         ParkingBoy parkingBoySaved = parkingBoyService.create(parkingBoy);
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingBoySaved);
     }

@@ -3,7 +3,6 @@ package com.oocl.web.parkingLot.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
