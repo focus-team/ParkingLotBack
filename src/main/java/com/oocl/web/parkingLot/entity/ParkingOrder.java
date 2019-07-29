@@ -2,9 +2,9 @@ package com.oocl.web.parkingLot.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -47,6 +47,10 @@ public class ParkingOrder {
     @NotNull
     @ApiModelProperty("用户id")
     private Long userId;
+
+    @ApiModelProperty("是否过期")
+    @JsonIgnore
+    private int isOverDate;
 
     public ParkingOrder() {
     }

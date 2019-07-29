@@ -21,22 +21,25 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "parkingordersApi",description = "预约取车接口")
 @RequestMapping("/parkingorders")
 @CrossOrigin(origins = "*")
-public class FetchCarController { 
+public class FetchCarController {
 
 
     @Autowired
     private FetchCarService fetchCarService;
 
-    @ApiOperation(value = "预约停车接口: 通过用户ID获取订单")
+    @ApiOperation(value = "通过用户ID获取订单")
     @GetMapping("/{userID}")
-    OrderDTO getOrderDTOByID(@PathVariable String userID){
-        return null;
+    OrderDTO getOrderDTOByID(@PathVariable Long userID){
+        return fetchCarService.getOrderDTOByUserID(userID);
     }
 
-    @ApiOperation(value = "预约停车接口: 更新订单)")
+
+    @ApiOperation(value = "取车更新订单")
     @PutMapping
     OrderDTO updateOrderDTO(@RequestBody OrderDTO orderDTO){
-        return null;
+
+        return fetchCarService.updateParkingOrder(orderDTO);
+
     }
 
 
