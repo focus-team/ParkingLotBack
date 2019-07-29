@@ -47,11 +47,13 @@ public class FetchCarServiceImpl implements FetchCarService {
     @Override
     public OrderDTO getOrderDTOByUserID(Long userID){
 
-        ParkingOrder parkingOrder = parkingOrderRepository.getOne(userID);
+        //通过用户名获取非过期的订单
+        ParkingOrder parkingOrder = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userID);
 
         if(parkingOrder == null) {
             return null;
         }
+
         else {
 
             OrderDTO result = new OrderDTO(parkingOrder);
@@ -67,6 +69,7 @@ public class FetchCarServiceImpl implements FetchCarService {
             result.setParkingLotName(parkingLot.getName());
 
             return result;
+
         }
 
     }
@@ -93,6 +96,12 @@ public class FetchCarServiceImpl implements FetchCarService {
         temp.setRemine(temp.getRemine() + 1);
         //修改parkinglot的剩余量
         parkingLotRepository.save(temp);
+
+
+        //保存订单 - 设置为过期
+        ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderDTO.getId());
+        parkingOrder.setIsOverDate(1);
+        parkingOrderRepository.save(parkingOrder);
 
         //通过orderDTO计费用
         ParkingChargesStrategy parkingChargesStrategy = new ConcreteParkingChargesA();

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -53,6 +51,7 @@ public class ParkingOrder {
     @ApiModelProperty("是否过期")
     @JsonIgnore
     private int isOverDate;
+
 
     public ParkingOrder() {
     }
@@ -135,4 +134,12 @@ public class ParkingOrder {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+    public int getIsOverDate() {
+        return isOverDate;
+    }
+
+    public void setIsOverDate(int isOverDate) {
+        this.isOverDate = isOverDate;
+    }
+
 }
