@@ -43,6 +43,7 @@ public class ParkCarServiceImpl implements ParkCarService {
 
     @Override
     public ResponseEntity park(Long userId,String startTime){
+        startTime = startTime.replace("+"," ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date startDate = null;
         try {
@@ -50,6 +51,8 @@ public class ParkCarServiceImpl implements ParkCarService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("************************************");
+        System.out.println(startDate);
         ParkingOrder parkingOrder = new ParkingOrder("a", startDate, null, 0, 0L, 0L, userId,0);
 
         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);

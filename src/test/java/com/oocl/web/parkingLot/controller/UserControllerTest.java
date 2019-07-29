@@ -110,7 +110,7 @@ public class UserControllerTest {
 //        JSONObject jsonObject = new JSONObject(mvcResultBoy.getResponse().getContentAsString());
 
         //then
-        MvcResult mvcResult = this.mockMvc.perform(get("/user/park?userId=1"))
+        MvcResult mvcResult = this.mockMvc.perform(get("/user/park?userId=1&startTime='2019-07-29 00:01'"))
                 .andExpect(status().isOk()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
         JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
