@@ -56,7 +56,7 @@ public class OrderDTO {
     private Long parkingLotName;
 
     @NotNull
-    @ApiModelProperty("用户名字") 
+    @ApiModelProperty("用户名字")
     private Long userName;
 
 
