@@ -43,4 +43,17 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
     }
+
+    @Test
+    public void should_return_error_info_when_park_car_and_no_valuable_boy()throws Exception{
+
+        //given
+
+
+        //when
+
+        //then
+
+
+    }
 }

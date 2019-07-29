@@ -2,15 +2,13 @@ package com.oocl.web.parkingLot.controller;
 
 import com.oocl.web.parkingLot.common.ResponseStatus;
 import com.oocl.web.parkingLot.entity.User;
+import com.oocl.web.parkingLot.service.ParkCarService;
 import com.oocl.web.parkingLot.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +20,9 @@ public class UserController {
     @Autowired
     private UserService userServiceImpl;
 
+    @Autowired
+    private ParkCarService parkCarService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) {
         User u =  userServiceImpl.findUserByUserNameAndPassword(user.getUserName(), user.getPassword());
@@ -30,5 +31,11 @@ public class UserController {
         }
         request.getSession().setAttribute(CURRENT_USER, u);
         return ResponseEntity.ok(ResponseStatus.SUCCESS.getStatusDesc());
+    }
+
+    @GetMapping(path="/park",produces = {"application/json"},params = {"userId"})
+    public ResponseEntity park(@RequestParam Long userId){
+
+        return  parkCarService.create(userId);
     }
 }

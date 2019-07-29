@@ -3,7 +3,7 @@ package com.oocl.web.parkingLot.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,15 +22,17 @@ public class ParkingOrder {
 
     @NotNull
     @ApiModelProperty("开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone ="GMT+8")
     private Date startTime;
 
     @NotNull
     @ApiModelProperty("结束时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone ="GMT+8")
     private Date endTime;
 
     @NotNull
     @ApiModelProperty("费用")
-    @Check(constraints = "cost > 0")
+    @Check(constraints = "cost >= 0")
     private int cost;
 
     @NotNull
@@ -48,8 +50,11 @@ public class ParkingOrder {
     public ParkingOrder() {
     }
 
-    public ParkingOrder(Long id, @NotNull String orderNum, @NotNull Date startTime, @NotNull Date endTime, @NotNull int cost, @NotNull Long parkingBoyId, @NotNull Long parkingLotId, @NotNull Long userId) {
-        this.id = id;
+    public ParkingOrder(@NotNull Long userId) {
+        this.userId = userId;
+    }
+
+    public ParkingOrder(@NotNull String orderNum, @NotNull Date startTime, @NotNull Date endTime, @NotNull int cost, @NotNull Long parkingBoyId, @NotNull Long parkingLotId, @NotNull Long userId) {
         this.orderNum = orderNum;
         this.startTime = startTime;
         this.endTime = endTime;
