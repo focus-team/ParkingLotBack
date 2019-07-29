@@ -18,6 +18,13 @@ public interface FetchCarService {
 
 
     /**
+     * 通过userID获取OrderDTO
+     * @return
+     */
+    OrderDTO getOrderDTOByUserID(Long userID);
+
+
+    /**
      *  通过订单预约取车
      *  1.取车默认是同一个停车员
      *  2.取车时间半小时内
@@ -25,7 +32,7 @@ public interface FetchCarService {
      * @param orderDTO
      * @return
      */
-    OrderDTO uodateParkingOrder(OrderDTO orderDTO);
+    OrderDTO updateParkingOrder(OrderDTO orderDTO);
 
 
 

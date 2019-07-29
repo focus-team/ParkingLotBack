@@ -1,13 +1,20 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.oocl.web.parkingLot.dto.OrderDTO;
+import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
+import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.repository.ParkingLotRepository;
+import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.FetchCarService;
+import com.oocl.web.parkingLot.service.ParkingChargesStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Created with IDEA
@@ -22,16 +29,49 @@ import org.springframework.stereotype.Service;
 public class FetchCarServiceImpl implements FetchCarService {
 
 
+    private ParkingOrderRepository parkingOrderRepository;
     private ParkingLotRepository parkingLotRepository;
     private ParkingBoyRepository parkingBoyRepository;
     private UserRepository userRepository;
 
     @Autowired
-    public FetchCarServiceImpl(ParkingLotRepository parkingLotRepository, ParkingBoyRepository parkingBoyRepository, UserRepository userRepository) {
+    public FetchCarServiceImpl(ParkingOrderRepository parkingOrderRepository, ParkingLotRepository parkingLotRepository, ParkingBoyRepository parkingBoyRepository, UserRepository userRepository) {
+        this.parkingOrderRepository = parkingOrderRepository;
         this.parkingLotRepository = parkingLotRepository;
         this.parkingBoyRepository = parkingBoyRepository;
         this.userRepository = userRepository;
     }
+
+
+
+    @Override
+    public OrderDTO getOrderDTOByUserID(Long userID){
+
+        ParkingOrder parkingOrder = parkingOrderRepository.getOne(userID);
+
+        if(parkingOrder == null) {
+            return null;
+        }
+        else {
+
+            OrderDTO result = new OrderDTO(parkingOrder);
+
+            User user = userRepository.getOne(parkingOrder.getUserId());
+            ParkingLot parkingLot = parkingLotRepository.getOne(parkingOrder.getParkingLotId());
+            ParkingBoy parkingBoy = parkingBoyRepository.getOne(parkingOrder.getParkingBoyId());
+
+            result.setCost(0);
+            result.setUserName(user.getUserName());
+            result.setParkingBoyName(parkingBoy.getName());
+            result.setParkingBoyTel(parkingBoy.getPhone());
+            result.setParkingLotName(parkingLot.getName());
+
+            return result;
+        }
+
+    }
+
+
 
     /**
      * 通过订单预约取车
@@ -43,16 +83,29 @@ public class FetchCarServiceImpl implements FetchCarService {
      * @return
      */
     @Override
-    public OrderDTO uodateParkingOrder(OrderDTO orderDTO) {
+    public OrderDTO updateParkingOrder(OrderDTO orderDTO) {
+
+        Long endTime = System.currentTimeMillis();
+        orderDTO.setEndTime(new Date(endTime));
 
         //通过停车场名字找停车场,剩余空位+1
+        ParkingLot temp = parkingLotRepository.findParkingLotByName(orderDTO.getParkingLotName());
+        temp.setRemine(temp.getRemine() + 1);
+        //修改parkinglot的剩余量
+        parkingLotRepository.save(temp);
 
+        //通过orderDTO计费用
+        ParkingChargesStrategy parkingChargesStrategy = new ConcreteParkingChargesA();
+        int coast = parkingChargesStrategy.ParkingCharges(orderDTO);
+        orderDTO.setCost(coast);
 
-
-
-        return null;
+        return orderDTO;
 
     }
+
+
+
+
 }
 
 
