@@ -29,21 +29,28 @@ import java.util.stream.Collectors;
 @Service
 public class ParkCarServiceImpl implements ParkCarService {
 
-    @Autowired
     private ParkingOrderRepository parkingOrderRepository;
-
-    @Autowired
     private ParkingBoyRepository parkingBoyRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private ParkingLotRepository parkingLotRepository;
 
+    @Autowired
+    public ParkCarServiceImpl(ParkingOrderRepository parkingOrderRepository, ParkingBoyRepository parkingBoyRepository, UserRepository userRepository, ParkingLotRepository parkingLotRepository) {
+        this.parkingOrderRepository = parkingOrderRepository;
+        this.parkingBoyRepository = parkingBoyRepository;
+        this.userRepository = userRepository;
+        this.parkingLotRepository = parkingLotRepository;
+    }
 
     @Override
     public ResponseEntity park(Long userId,String startTime){
+
+        ParkingOrder parkingOrderTemp = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userId);
+
+        if(parkingOrderTemp != null){
+            return  ResponseEntity.ok().body(new GlobalException(4, "There has a unfinished order!"));
+        }
+
         startTime = startTime.replace("?"," ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date startDate = null;
