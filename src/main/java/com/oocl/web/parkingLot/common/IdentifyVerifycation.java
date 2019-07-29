@@ -3,16 +3,21 @@ package com.oocl.web.parkingLot.common;
 import com.oocl.web.parkingLot.entity.User;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class IdentifyVerifycation {
 
-    /***
-     *
-     * @param httpSession
-     * @param key
-     * @return null if current session does not store use info, or return current login user info.
-     */
-    public static User verify(HttpSession httpSession, String key){
-        return (User) httpSession.getAttribute(key);
+    private static Map tokenPool = new HashMap<String, User>();
+
+    public static String storeUser(User user){
+        String uuid = UUID.randomUUID().toString();
+        tokenPool.put(uuid, user);
+        return uuid;
+    }
+
+    public static User fetchUser(String uuid){
+        return (User) tokenPool.get(uuid);
     }
 }
