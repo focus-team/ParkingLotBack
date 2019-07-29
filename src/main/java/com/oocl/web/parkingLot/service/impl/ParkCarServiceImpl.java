@@ -32,7 +32,7 @@ public class ParkCarServiceImpl implements ParkCarService {
 
 
     @Override
-    public ParkingOrder create(Long userId) {
+    public ResponseEntity create(Long userId) {
         Date date = new Date();
         System.out.println(date.getTime());
         ParkingOrder parkingOrder = new ParkingOrder("", new Date(System.currentTimeMillis()), date, 0, 0L, 0L, userId);
@@ -54,7 +54,7 @@ public class ParkCarServiceImpl implements ParkCarService {
                     itemTag.setRemine(itemTag.getRemine() - 1);
                     savedParkingOrder.setParkingLotId(itemTag.getId());
                     ParkingOrder save = parkingOrderRepository.save(savedParkingOrder);
-                    return save;
+                    return ResponseEntity.ok().body(save);
                 }
             }
         } catch (Exception e) {
