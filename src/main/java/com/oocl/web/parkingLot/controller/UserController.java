@@ -41,6 +41,16 @@ public class UserController {
         return ServerResponse.createBySuccess(IdentifyVerifycation.storeUser(u), u);
     }
 
+    @ApiOperation(value = "用户相关接口: 用户注册")
+    @PostMapping("/register")
+    public ServerResponse register(@RequestBody User user){
+        if(user.getUserName() == null || user.getPassword() == null || user.getCarNo() == null || user.getPhoneNo() == null){
+            return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
+        }
+        user.setType(1);
+        userServiceImpl.register(user);
+        return ServerResponse.createBySuccess();
+    }
 
 
 }
