@@ -1,10 +1,8 @@
 package com.oocl.web.parkingLot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oocl.web.parkingLot.common.IdentifyVerifycation;
+import com.oocl.web.parkingLot.common.*;
 import com.oocl.web.parkingLot.common.ResponseStatus;
-import com.oocl.web.parkingLot.common.ServerResponse;
-import com.oocl.web.parkingLot.common.TagConst;
 import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.service.UserService;
 import io.swagger.annotations.Api;
@@ -47,7 +45,8 @@ public class UserController {
         if(user.getUserName() == null || user.getPassword() == null || user.getCarNo() == null || user.getPhoneNo() == null){
             return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
         }
-        user.setType(1);
+        user.setType(TypeConst.CUSTOMER);
+        user.setTag(TagConst.ORDINARY);
         userServiceImpl.register(user);
         return ServerResponse.createBySuccess();
     }
