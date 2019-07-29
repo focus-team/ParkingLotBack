@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long> {
 
 
-    @Query(value = "select * from `parking_order` where is_over_date = 0 and user_id = :userID;",nativeQuery = true)
-    ParkingOrder getParkingOrderByNotIsOverDateBOrderByUserId(@Param("userID")Long userID);
+    @Query(value = "select * from `parking_order` where is_over_date = 0 and user_id = :userId",nativeQuery = true)
+    ParkingOrder getParkingOrderByNotIsOverDateBOrderByUserId(@Param("userId")Long userId);
 
 
 

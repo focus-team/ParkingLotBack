@@ -64,7 +64,7 @@ public class OrderDTO {
     @NotNull
     @ApiModelProperty("用户名字")
     private String userName;
-    
+
 
     public OrderDTO(ParkingOrder parkingOrder){
         BeanUtils.copyProperties(parkingOrder,this);
