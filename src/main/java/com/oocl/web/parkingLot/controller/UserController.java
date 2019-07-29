@@ -28,7 +28,6 @@ public class UserController {
         if(u == null){
             return ResponseEntity.status(ResponseStatus.NOT_FOUND.getStatusCode()).body(ResponseStatus.NOT_FOUND.getStatusDesc());
         }
-        System.out.println("Session: " + request.getSession() + " store successfully login user.");
         request.getSession().setAttribute(CURRENT_USER, u);
         return ResponseEntity.ok(ResponseStatus.SUCCESS.getStatusDesc());
     }
