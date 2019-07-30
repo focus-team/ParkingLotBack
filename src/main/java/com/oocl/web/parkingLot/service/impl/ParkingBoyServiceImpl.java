@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
@@ -13,12 +14,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
 @Service
 public class ParkingBoyServiceImpl implements ParkingBoyService {
 
     @Autowired
     private ParkingBoyRepository parkingBoyRepository;
+
+
+    @Override
+    public ParkingBoy findByNameAndPasswd(String name, String password) {
+        return parkingBoyRepository.findByNameAndPasswd(name, password);
+    }
 
     @Override
     public ParkingBoy create(ParkingBoy parkingBoy) {
@@ -52,11 +59,14 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     }
 
     @Override
-    public ParkingBoy update(Long id, ParkingBoy parkingBoy) {
-        ParkingBoy oldParkingBoy = this.getById(id);
-
-        System.out.println(JSON.toJSONString(parkingBoy.getPhone()));
-        return parkingBoyRepository.save(parkingBoy);
+    public ServerResponse update(ParkingBoy parkingBoy) {
+        ParkingBoy parkingBoy1 = parkingBoyRepository.findById(parkingBoy.getId()).get();
+        if(parkingBoy1 == null){
+            return ServerResponse.createByErrorMessage("参数错误，无法找到指定的停车员！");
+        }
+        parkingBoy1.setTag(parkingBoy.getTag());
+        parkingBoyRepository.save(parkingBoy1);
+        return ServerResponse.createBySuccess();
     }
 
     @Override
@@ -66,5 +76,33 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //            return ResponseEntity.status(HttpStatus.OK).body();
 //        }
         parkingBoyRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ParkingBoy> getParkingBoyByFilterWord(ParkingBoy parkingBoy) {
+        List<ParkingBoy> parkingBoyList = null;
+        if(parkingBoy.getName() != null) {
+            parkingBoyList = parkingBoyRepository.findByNameLike(parkingBoy.getName());
+        }
+        if(parkingBoy.getStatus() != null) {
+            parkingBoyList = parkingBoyRepository.findByStateLike(parkingBoy.getStatus());
+        }
+        if(parkingBoy.getPhone() != null) {
+            parkingBoyList = parkingBoyRepository.findByPhoneLike(parkingBoy.getPhone());
+        }
+        if(parkingBoy.getTag() != null) {
+            parkingBoyList = parkingBoyRepository.findByTagLike(parkingBoy.getTag());
+        }
+        return parkingBoyList;
+    }
+
+    @Override
+    public ParkingBoy resetPassword(String name, String newPassword) {
+        ParkingBoy parkingBoy = parkingBoyRepository.findByName(name);
+        if(parkingBoy == null){
+            return null;
+        }
+        parkingBoy.setPassword(newPassword);
+        return parkingBoyRepository.save(parkingBoy);
     }
 }

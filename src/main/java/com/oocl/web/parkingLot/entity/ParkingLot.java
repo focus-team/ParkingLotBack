@@ -39,5 +39,9 @@ public class ParkingLot {
         this.tag = tag;
     }
 
-
+    public ParkingLot(String name, Integer capacity, Integer remine) {
+        this.name = name;
+        this.capacity = capacity;
+        this.remine = remine;
+    }
 }

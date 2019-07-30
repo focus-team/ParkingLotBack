@@ -1,9 +1,6 @@
 package com.oocl.web.parkingLot.service;
 
-import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.entity.ParkingLot;
-import com.oocl.web.parkingLot.entity.ParkingOrder;
-
 import java.util.Date;
 
 /**
