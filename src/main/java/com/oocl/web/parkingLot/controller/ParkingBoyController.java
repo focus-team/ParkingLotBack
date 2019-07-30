@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -76,6 +77,12 @@ public class ParkingBoyController {
     public ResponseEntity delete(@PathVariable Long id){
         parkingBoyService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(produces = {"application/json"}, path="/filter")
+    public ResponseEntity getAllFilterByCondition(@RequestBody ParkingBoy parkingBoy) {
+        List<ParkingBoy> parkingBoyList = parkingBoyService.getParkingBoyByFilterWord(parkingBoy);
+        return ResponseEntity.ok().body(parkingBoyList);
     }
 
 

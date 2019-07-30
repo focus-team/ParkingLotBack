@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public interface ParkingBoyService {
@@ -20,6 +22,8 @@ public interface ParkingBoyService {
     ParkingBoy update(Long id, ParkingBoy parkingBoy);
 
     void delete(Long id);
+
+    List<ParkingBoy> getParkingBoyByFilterWord(ParkingBoy parkingBoy);
 
     ParkingBoy resetPassword(String name, String newPassword);
 

@@ -17,4 +17,17 @@ public interface ParkingBoyRepository extends JpaRepository<ParkingBoy,Long> {
         ParkingBoy findByNameAndPasswd(@Param("name") String name, @Param("password") String password);
         Page<ParkingBoy> findAll(Pageable pageable);
         ParkingBoy findByName(String name);
+
+        @Query("select p from ParkingBoy p where p.name like concat('%',:name, '%')")
+        public List<ParkingBoy> findByNameLike(@Param("name") String name);
+
+
+        @Query("select p from ParkingBoy p where p.status like concat('%',:status, '%')")
+        public List<ParkingBoy> findByStateLike(@Param("status") String status);
+
+        @Query("select p from ParkingBoy p where p.phone like concat(:phone, '%')")
+        public List<ParkingBoy> findByPhoneLike(@Param("phone") String phone);
+
+        @Query("select p from ParkingBoy p where p.tag like concat(:tag, '%')")
+        public List<ParkingBoy> findByTagLike(@Param("tag") String tag);
 }

@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -64,6 +65,10 @@ public class OrderDTO {
     @NotNull
     @ApiModelProperty("用户名字")
     private String userName;
+
+    @ApiModelProperty("是否过期")
+    @JsonIgnore
+    private int isOverDate;
 
 
     public OrderDTO(ParkingOrder parkingOrder){
