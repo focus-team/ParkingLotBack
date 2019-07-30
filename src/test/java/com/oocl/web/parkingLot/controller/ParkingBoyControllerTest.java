@@ -18,12 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -149,6 +151,41 @@ public class ParkingBoyControllerTest {
 
         //then
         this.mockMvc.perform(delete("/parkingboy/"+parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_login_successfully_when_given_correct_username_and_password() throws Exception{
+        // given
+        String requestBody = "{\n" +
+                "\t\"name\": \"pb1\",\n" +
+                "\t\"password\": \"222222\"\n" +
+                "}";
+        // when
+        final RequestBuilder requestBuilder = post("/parkingboy/login")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON);
+        // than
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_reset_password_successfully_when_given_correct_parkingBoy_info() throws Exception{
+        // given
+        String requestBody = "{\n" +
+                "\t\"name\": \"pb1\",\n" +
+                "\t\"password\": \"333333\"\n" +
+                "}";
+
+        // when
+        final RequestBuilder requestBuilder = put("/parkingboy/reset")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON);
+        // than
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 

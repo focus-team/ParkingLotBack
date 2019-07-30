@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ParkingBoyService {
 
+    ParkingBoy findByNameAndPasswd(String name, String password);
+
     ParkingBoy create(ParkingBoy parkingBoy);
 
     Page<ParkingBoy> getByPage(int page, int pageSize);
@@ -18,5 +20,7 @@ public interface ParkingBoyService {
     ParkingBoy update(Long id, ParkingBoy parkingBoy);
 
     void delete(Long id);
+
+    ParkingBoy resetPassword(String name, String newPassword);
 
 }

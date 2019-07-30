@@ -2,6 +2,7 @@ package com.oocl.web.parkingLot.controller;
 
 
 import com.oocl.web.parkingLot.common.ResponseStatus;
+import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import com.oocl.web.parkingLot.common.IdentifyVerifycation;
@@ -11,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 
@@ -23,6 +22,31 @@ public class ParkingBoyController {
 
     @Autowired
     private ParkingBoyService parkingBoyService;
+
+
+    @PostMapping(value =  "/login", produces = {"application/json"})
+    public ServerResponse<ParkingBoy> login(@RequestBody ParkingBoy parkingBoy){
+        if(parkingBoy.getName() == null || parkingBoy.getPassword() == null){
+            return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
+        }
+        ParkingBoy parkingBoy1 = parkingBoyService.findByNameAndPasswd(parkingBoy.getName(), parkingBoy.getPassword());
+        if(parkingBoy1 == null){
+            return ServerResponse.createByErrorMessage("登录失败，请检查账号跟密码是否正确！");
+        }
+        return ServerResponse.createBySuccess(IdentifyVerifycation.storeUser(parkingBoy1), parkingBoy1);
+    }
+
+    @PutMapping(value = "/reset", produces = {"application/json"})
+    public ServerResponse resetPassword(@RequestBody ParkingBoy parkingBoy){
+        if(parkingBoy.getName() == null || parkingBoy.getPassword() == null){
+            return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
+        }
+        if(parkingBoyService.resetPassword(parkingBoy.getName(), parkingBoy.getPassword()) == null){
+            return ServerResponse.createByErrorMessage("非法的请求数据,请重试！");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
 
     @PostMapping(produces = {"application/json"})
     private ResponseEntity add(@RequestBody ParkingBoy parkingBoy){

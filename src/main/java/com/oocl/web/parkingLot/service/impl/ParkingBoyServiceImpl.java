@@ -20,6 +20,12 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     @Autowired
     private ParkingBoyRepository parkingBoyRepository;
 
+
+    @Override
+    public ParkingBoy findByNameAndPasswd(String name, String password) {
+        return parkingBoyRepository.findByNameAndPasswd(name, password);
+    }
+
     @Override
     public ParkingBoy create(ParkingBoy parkingBoy) {
 
@@ -66,5 +72,15 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //            return ResponseEntity.status(HttpStatus.OK).body();
 //        }
         parkingBoyRepository.deleteById(id);
+    }
+
+    @Override
+    public ParkingBoy resetPassword(String name, String newPassword) {
+        ParkingBoy parkingBoy = parkingBoyRepository.findByName(name);
+        if(parkingBoy == null){
+            return null;
+        }
+        parkingBoy.setPassword(newPassword);
+        return parkingBoyRepository.save(parkingBoy);
     }
 }
