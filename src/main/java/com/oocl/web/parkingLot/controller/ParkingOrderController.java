@@ -4,6 +4,7 @@ import com.oocl.web.parkingLot.dto.OrderDetailDTO;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,44 @@ public class ParkingOrderController {
 
     @ApiOperation(value = "获取所有订单")
     @GetMapping(params = {"page", "size"})
-    List<OrderDetailDTO> getOrderDTOList(@RequestParam(name = "page",defaultValue = "0") int pageNum,
+    List<OrderDetailDTO> OrderDetailDTOList(@RequestParam(name = "page",defaultValue = "0") int pageNum,
                                          @RequestParam(name = "size",defaultValue = "10") int pageSize){
 
         return parkingOrderService.getOrderDetailDTOs(pageNum,pageSize);
 
     }
+
+    @ApiOperation(value = "通过订单ID获取详情")
+    @GetMapping("/{orderId}")
+    OrderDetailDTO getOrderDetailDTO(@PathVariable Long orderId){
+
+        return null;
+
+    }
+
+
+    @ApiOperation(value = "通过停车员ID获取相关条件的订单")
+    @GetMapping("/{orderId}")
+    List<OrderDetailDTO> getOrderDTOsWithCondition(@PathVariable Long parkingBoyId,
+                                                   @ApiParam("条件内容：1.已完成 2.已预约") @PathVariable String condition){
+
+
+        return null;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
