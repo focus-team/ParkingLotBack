@@ -34,7 +34,7 @@ public class ParkingOrderController {
     @GetMapping("/{orderId}")
     OrderDetailDTO getOrderDetailDTO(@PathVariable Long orderId){
 
-        return null;
+        return parkingOrderService.getOrderDetailDTO(orderId);
 
     }
 
@@ -45,23 +45,9 @@ public class ParkingOrderController {
                                                    @ApiParam("条件内容：1.已完成 2.已预约") @PathVariable String condition){
 
 
-        return null;
+        return parkingOrderService.getOrderDetailDTOsWithConditon(parkingBoyId,condition);
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
