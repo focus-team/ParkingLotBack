@@ -51,7 +51,9 @@ public class FetchCarServiceImpl implements FetchCarService {
         ParkingOrder parkingOrder = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userID);
 
         if(parkingOrder == null) {
-            return null;
+             OrderDTO orderDTO = new OrderDTO();
+             orderDTO.setId(-1L);
+             return orderDTO;
         }
 
         else {
