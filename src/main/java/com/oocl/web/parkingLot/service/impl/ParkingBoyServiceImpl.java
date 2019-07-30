@@ -3,8 +3,11 @@ package com.oocl.web.parkingLot.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.entity.ParkingLot;
+import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
+import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,9 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 
     @Autowired
     private ParkingBoyRepository parkingBoyRepository;
+
+    @Autowired
+    private ParkingOrderRepository parkingOrderRepository;
 
 
     @Override
@@ -104,5 +110,23 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
         }
         parkingBoy.setPassword(newPassword);
         return parkingBoyRepository.save(parkingBoy);
+    }
+
+    @Override
+    public ServerResponse fetchOrderManually(String parkingBoyId, String orderId) {
+        ParkingOrder parkingOrder = parkingOrderRepository.findById(Long.valueOf(orderId)).get();
+        if(parkingOrder.getParkingBoyId() != 0){
+            return ServerResponse.createByErrorMessage("当前订单已被其他停车员抢去，请选择其他订单进行抢单操作！");
+        }
+        ParkingBoy parkingBoy = parkingBoyRepository.findById(Long.valueOf(parkingBoyId)).get();
+        parkingOrder.setParkingBoyId(Long.valueOf(parkingBoyId));
+        for(ParkingLot parkingLot : parkingBoy.getParkingLots()){
+            if(parkingLot.getRemine() > 0){
+                parkingOrder.setParkingLotId(parkingLot.getId());
+                parkingOrderRepository.save(parkingOrder);
+                return ServerResponse.createBySuccess();
+            }
+        }
+        return ServerResponse.createByErrorMessage("当前停车员所管理的停车场都处于停车饱满状态，无空位停车场可停！");
     }
 }
