@@ -183,7 +183,13 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         System.out.println(JSON.toJSONString(tagUserList));
         List<User> tagUserListTure = new ArrayList<>();
 
-        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());;
+        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+
+        tagUserList.stream().forEach(item -> {
+            System.out.println(item.getTag());
+            System.out.println(item.getTag().endsWith(tag));
+        });
+
         System.out.println(JSON.toJSONString(tagUserList));
 
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
