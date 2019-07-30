@@ -5,4 +5,6 @@ import com.oocl.web.parkingLot.entity.User;
 public interface UserService {
 
     User findUserByUserNameAndPassword(String username, String password);
+
+    User register(User user);
 }

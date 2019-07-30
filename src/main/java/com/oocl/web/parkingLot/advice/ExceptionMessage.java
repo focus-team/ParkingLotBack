@@ -11,7 +11,7 @@ public class ExceptionMessage {
 
     @ExceptionHandler(value = GlobalException.class)
     public ResponseEntity exceptionHandler(GlobalException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getErrMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(e.getErrMessage());
     }
 
 }

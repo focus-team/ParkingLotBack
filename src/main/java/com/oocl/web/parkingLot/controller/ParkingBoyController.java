@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 
 @RestController
 @RequestMapping("/parkingboy")
-@CrossOrigin(origins = "*")
+@CrossOrigin(allowCredentials = "true")
 public class ParkingBoyController {
-
-    private static final String CURRENT_USER = "CURRENT_USER";
 
     @Autowired
     private ParkingBoyService parkingBoyService;

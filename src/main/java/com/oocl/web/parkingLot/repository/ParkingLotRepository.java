@@ -14,12 +14,19 @@ import java.util.List;
 public interface ParkingLotRepository extends JpaRepository<ParkingLot,Long> {
 
 
+
     @Override
     Page<ParkingLot> findAll(Pageable pageable);
 
 
     @Query(value = "SELECT * from parking_lot where remine > :remine limit :pageNum,:pageSize",nativeQuery = true)
     List<ParkingLot> findAllByPageableWithRemine(@Param("remine") int remine, @Param("pageNum")int pageNum, @Param("pageSize")int pageSize);
+
+
+
+    ParkingLot findParkingLotByName(String name);
+
+
 
 
 }

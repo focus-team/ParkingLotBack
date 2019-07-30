@@ -64,7 +64,6 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //            parkingBoyRepository.deleteById(id);
 //            return ResponseEntity.status(HttpStatus.OK).body();
 //        }
-
         parkingBoyRepository.deleteById(id);
     }
 }

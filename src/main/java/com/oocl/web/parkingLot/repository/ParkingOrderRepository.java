@@ -2,6 +2,8 @@ package com.oocl.web.parkingLot.repository;
 
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +16,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long> {
+
+
+    @Query(value = "select * from `parking_order` where is_over_date = 0 and user_id = :userId",nativeQuery = true)
+    ParkingOrder getParkingOrderByNotIsOverDateBOrderByUserId(@Param("userId")Long userId);
+
 
 
 

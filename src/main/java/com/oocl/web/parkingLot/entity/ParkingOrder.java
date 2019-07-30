@@ -1,9 +1,10 @@
 package com.oocl.web.parkingLot.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Check;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,15 +23,16 @@ public class ParkingOrder {
 
     @NotNull
     @ApiModelProperty("开始时间")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
 
-    @NotNull
     @ApiModelProperty("结束时间")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm")
     private Date endTime;
 
     @NotNull
     @ApiModelProperty("费用")
-    @Check(constraints = "cost > 0")
+    @Check(constraints = "cost >= 0")
     private int cost;
 
     @NotNull
@@ -45,18 +47,27 @@ public class ParkingOrder {
     @ApiModelProperty("用户id")
     private Long userId;
 
+    @ApiModelProperty("是否过期")
+    @JsonIgnore
+    private int isOverDate;
+
+
     public ParkingOrder() {
     }
 
-    public ParkingOrder(Long id, @NotNull String orderNum, @NotNull Date startTime, @NotNull Date endTime, @NotNull int cost, @NotNull Long parkingBoyId, @NotNull Long parkingLotId, @NotNull Long userId) {
-        this.id = id;
+    public ParkingOrder(@NotNull Long userId) {
+        this.userId = userId;
+    }
+
+    public ParkingOrder(@NotNull String orderNum, @NotNull Date startTime, Date endTime, @NotNull int cost, @NotNull Long parkingBoyId, @NotNull Long parkingLotId, @NotNull Long userId, int isOverDate) {
         this.orderNum = orderNum;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.cost = cost;
+        this.cost = 0;
         this.parkingBoyId = parkingBoyId;
         this.parkingLotId = parkingLotId;
         this.userId = userId;
+        this.isOverDate = 0;
     }
 
     public Long getId() {
@@ -122,4 +133,12 @@ public class ParkingOrder {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+    public int getIsOverDate() {
+        return isOverDate;
+    }
+
+    public void setIsOverDate(int isOverDate) {
+        this.isOverDate = isOverDate;
+    }
+
 }
