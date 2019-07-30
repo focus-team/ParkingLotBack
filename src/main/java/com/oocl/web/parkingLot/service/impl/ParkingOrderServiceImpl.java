@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created with IDEA
@@ -169,6 +170,24 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     private void updateUserName(OrderDetailDTO orderDetailDTO,Long id){
         User user = userRepository.getOne(id);
         orderDetailDTO.setUserName(user.getUserName());
+    }
+
+    private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
+
+        String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
+
+        List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().equals(tag)).collect(Collectors.toList());
+
+        List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
+        for(User user : tagUserList){
+            List<ParkingOrder> collect = parkingOrderRepository.findAll().stream().filter(item ->
+                    item.getUserId() == user.getId()
+                            && item.getIsOverDate() == 0
+                            && item.getParkingBoyId() == 0)
+                    .collect(Collectors.toList());
+            unbookedParkingOrders.addAll(collect);
+        }
+        return unbookedParkingOrders;
     }
 
 
