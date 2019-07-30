@@ -179,6 +179,7 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
 
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
+        System.out.println(tag);
         List<User> tagUserList = userRepository.findAll();
         System.out.println(JSON.toJSONString(tagUserList));
         List<User> tagUserListTure = new ArrayList<>();
