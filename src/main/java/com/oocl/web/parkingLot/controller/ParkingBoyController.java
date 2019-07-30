@@ -91,5 +91,12 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(parkingBoyList);
     }
 
+    @ApiOperation(value = "停车员相关接口: 停车员手动抢单操作")
+    @GetMapping(params = {"parkingBoyId", "orderId"})
+    public ServerResponse fetchOrderManually(@ApiParam("停车员Id")@RequestParam("parkingBoyId") String parkingBoyId,
+                                             @ApiParam("订单Id")@RequestParam("orderId") String orderId){
+        return parkingBoyService.fetchOrderManually(parkingBoyId, orderId);
+    }
+
 
 }
