@@ -1,7 +1,6 @@
 package com.oocl.web.parkingLot.dto;
 
 import com.oocl.web.parkingLot.common.OrderStatusConst;
-import com.oocl.web.parkingLot.entity.ParkingOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;

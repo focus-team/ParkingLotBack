@@ -30,5 +30,8 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     Page<ParkingOrder> findAll(Pageable pageable);
 
 
+    List<ParkingOrder> findParkingOrdersByIsOverDateAndParkingBoyId(int IsOverDate,Long parkingBoyId);
+
+
 
 }

@@ -59,7 +59,42 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
     }
 
-    //将parkingOrder转OrderDetailDTO
+
+
+    @Override
+    public OrderDetailDTO getOrderDetailDTO(Long orderId) {
+        ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderId);
+        return transferParkingOrder(parkingOrder);
+    }
+
+
+    @Override
+    public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, String condition) {
+
+        List<ParkingOrder> parkingOrders = null;
+        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
+
+        if(condition.equals(OrderStatusConst.SUBSCRIBED)){
+            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0,parkingBoyId);
+        }else if(condition.equals(OrderStatusConst.FINISHED)){
+            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1,parkingBoyId);
+        }
+
+        for(ParkingOrder parkingOrder:parkingOrders){
+            orderDetailDTOS.add(transferParkingOrder(parkingOrder));
+        }
+
+        return orderDetailDTOS;
+
+    }
+
+
+
+    /**
+     * 将parkingOrder转OrderDetailDTO
+     * @param parkingOrder
+     * @return
+     */
     private OrderDetailDTO transferParkingOrder(ParkingOrder parkingOrder){
 
         OrderDTO orderDTO = new OrderDTO(parkingOrder);
@@ -101,20 +136,35 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
     }
 
-    //修改 parkinglot
+
+    /**
+     * 修改parkinglot
+     * @param orderDetailDTO
+     * @param id
+     */
     private void updateParkingLotName(OrderDetailDTO orderDetailDTO,Long id){
         ParkingLot parkingLot = parkingLotRepository.getOne(id);
         orderDetailDTO.setParkingLotName(parkingLot.getName());
     }
 
-    //修改 parkingboy
+
+    /**
+     * 修改 parkingboy
+     * @param orderDetailDTO
+     * @param id
+     */
     private void updateParkingBoy(OrderDetailDTO orderDetailDTO,Long id){
         ParkingBoy parkingBoy = parkingBoyRepository.getOne(id);
         orderDetailDTO.setParkingBoyName(parkingBoy.getName());
         orderDetailDTO.setParkingBoyTel(parkingBoy.getPhone());
     }
 
-    //修改 user
+
+    /**
+     * 修改 user
+     * @param orderDetailDTO
+     * @param id
+     */
     private void updateUserName(OrderDetailDTO orderDetailDTO,Long id){
         User user = userRepository.getOne(id);
         orderDetailDTO.setUserName(user.getUserName());
