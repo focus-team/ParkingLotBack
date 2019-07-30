@@ -182,15 +182,19 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
         System.out.println("**********************************");
         System.out.println(tag);
-        System.out.println(JSON.toJSONString(userRepository.findAll()));
-        List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+        List<User> tagUserList = userRepository.findAll();
+        System.out.println(JSON.toJSONString(tagUserList));
+
+        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+        System.out.println(JSON.toJSONString(tagUserList));
         System.out.println("**********************************");
         System.out.println(JSON.toJSONString(tagUserList));
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
         for(User user : tagUserList){
             System.out.println("***********User***********************");
             System.out.println(JSON.toJSONString(user));
-            List<ParkingOrder> collect = parkingOrderRepository.findAll().stream().filter(item ->
+            List<ParkingOrder> collect =
+                    parkingOrderRepository.findAll().stream().filter(item ->
                     item.getUserId().equals(user.getId())
                             && item.getIsOverDate() == 0
                             && item.getParkingBoyId() == 0)
