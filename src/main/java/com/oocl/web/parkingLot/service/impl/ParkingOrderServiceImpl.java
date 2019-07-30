@@ -68,7 +68,7 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
 
         String state = orderDetailDTO.getState();
-        
+
 
         if(state.equals(OrderStatusConst.FINISHED)){
 
