@@ -42,7 +42,7 @@ public class ParkingOrderController {
     @ApiOperation(value = "通过停车员ID获取相关条件的订单")
     @GetMapping("/{parkingBoyId}/{condition}")
     List<OrderDetailDTO> getOrderDTOsWithCondition(@PathVariable Long parkingBoyId,
-                                                   @ApiParam("条件内容：1.已完成 2.已预约") @PathVariable String condition){
+                                                   @ApiParam("条件内容：1.已预约 2.已完成") @PathVariable Long condition){
 
 
         return parkingOrderService.getOrderDetailDTOsWithConditon(parkingBoyId,condition);
