@@ -177,6 +177,8 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
 
 
+
+
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
 
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
@@ -184,8 +186,21 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         System.out.println(tag);
         List<User> tagUserList = userRepository.findAll();
         System.out.println(JSON.toJSONString(tagUserList));
-        System.out.println("**********************************");
-        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+        System.out.println("***************++++++++++++++++++++++++++*******************");
+
+        List<User> tagUserListTure = new ArrayList<>();
+        tagUserList.stream().forEach(item -> {
+                if(item.getTag().endsWith(tag)) {
+
+                    tagUserListTure.add(item);
+                }
+        }
+        );
+
+
+
+
+        tagUserList = tagUserListTure;
         System.out.println(JSON.toJSONString(tagUserList));
         System.out.println("**********************************");
         System.out.println(JSON.toJSONString(tagUserList));
