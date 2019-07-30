@@ -27,7 +27,7 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
 
     @Query(value = "select * from `parking_order` where is_over_date = 0 and parking_boy_id = :parkingBoyId",nativeQuery = true)
     List<ParkingOrder> getParkingOrderByNotIsOverDateOrderByParkingBoyId(@Param("parkingBoyId")Long parkingBoyId);
-    
+
     @Override
     Page<ParkingOrder> findAll(Pageable pageable);
 

@@ -7,10 +7,6 @@ import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingCarStrategy;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +15,6 @@ import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -73,21 +68,16 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
         System.out.println(JSON.toJSONString(savedParkingOrder));
 
         try {
-            System.out.println("*******00000********");
             System.out.println(userId);
             List<ParkingBoy> availableBoys = getFilterParkingBoy(userId);
-            System.out.println("*******1111********");
             if(availableBoys.size() == 0 ){
                 return ResponseEntity.ok().body(new GlobalException(5, "AvailableParkingBoys has too many order pending.System " +
                         "can't dispatch!Waiting for pick-uping by hand!"));
             }
-            System.out.println("*******2222********");
+
             for (ParkingBoy boy : availableBoys) {
                 System.out.println(JSON.toJSONString(boy));
                 List<ParkingLot> parkingLots = boy.getParkingLots().stream().filter(itemLot -> itemLot.getRemine() >= 1).collect(Collectors.toList());
-
-                System.out.println("*******parkingLots********");
-                System.out.println(JSON.toJSONString(parkingLots));
 
                 savedParkingOrder.setParkingBoyId(boy.getId());
                 for (ParkingLot itemTag : parkingLots) {
@@ -134,16 +124,10 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
         List<ParkingBoy> parkingBoysChargeParkingLotLessTwo = new ArrayList<>();
         for(ParkingBoy parkingBoy : tagBoys){
             List<ParkingOrder> parkingBoyUnfinishedOrders = parkingOrderRepository.getParkingOrderByNotIsOverDateOrderByParkingBoyId(parkingBoy.getId());
-            System.out.println("!!!!!!!!!!!!!!!!!!");
-            System.out.println(JSON.toJSONString(parkingBoyUnfinishedOrders));
-            System.out.println(parkingBoyUnfinishedOrders.size());
             if(parkingBoyUnfinishedOrders.size() < 2){
                 parkingBoysChargeParkingLotLessTwo.add(parkingBoy);
-                System.out.println(JSON.toJSONString(parkingBoysChargeParkingLotLessTwo));
             }
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!");
-        System.out.println(JSON.toJSONString(parkingBoysChargeParkingLotLessTwo));
         return parkingBoysChargeParkingLotLessTwo;
     }
 
