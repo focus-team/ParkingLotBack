@@ -76,7 +76,10 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
 
-        if(condition == 1){
+        if(condition == 0){
+            parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+        }
+        else if(condition == 1){
             parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0,parkingBoyId);
         }else if(condition == 2){
             parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1,parkingBoyId);
@@ -172,6 +175,8 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         orderDetailDTO.setUserName(user.getUserName());
     }
 
+
+
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
 
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
@@ -181,7 +186,7 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
         for(User user : tagUserList){
             List<ParkingOrder> collect = parkingOrderRepository.findAll().stream().filter(item ->
-                    item.getUserId() == user.getId()
+                    item.getUserId().equals(user.getId())
                             && item.getIsOverDate() == 0
                             && item.getParkingBoyId() == 0)
                     .collect(Collectors.toList());
