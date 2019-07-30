@@ -27,6 +27,7 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //            throw new GlobalException(1,"The parkingBoy name has exited!");
 //        }
         try {
+            parkingBoy.setPassword("123456");
             ParkingBoy save = parkingBoyRepository.save(parkingBoy);
             return save;
         } catch (Exception e) {

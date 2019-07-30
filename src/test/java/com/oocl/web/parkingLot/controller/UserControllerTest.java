@@ -93,9 +93,9 @@ public class UserControllerTest {
         parkingLotsVip.add(parkingLotFull);
         parkingLotsVip.add(parkingLotEmpity);
 
-        ParkingBoy parkingBoyOrdinary = new ParkingBoy("Mike", "123454778", 18, "male", StatusConst.FREE, TagConst.ORDINARY, parkingLotsOrdinary);
-        ParkingBoy parkingBoyVipBusy = new ParkingBoy("yamy", "123454778", 18, "male", StatusConst.BUSY, TagConst.VIP, parkingLotsVip);
-        ParkingBoy parkingBoyVipFree = new ParkingBoy("Coko", "123454778", 18, "male", StatusConst.FREE, TagConst.VIP, parkingLotsVip);
+        ParkingBoy parkingBoyOrdinary = new ParkingBoy("Mike", "","123454778", 18, "male", StatusConst.FREE, TagConst.ORDINARY, parkingLotsOrdinary);
+        ParkingBoy parkingBoyVipBusy = new ParkingBoy("yamy","", "123454778", 18, "male", StatusConst.BUSY, TagConst.VIP, parkingLotsVip);
+        ParkingBoy parkingBoyVipFree = new ParkingBoy("Coko","", "123454778", 18, "male", StatusConst.FREE, TagConst.VIP, parkingLotsVip);
         //when
         this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)

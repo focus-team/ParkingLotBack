@@ -43,7 +43,7 @@ public class ParkingBoyControllerTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         ParkingLot initParkingLot = new ParkingLot("AA",18,10,"boy");
         parkingLots.add(initParkingLot);
-        ParkingBoy initParkingBoy = new ParkingBoy("Tom", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy initParkingBoy = new ParkingBoy("Tom","", "123454778", 18, "male", "busy", "VIP", parkingLots);
         parkingBoyRepository.save(initParkingBoy);
     }
 
@@ -57,7 +57,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Jemmy11", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Jemmy11","" ,"123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         //then
@@ -71,9 +71,9 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy1 = new ParkingBoy("Mike", "123454778", 18, "male", "busy", "VIP", parkingLots);
-        ParkingBoy parkingBoy2 = new ParkingBoy("yamy", "123454778", 18, "male", "busy", "VIP", parkingLots);
-        ParkingBoy parkingBoy3 = new ParkingBoy("Coko", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy1 = new ParkingBoy("Mike","", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy2 = new ParkingBoy("yamy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy3 = new ParkingBoy("Coko","","123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         this.mockMvc.perform(post("/parkingboy")
@@ -98,7 +98,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
@@ -119,7 +119,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(parkingBoy))).andReturn();
@@ -140,7 +140,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy","", "123454778", 18, "male", "busy", "VIP", parkingLots);
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(parkingBoy))).andReturn();
