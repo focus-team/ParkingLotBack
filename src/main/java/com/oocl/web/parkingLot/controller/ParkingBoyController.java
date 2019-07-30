@@ -6,6 +6,9 @@ import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import com.oocl.web.parkingLot.common.IdentifyVerifycation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,14 +22,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/parkingboy")
 @CrossOrigin(allowCredentials = "true")
+@Api(value = "ParkingBoyApi",description = "停车员相关接口")
 public class ParkingBoyController {
 
     @Autowired
     private ParkingBoyService parkingBoyService;
 
 
+    @ApiOperation(value = "停车员相关接口: 停车员登录")
     @PostMapping(value =  "/login", produces = {"application/json"})
-    public ServerResponse<ParkingBoy> login(@RequestBody ParkingBoy parkingBoy){
+    public ServerResponse<ParkingBoy> login(@ApiParam("停车员对象") @RequestBody ParkingBoy parkingBoy){
         if(parkingBoy.getName() == null || parkingBoy.getPassword() == null){
             return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
         }
@@ -37,8 +42,9 @@ public class ParkingBoyController {
         return ServerResponse.createBySuccess(IdentifyVerifycation.storeUser(parkingBoy1), parkingBoy1);
     }
 
+    @ApiOperation(value = "停车员相关接口: 停车员修改密码")
     @PutMapping(value = "/reset", produces = {"application/json"})
-    public ServerResponse resetPassword(@RequestBody ParkingBoy parkingBoy){
+    public ServerResponse resetPassword(@ApiParam("停车员对象")@RequestBody ParkingBoy parkingBoy){
         if(parkingBoy.getName() == null || parkingBoy.getPassword() == null){
             return ServerResponse.createByErrorMessage("请检查必填项是否都有填写！");
         }
@@ -67,8 +73,9 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(parkingBoy);
     }
 
+    @ApiOperation(value = "停车员相关接口: 修改停车员对应的Tag")
     @PatchMapping(produces = {"application/json"})
-    public ServerResponse updateById(@RequestBody ParkingBoy parkingBoy){
+    public ServerResponse update(@ApiParam("停车员对象")@RequestBody ParkingBoy parkingBoy){
        return parkingBoyService.update(parkingBoy);
     }
 

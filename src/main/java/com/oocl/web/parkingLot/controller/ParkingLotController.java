@@ -37,8 +37,9 @@ public class ParkingLotController {
         return parkingLotService.saveParkingLot(parkingLot);
     }
 
+    @ApiOperation(value = "停车管理接口: 更新停车场相关信息")
     @PutMapping
-    public ParkingLot updateParkingLot(@RequestBody ParkingLot parkingLot){
+    public ParkingLot updateParkingLot(@ApiParam("停车场对象")@RequestBody ParkingLot parkingLot){
         return parkingLotService.saveParkingLot(parkingLot);
     }
 
