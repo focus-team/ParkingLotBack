@@ -13,8 +13,10 @@ import java.util.List;
 @Repository
 public interface ParkingBoyRepository extends JpaRepository<ParkingBoy,Long> {
 
+        @Query(value = "select * from parking_boy where name = :name and password = :password", nativeQuery = true)
+        ParkingBoy findByNameAndPasswd(@Param("name") String name, @Param("password") String password);
         Page<ParkingBoy> findAll(Pageable pageable);
-        List<ParkingBoy> findByName(String naeme);
+        ParkingBoy findByName(String name);
 
         @Query("select p from ParkingBoy p where p.name like concat('%',:name, '%')")
         public List<ParkingBoy> findByNameLike(@Param("name") String name);
