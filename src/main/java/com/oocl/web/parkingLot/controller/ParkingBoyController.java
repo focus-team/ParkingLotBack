@@ -67,10 +67,9 @@ public class ParkingBoyController {
         return ResponseEntity.ok().body(parkingBoy);
     }
 
-    @PatchMapping(produces = {"application/json"} ,path="/{id}")
-    public ResponseEntity updateById(@PathVariable Long id,@RequestBody ParkingBoy parkingBoy){
-        ParkingBoy update = parkingBoyService.update(id, parkingBoy);
-        return ResponseEntity.ok().body(update);
+    @PatchMapping(produces = {"application/json"})
+    public ServerResponse updateById(@RequestBody ParkingBoy parkingBoy){
+       return parkingBoyService.update(parkingBoy);
     }
 
     @DeleteMapping(produces = {"application/json"} ,path="/{id}")

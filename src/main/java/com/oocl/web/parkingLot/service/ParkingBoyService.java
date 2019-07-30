@@ -1,5 +1,6 @@
 package com.oocl.web.parkingLot.service;
 
+import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public interface ParkingBoyService {
 
     ParkingBoy getById(Long id);
 
-    ParkingBoy update(Long id, ParkingBoy parkingBoy);
+    ServerResponse update(ParkingBoy parkingBoy);
 
     void delete(Long id);
 

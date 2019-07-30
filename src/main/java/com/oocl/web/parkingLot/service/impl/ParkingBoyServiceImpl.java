@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
@@ -58,11 +59,14 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     }
 
     @Override
-    public ParkingBoy update(Long id, ParkingBoy parkingBoy) {
-        ParkingBoy oldParkingBoy = this.getById(id);
-
-        System.out.println(JSON.toJSONString(parkingBoy.getPhone()));
-        return parkingBoyRepository.save(parkingBoy);
+    public ServerResponse update(ParkingBoy parkingBoy) {
+        ParkingBoy parkingBoy1 = parkingBoyRepository.findById(parkingBoy.getId()).get();
+        if(parkingBoy1 == null){
+            return ServerResponse.createByErrorMessage("参数错误，无法找到指定的停车员！");
+        }
+        parkingBoy1.setTag(parkingBoy.getTag());
+        parkingBoyRepository.save(parkingBoy1);
+        return ServerResponse.createBySuccess();
     }
 
     @Override
