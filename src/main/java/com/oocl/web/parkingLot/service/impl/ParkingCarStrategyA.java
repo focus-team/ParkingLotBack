@@ -71,8 +71,12 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
             System.out.println(userId);
             List<ParkingBoy> availableBoys = getFilterParkingBoy(userId);
             if(availableBoys.size() == 0 ){
-                return ResponseEntity.ok().body(new GlobalException(5, "AvailableParkingBoys has too many order pending.System " +
-                        "can't dispatch!Waiting for pick-uping by hand!"));
+
+                OrderDTO orderDTO = new OrderDTO(savedParkingOrder);
+                return ResponseEntity.ok().body(orderDTO);
+
+//                return ResponseEntity.ok().body(new GlobalException(5, "AvailableParkingBoys has too many order pending.System " +
+//                        "can't dispatch!Waiting for pick-uping by hand!"));
             }
 
             for (ParkingBoy boy : availableBoys) {
