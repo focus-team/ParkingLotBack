@@ -2,7 +2,6 @@ package com.oocl.web.parkingLot.controller;
 
 import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.service.FetchCarService;
-import com.oocl.web.parkingLot.service.ParkingLotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
