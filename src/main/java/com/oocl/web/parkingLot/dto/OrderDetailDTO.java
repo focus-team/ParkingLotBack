@@ -18,26 +18,33 @@ import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
-public class OrderDetailsDTO extends OrderDTO {
+public class OrderDetailDTO extends OrderDTO {
 
     @ApiModelProperty("订单状态：'已完成'，'未接单'，'已预约' ")
     private String State;
 
 
-    public OrderDetailsDTO(ParkingOrder parkingOrder) {
-        BeanUtils.copyProperties(parkingOrder, this);
+    public OrderDetailDTO(OrderDTO orderDTO,Long parkingBoyId) {
+
+        BeanUtils.copyProperties(orderDTO, this);
+        judgeState(parkingBoyId);
+
     }
 
-    private void judgeState() {
+    private void judgeState(Long parkingBoyId) {
 
-        if(getParkingBoyName() == null) {
+        if(parkingBoyId == null) {
+
             this.State = OrderStatusConst.UNHANDLED;
+
         }else {
+
             if (this.getIsOverDate() == 0) {
                 this.State = OrderStatusConst.SUBSCRIBED;
             } else {
                 this.State = OrderStatusConst.FINISHED;
             }
+
         }
 
     }
