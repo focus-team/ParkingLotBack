@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ParkingBoyServiceImpl implements ParkingBoyService {
@@ -66,5 +68,23 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //            return ResponseEntity.status(HttpStatus.OK).body();
 //        }
         parkingBoyRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ParkingBoy> getParkingBoyByFilterWord(ParkingBoy parkingBoy) {
+        List<ParkingBoy> parkingBoyList = null;
+        if(parkingBoy.getName() != null) {
+            parkingBoyList = parkingBoyRepository.findByNameLike(parkingBoy.getName());
+        }
+        if(parkingBoy.getStatus() != null) {
+            parkingBoyList = parkingBoyRepository.findByStateLike(parkingBoy.getStatus());
+        }
+        if(parkingBoy.getPhone() != null) {
+            parkingBoyList = parkingBoyRepository.findByPhoneLike(parkingBoy.getPhone());
+        }
+        if(parkingBoy.getTag() != null) {
+            parkingBoyList = parkingBoyRepository.findByTagLike(parkingBoy.getTag());
+        }
+        return parkingBoyList;
     }
 }
