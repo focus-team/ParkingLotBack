@@ -190,14 +190,14 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
         List<User> tagUserListTure = new ArrayList<>();
         tagUserList.stream().forEach(item -> {
+                    System.out.println("------------------------------");
+                    System.out.println(tag);
                 if(item.getTag().endsWith(tag)) {
 
                     tagUserListTure.add(item);
                 }
         }
         );
-
-
 
 
         tagUserList = tagUserListTure;
