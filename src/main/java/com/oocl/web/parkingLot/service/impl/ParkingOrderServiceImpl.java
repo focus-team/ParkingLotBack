@@ -176,47 +176,25 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     }
 
 
-
-
-
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
 
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
-        System.out.println("**********************************");
-        System.out.println(tag);
         List<User> tagUserList = userRepository.findAll();
         System.out.println(JSON.toJSONString(tagUserList));
-        System.out.println("***************++++++++++++++++++++++++++*******************");
-
         List<User> tagUserListTure = new ArrayList<>();
-        tagUserList.stream().forEach(item -> {
-                    System.out.println("------------------------------");
-                    System.out.println(item.getTag());
-                    System.out.println(item.getTag().endsWith(tag));
-                if(item.getTag().endsWith(tag)) {
 
-                    tagUserListTure.add(item);
-                }
-        }
-        );
-
-
-        tagUserList = tagUserListTure;
+        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());;
         System.out.println(JSON.toJSONString(tagUserList));
-        System.out.println("**********************************");
-        System.out.println(JSON.toJSONString(tagUserList));
+
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
         for(User user : tagUserList){
-            System.out.println("***********User***********************");
-            System.out.println(JSON.toJSONString(user));
             List<ParkingOrder> collect =
                     parkingOrderRepository.findAll().stream().filter(item ->
                     item.getUserId().equals(user.getId())
                             && item.getIsOverDate() == 0
                             && item.getParkingBoyId() == 0)
                     .collect(Collectors.toList());
-            System.out.println("************List<ParkingOrder>**********************");
-            System.out.println(JSON.toJSONString(collect));
+
             unbookedParkingOrders.addAll(collect);
         }
         return unbookedParkingOrders;
