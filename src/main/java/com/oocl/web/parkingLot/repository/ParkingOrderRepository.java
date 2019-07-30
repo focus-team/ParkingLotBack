@@ -32,7 +32,8 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     Page<ParkingOrder> findAll(Pageable pageable);
 
 
-    List<ParkingOrder> findParkingOrdersByIsOverDateAndParkingBoyId(int IsOverDate,Long parkingBoyId);
+    @Query(value = "Select * from parking_order where is_over_date = :IsOverDate and parking_boy_id = :parkingBoyId",nativeQuery = true)
+    List<ParkingOrder> findParkingOrdersByIsOverDateAndParkingBoyId(@Param("IsOverDate") int IsOverDate,@Param("parkingBoyId") Long parkingBoyId);
 
 
 

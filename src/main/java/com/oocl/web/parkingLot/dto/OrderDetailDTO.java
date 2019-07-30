@@ -32,7 +32,7 @@ public class OrderDetailDTO extends OrderDTO {
 
     private void judgeState(Long parkingBoyId) {
 
-        if(parkingBoyId == null) {
+        if(parkingBoyId == 0) {
 
             this.State = OrderStatusConst.UNHANDLED;
 
