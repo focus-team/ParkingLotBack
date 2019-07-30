@@ -69,14 +69,15 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
 
     @Override
-    public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, String condition) {
+    public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, Long condition) {
 
         List<ParkingOrder> parkingOrders = null;
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
-        if(condition.equals(OrderStatusConst.SUBSCRIBED)){
+
+        if(condition == 1){
             parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0,parkingBoyId);
-        }else if(condition.equals(OrderStatusConst.FINISHED)){
+        }else if(condition == 2){
             parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1,parkingBoyId);
         }
 

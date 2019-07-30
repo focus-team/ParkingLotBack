@@ -40,7 +40,7 @@ public interface ParkingOrderService {
      * @param condition
      * @return
      */
-    List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId,String condition);
+    List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId,Long condition);
 
 
 }
