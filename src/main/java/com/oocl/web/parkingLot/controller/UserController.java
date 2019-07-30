@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @GetMapping(path="/park",produces = {"application/json"},params = {"userId","startTime"})
-    public ResponseEntity park(@RequestParam Long userId,@RequestParam String startTime){
+    public ResponseEntity park(@RequestParam Long userId,@RequestParam String startTime) throws Exception {
 
         return  parkCarService.park(userId,startTime);
     }

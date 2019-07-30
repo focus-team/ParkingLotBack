@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created with IDEA
  *
@@ -21,7 +23,8 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     @Query(value = "select * from `parking_order` where is_over_date = 0 and user_id = :userId",nativeQuery = true)
     ParkingOrder getParkingOrderByNotIsOverDateBOrderByUserId(@Param("userId")Long userId);
 
-
+    @Query(value = "select * from `parking_order` where is_over_date = 0 and parking_boy_id = :parkingBoyId",nativeQuery = true)
+    List<ParkingOrder> getParkingOrderByNotIsOverDateOrderByParkingBoyId(@Param("parkingBoyId")Long parkingBoyId);
 
 
 
