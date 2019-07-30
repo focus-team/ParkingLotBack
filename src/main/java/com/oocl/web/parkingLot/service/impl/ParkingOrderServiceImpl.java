@@ -76,7 +76,6 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         List<ParkingOrder> parkingOrders = null;
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
-
         if(condition == 0){
             parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
         }
@@ -184,14 +183,19 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         System.out.println("**********************************");
         System.out.println(tag);
         List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+        System.out.println("**********************************");
         System.out.println(JSON.toJSONString(tagUserList));
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
         for(User user : tagUserList){
+            System.out.println("***********User***********************");
+            System.out.println(JSON.toJSONString(user));
             List<ParkingOrder> collect = parkingOrderRepository.findAll().stream().filter(item ->
                     item.getUserId().equals(user.getId())
                             && item.getIsOverDate() == 0
                             && item.getParkingBoyId() == 0)
                     .collect(Collectors.toList());
+            System.out.println("************List<ParkingOrder>**********************");
+            System.out.println(JSON.toJSONString(collect));
             unbookedParkingOrders.addAll(collect);
         }
         return unbookedParkingOrders;
