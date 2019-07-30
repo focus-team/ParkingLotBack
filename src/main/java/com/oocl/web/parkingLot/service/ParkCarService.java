@@ -8,5 +8,5 @@ import java.util.Date;
 
 @Service
 public interface ParkCarService {
-    ResponseEntity park(Long userId, String startTime);
+    ResponseEntity park(Long userId, String startTime) throws Exception;
 }

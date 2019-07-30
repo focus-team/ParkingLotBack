@@ -15,10 +15,12 @@ import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkCarService;
+import com.oocl.web.parkingLot.service.ParkingCarStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +45,7 @@ public class ParkCarServiceImpl implements ParkCarService {
     }
 
     @Override
-    public ResponseEntity park(Long userId,String startTime){
+    public ResponseEntity park(Long userId,String startTime)throws Exception{
 
         ParkingOrder parkingOrderTemp = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userId);
 
@@ -51,75 +53,77 @@ public class ParkCarServiceImpl implements ParkCarService {
             return  ResponseEntity.ok().body(new GlobalException(4, "There has a unfinished order!"));
         }
 
-        startTime = startTime.replace("?"," ");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date startDate = null;
-        try {
-            startDate = sdf.parse(startTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println("************************************");
-        System.out.println(startDate);
-        ParkingOrder parkingOrder = new ParkingOrder("a", startDate, null, 0, 0L, 0L, userId,0);
-
-        ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
-        String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-        savedParkingOrder.setOrderNum(yyyyMMdd + "." + savedParkingOrder.getId().toString());
-        try {
-            String tag = userRepository.findById(userId).get().getTag();
-            System.out.println("******************************");
-            System.out.println(tag);
-            List<ParkingBoy> tagBoysALl = parkingBoyRepository.findAll();
-            List<ParkingBoy> tagBoysVIP = parkingBoyRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
-
-            List<ParkingBoy> tagBoys = tagBoysVIP.stream().filter(item -> item.getStatus().endsWith(StatusConst.FREE)).collect(Collectors.toList());
-
-            for (ParkingBoy boy : tagBoys) {
-                List<ParkingLot> parkingLots = boy.getParkingLots().stream().filter(itemLot -> itemLot.getRemine() > 1).collect(Collectors.toList());
-                savedParkingOrder.setParkingBoyId(boy.getId());
-                for (ParkingLot itemTag : parkingLots) {
-                    itemTag.setRemine(itemTag.getRemine() - 1);
-                    savedParkingOrder.setParkingLotId(itemTag.getId());
-
-                    System.out.println("***********************before");
-                    System.out.println(JSON.toJSONString(savedParkingOrder));
-
-                    ParkingOrder save = parkingOrderRepository.save(savedParkingOrder);
-
-                    System.out.println("***********************after");
-                    System.out.println(JSON.toJSONString(save));
-
-                    ParkingLot parkingLot = parkingLotRepository.findById(itemTag.getId()).get();
-                    parkingLot.setRemine(parkingLot.getRemine() -1);
-                    parkingLotRepository.save(parkingLot);
-
-
-
-
-                    ParkingOrderVo parkingOrderVo = new ParkingOrderVo();
-                    parkingOrderVo.setParkingOrder(save);
-
-
-                    OrderDTO orderDTO = new OrderDTO(save);
-                    orderDTO.setParkingBoyName(boy.getName());
-                    orderDTO.setParkingBoyTel(boy.getPhone());
-                    orderDTO.setParkingLotName(parkingLot.getName());
-                    orderDTO.setUserName(userRepository.findById(userId).get().getUserName());
-
-
-//                    //username   userRepository.
+//        startTime = startTime.replace("?"," ");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        Date startDate = null;
+//        try {
+//            startDate = sdf.parse(startTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 //
-//                    parkingOrderVo.setUserName("user");
-//                    parkingOrderVo.setParkingLotName(parkingLot.getName());
-//                    parkingOrderVo.setParkingBoyName(boy.getName());
-
-                    return ResponseEntity.ok().body(orderDTO);
-                }
-            }
-        } catch (Exception e) {
-            throw new GlobalException(2, "There has no right parkingBoy!");
-        }
-        return ResponseEntity.ok().body(new GlobalException(3, "There has no right parkingBoy!"));
+//        System.out.println(startDate);
+//        ParkingOrder parkingOrder = new ParkingOrder("a", startDate, null, 0, 0L, 0L, userId,0);
+//
+//        ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
+//        String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+//        savedParkingOrder.setOrderNum(yyyyMMdd + "." + savedParkingOrder.getId().toString());
+//        try {
+//            String tag = userRepository.findById(userId).get().getTag();
+//            System.out.println("******************************");
+//            System.out.println(tag);
+//            List<ParkingBoy> tagBoysALl = parkingBoyRepository.findAll();
+//            List<ParkingBoy> tagBoysVIP = parkingBoyRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+//
+//            List<ParkingBoy> tagBoys = tagBoysVIP.stream().filter(item -> item.getStatus().endsWith(StatusConst.FREE)).collect(Collectors.toList());
+//
+//            for (ParkingBoy boy : tagBoys) {
+//                List<ParkingLot> parkingLots = boy.getParkingLots().stream().filter(itemLot -> itemLot.getRemine() > 1).collect(Collectors.toList());
+//                savedParkingOrder.setParkingBoyId(boy.getId());
+//                for (ParkingLot itemTag : parkingLots) {
+//                    itemTag.setRemine(itemTag.getRemine() - 1);
+//                    savedParkingOrder.setParkingLotId(itemTag.getId());
+//
+//                    System.out.println("***********************before");
+//                    System.out.println(JSON.toJSONString(savedParkingOrder));
+//
+//                    ParkingOrder save = parkingOrderRepository.save(savedParkingOrder);
+//
+//                    System.out.println("***********************after");
+//                    System.out.println(JSON.toJSONString(save));
+//
+//                    ParkingLot parkingLot = parkingLotRepository.findById(itemTag.getId()).get();
+//                    parkingLot.setRemine(parkingLot.getRemine() -1);
+//                    parkingLotRepository.save(parkingLot);
+//
+//
+//
+//
+//                    ParkingOrderVo parkingOrderVo = new ParkingOrderVo();
+//                    parkingOrderVo.setParkingOrder(save);
+//
+//
+//                    OrderDTO orderDTO = new OrderDTO(save);
+//                    orderDTO.setParkingBoyName(boy.getName());
+//                    orderDTO.setParkingBoyTel(boy.getPhone());
+//                    orderDTO.setParkingLotName(parkingLot.getName());
+//                    orderDTO.setUserName(userRepository.findById(userId).get().getUserName());
+//
+//
+////                    //username   userRepository.
+////
+////                    parkingOrderVo.setUserName("user");
+////                    parkingOrderVo.setParkingLotName(parkingLot.getName());
+////                    parkingOrderVo.setParkingBoyName(boy.getName());
+//
+//                    return ResponseEntity.ok().body(orderDTO);
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new GlobalException(2, "There has no right parkingBoy!");
+//        }
+//        return ResponseEntity.ok().body(new GlobalException(3, "There has no right parkingBoy!"));
+        ParkingCarStrategy parkingCarStrategyA = new ParkingCarStrategyA(parkingBoyRepository,userRepository,parkingLotRepository,parkingOrderRepository);
+        return parkingCarStrategyA.ParkingCarStrategy(userId,startTime);
     }
 }
