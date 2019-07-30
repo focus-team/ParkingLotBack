@@ -1,5 +1,6 @@
 package com.oocl.web.parkingLot.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.oocl.web.parkingLot.common.OrderStatusConst;
 import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
@@ -180,9 +181,10 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
 
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
-
-        List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().equals(tag)).collect(Collectors.toList());
-
+        System.out.println("**********************************");
+        System.out.println(tag);
+        List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+        System.out.println(JSON.toJSONString(tagUserList));
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
         for(User user : tagUserList){
             List<ParkingOrder> collect = parkingOrderRepository.findAll().stream().filter(item ->
