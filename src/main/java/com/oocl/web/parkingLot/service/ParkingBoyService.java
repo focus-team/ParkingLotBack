@@ -28,4 +28,5 @@ public interface ParkingBoyService {
 
     ParkingBoy resetPassword(String name, String newPassword);
 
+    ServerResponse fetchOrderManually(String parkingBoyId, String orderId);
 }
