@@ -182,6 +182,7 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
         String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
         System.out.println("**********************************");
         System.out.println(tag);
+        System.out.println(JSON.toJSONString(userRepository.findAll()));
         List<User> tagUserList = userRepository.findAll().stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
         System.out.println("**********************************");
         System.out.println(JSON.toJSONString(tagUserList));
