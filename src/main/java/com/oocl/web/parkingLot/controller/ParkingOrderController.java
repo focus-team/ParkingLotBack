@@ -2,6 +2,7 @@ package com.oocl.web.parkingLot.controller;
 
 import com.oocl.web.parkingLot.dto.OrderDTO;
 
+import com.oocl.web.parkingLot.dto.OrderDetailsDTO;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +27,7 @@ public class ParkingOrderController {
 
     @ApiOperation(value = "获取所有订单")
     @GetMapping
-    List<OrderDTO> getOrderDTOList(){
+    List<OrderDetailsDTO> getOrderDTOList(){
         return null;
     }
 

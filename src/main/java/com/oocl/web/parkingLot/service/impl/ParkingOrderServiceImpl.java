@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.oocl.web.parkingLot.dto.OrderDTO;
+import com.oocl.web.parkingLot.dto.OrderDetailsDTO;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
 
 
     @Override
-    public List<OrderDTO> getOrderDTOs() {
+    public List<OrderDetailsDTO> getOrderDTOs() {
         return null;
     }
 
