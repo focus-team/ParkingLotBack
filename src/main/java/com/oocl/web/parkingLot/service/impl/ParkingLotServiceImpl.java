@@ -28,12 +28,16 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public ParkingLot saveParkingLot(ParkingLot parkingLot) {
-        ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).get();
-        if(parkingLot1 == null){
-            return null;
+        if(parkingLot.getId() == null){
+            return parkingLotRepository.save(parkingLot);
+        }else {
+            ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).get();
+            if (parkingLot1 == null) {
+                return null;
+            }
+            parkingLot1.setTag(parkingLot.getTag());
+            return parkingLotRepository.save(parkingLot1);
         }
-        parkingLot1.setTag(parkingLot.getTag());
-        return parkingLotRepository.save(parkingLot1);
     }
 
     @Override
