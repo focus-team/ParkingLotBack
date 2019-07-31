@@ -37,5 +37,18 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
 
 
 
+    @Query(value ="SELECT AVG(TIMESTAMPDIFF(MINUTE,start_time,end_time)) from parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
+    String getAvgDurationOfCompletedOrders();
+
+
+
+    @Query(value = "SELECT MAX(TIMESTAMPDIFF(MINUTE,start_time,end_time)) MaxDuration FROM parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
+    String getMaxDurationOfCompletedOrders();
+
+    @Query(value = "SELECT MIN(TIMESTAMPDIFF(MINUTE,start_time,end_time)) MinDuration FROM parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
+    String getMinDurationOfCompletedOrders();
+
+
+
 
 }

@@ -26,6 +26,9 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot,Long> {
 
     ParkingLot findParkingLotByName(String name);
 
+    @Query(value = "SELECT sum(remine) from parking_lot where tag = :tag",nativeQuery = true)
+    Integer findParkingLotsRemineByTag(@Param("tag") String tag);
+
 
 
 

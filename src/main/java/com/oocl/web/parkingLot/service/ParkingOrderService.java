@@ -42,5 +42,6 @@ public interface ParkingOrderService {
      */
     List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId,Long condition);
 
+    double getForecastTimeForFreeParkingSpaces();
 
 }
