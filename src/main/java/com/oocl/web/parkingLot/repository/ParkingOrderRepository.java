@@ -29,15 +29,20 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     @Query(value = "select * from `parking_order` where is_over_date = 0 and parking_boy_id = :parkingBoyId",nativeQuery = true)
     List<ParkingOrder> getParkingOrderByNotIsOverDateOrderByParkingBoyId(@Param("parkingBoyId")Long parkingBoyId);
 
-    @Override
-    Page<ParkingOrder> findAll(Pageable pageable);
+    @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
+            "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id limit :pageNum,:pageSize",nativeQuery = true)
+    List<Map> findAllByPage(@Param("pageNum")int pageNum,@Param("pageSize") int pageSize);
 
 
     @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
             "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
             "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
             "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",nativeQuery = true)
-    List<Map> findAllOrderDTOsWithSeveralTable();
+    List<Map> findAllOrderDTOs();
+
+
 
 
     @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
@@ -47,15 +52,22 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     Map findOrderDTOById(@Param("orderId") Long orderId);
 
 
-    @Query(value = "Select * from parking_order where is_over_date = :IsOverDate and parking_boy_id = :parkingBoyId",nativeQuery = true)
-    List<ParkingOrder> findParkingOrdersByIsOverDateAndParkingBoyId(@Param("IsOverDate") int IsOverDate,@Param("parkingBoyId") Long parkingBoyId);
+
+
+    @Query(value = "" +
+            "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
+            "where (p.is_over_date = :IsOverDate and p.parking_boy_id = :parkingBoyId) and p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",
+            nativeQuery = true)
+    List<Map> findParkingOrdersByIsOverDateAndParkingBoyId(@Param("IsOverDate") int IsOverDate,@Param("parkingBoyId") Long parkingBoyId);
+
+
 
 
 
     @Query(value ="SELECT AVG(TIMESTAMPDIFF(MINUTE,start_time,end_time)) from parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
     String getAvgDurationOfCompletedOrders();
-
-
 
     @Query(value = "SELECT MAX(TIMESTAMPDIFF(MINUTE,start_time,end_time)) MaxDuration FROM parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
     String getMaxDurationOfCompletedOrders();

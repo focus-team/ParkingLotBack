@@ -25,6 +25,10 @@ public interface ParkingOrderService {
     List<OrderDetailDTO> getOrderDetailDTOs(int pageNum,int pageSize);
 
 
+    /**
+     * 返回所有的订单信息列表
+     * @return
+     */
     List<OrderDetailDTO> getOrderDetailDTOs();
 
     /**
@@ -42,6 +46,8 @@ public interface ParkingOrderService {
      * @return
      */
     List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId,Long condition);
+
+
 
     double getForecastTimeForFreeParkingSpaces();
 
