@@ -86,16 +86,16 @@ public class UserControllerTest {
     public void should_return_order_info_when_park_car_and_valuable_boy()throws Exception{
 
         ParkingLot parkingLotFull = new ParkingLot("AA",10,0,TagConst.VIP);
-        ParkingLot parkingLotEmpity = new ParkingLot("BB",10,3,TagConst.VIP);
+        ParkingLot parkingLotEmpity = new ParkingLot("BB",10,30,TagConst.VIP);
         //given
         List<ParkingLot> parkingLotsVip = new ArrayList<>();
         List<ParkingLot> parkingLotsOrdinary = new ArrayList<>();
         parkingLotsVip.add(parkingLotFull);
         parkingLotsVip.add(parkingLotEmpity);
 
-        ParkingBoy parkingBoyOrdinary = new ParkingBoy("Mike", "123454778", 18, "male", StatusConst.FREE, TagConst.ORDINARY, parkingLotsOrdinary);
-        ParkingBoy parkingBoyVipBusy = new ParkingBoy("yamy", "123454778", 18, "male", StatusConst.BUSY, TagConst.VIP, parkingLotsVip);
-        ParkingBoy parkingBoyVipFree = new ParkingBoy("Coko", "123454778", 18, "male", StatusConst.FREE, TagConst.VIP, parkingLotsVip);
+        ParkingBoy parkingBoyOrdinary = new ParkingBoy("Mike", "","123454778", 18, "male", StatusConst.FREE, TagConst.ORDINARY, parkingLotsOrdinary);
+        ParkingBoy parkingBoyVipBusy = new ParkingBoy("yamy","", "123454778", 18, "male", StatusConst.BUSY, TagConst.VIP, parkingLotsVip);
+        ParkingBoy parkingBoyVipFree = new ParkingBoy("Coko","", "123454778", 18, "male", StatusConst.FREE, TagConst.VIP, parkingLotsVip);
         //when
         this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ public class UserControllerTest {
 //        JSONObject jsonObject = new JSONObject(mvcResultBoy.getResponse().getContentAsString());
 
         //then
-        MvcResult mvcResult = this.mockMvc.perform(get("/user/park?userId=1&startTime='2019-07-29 00:01'"))
+        MvcResult mvcResult = this.mockMvc.perform(get("/user/park?userId=1&startTime=2019-07-29?00:01"))
                 .andExpect(status().isOk()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
         JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());

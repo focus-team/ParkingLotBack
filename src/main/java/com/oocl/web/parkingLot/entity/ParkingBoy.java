@@ -17,6 +17,9 @@ public class ParkingBoy {
     @Column(unique = true)
     private String name;
 
+    @Column
+    private String password;
+
     @NotNull
     @Column
     private String phone;
@@ -46,8 +49,9 @@ public class ParkingBoy {
     public ParkingBoy() {
     }
 
-    public ParkingBoy(String name, String phone, Integer age, String sex, String status, String tag, List<ParkingLot> parkingLots) {
+    public ParkingBoy(@NotNull String name, String password, @NotNull String phone, @NotNull Integer age, @NotNull String sex, @NotNull String status, @NotNull String tag, @NotNull List<ParkingLot> parkingLots) {
         this.name = name;
+        this.password = "123456";
         this.phone = phone;
         this.age = age;
         this.sex = sex;
@@ -70,6 +74,14 @@ public class ParkingBoy {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -119,6 +131,8 @@ public class ParkingBoy {
     public void setParkingLots(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;
     }
+
+
 
 
 }

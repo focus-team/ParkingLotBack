@@ -18,12 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -43,7 +45,7 @@ public class ParkingBoyControllerTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         ParkingLot initParkingLot = new ParkingLot("AA",18,10,"boy");
         parkingLots.add(initParkingLot);
-        ParkingBoy initParkingBoy = new ParkingBoy("Tom", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy initParkingBoy = new ParkingBoy("Tom","", "123454778", 18, "male", "busy", "VIP", parkingLots);
         parkingBoyRepository.save(initParkingBoy);
     }
 
@@ -57,7 +59,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Jemmy11", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Jemmy11","" ,"123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         //then
@@ -71,9 +73,9 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy1 = new ParkingBoy("Mike", "123454778", 18, "male", "busy", "VIP", parkingLots);
-        ParkingBoy parkingBoy2 = new ParkingBoy("yamy", "123454778", 18, "male", "busy", "VIP", parkingLots);
-        ParkingBoy parkingBoy3 = new ParkingBoy("Coko", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy1 = new ParkingBoy("Mike","", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy2 = new ParkingBoy("yamy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy3 = new ParkingBoy("Coko","","123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         this.mockMvc.perform(post("/parkingboy")
@@ -98,7 +100,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
 
         //when
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
@@ -119,7 +121,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy", "","123454778", 18, "male", "busy", "VIP", parkingLots);
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(parkingBoy))).andReturn();
@@ -140,7 +142,7 @@ public class ParkingBoyControllerTest {
 
         //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        ParkingBoy parkingBoy = new ParkingBoy("Joy", "123454778", 18, "male", "busy", "VIP", parkingLots);
+        ParkingBoy parkingBoy = new ParkingBoy("Joy","", "123454778", 18, "male", "busy", "VIP", parkingLots);
         MvcResult mvcResultSaved = this.mockMvc.perform(post("/parkingboy")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(parkingBoy))).andReturn();
@@ -149,6 +151,41 @@ public class ParkingBoyControllerTest {
 
         //then
         this.mockMvc.perform(delete("/parkingboy/"+parkingBoySaved.getLong("id")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_login_successfully_when_given_correct_username_and_password() throws Exception{
+        // given
+        String requestBody = "{\n" +
+                "\t\"name\": \"pb1\",\n" +
+                "\t\"password\": \"222222\"\n" +
+                "}";
+        // when
+        final RequestBuilder requestBuilder = post("/parkingboy/login")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON);
+        // than
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_reset_password_successfully_when_given_correct_parkingBoy_info() throws Exception{
+        // given
+        String requestBody = "{\n" +
+                "\t\"name\": \"pb1\",\n" +
+                "\t\"password\": \"333333\"\n" +
+                "}";
+
+        // when
+        final RequestBuilder requestBuilder = put("/parkingboy/reset")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON);
+        // than
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 
