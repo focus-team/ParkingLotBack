@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IDEA
@@ -30,6 +31,13 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
 
     @Override
     Page<ParkingOrder> findAll(Pageable pageable);
+
+
+    @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
+            "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",nativeQuery = true)
+    List<Map> findAllOrderDTOsWithSeveralTable();
 
 
     @Query(value = "Select * from parking_order where is_over_date = :IsOverDate and parking_boy_id = :parkingBoyId",nativeQuery = true)

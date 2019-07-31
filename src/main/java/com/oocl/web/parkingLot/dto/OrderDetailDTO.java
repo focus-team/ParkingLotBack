@@ -23,16 +23,16 @@ public class OrderDetailDTO extends OrderDTO {
     private String State;
 
 
-    public OrderDetailDTO(OrderDTO orderDTO,Long parkingBoyId) {
+    public OrderDetailDTO(OrderDTO orderDTO) {
 
         BeanUtils.copyProperties(orderDTO, this);
-        judgeState(parkingBoyId);
+        judgeState();
 
     }
 
-    private void judgeState(Long parkingBoyId) {
+    private void judgeState() {
 
-        if(parkingBoyId == 0) {
+        if(this.getParkingBoyName().equals("")  || this.getParkingBoyName() == null) {
 
             this.State = OrderStatusConst.UNHANDLED;
 
@@ -47,4 +47,5 @@ public class OrderDetailDTO extends OrderDTO {
         }
 
     }
+
 }

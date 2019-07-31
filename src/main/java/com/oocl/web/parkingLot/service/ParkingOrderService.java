@@ -2,7 +2,6 @@ package com.oocl.web.parkingLot.service;
 
 
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
-import com.oocl.web.parkingLot.entity.ParkingBoy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +24,8 @@ public interface ParkingOrderService {
      */
     List<OrderDetailDTO> getOrderDetailDTOs(int pageNum,int pageSize);
 
+
+    List<OrderDetailDTO> getOrderDetailDTOs();
 
     /**
      * 通过id返回单个订单详情
