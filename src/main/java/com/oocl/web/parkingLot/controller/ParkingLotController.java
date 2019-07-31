@@ -1,5 +1,6 @@
 package com.oocl.web.parkingLot.controller;
 
+import com.oocl.web.parkingLot.common.TagConst;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.service.ParkingLotService;
 import io.swagger.annotations.Api;
@@ -34,6 +35,7 @@ public class ParkingLotController {
     public ParkingLot saveParkingLot(
             @ApiParam("停车场对象")@RequestBody ParkingLot parkingLot){
         parkingLot.setRemine(parkingLot.getCapacity());
+        parkingLot.setTag(TagConst.ORDINARY);
         return parkingLotService.saveParkingLot(parkingLot);
     }
 
