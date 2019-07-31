@@ -1,11 +1,8 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.oocl.web.parkingLot.common.OrderStatusConst;
 import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
-import com.oocl.web.parkingLot.entity.ParkingBoy;
-import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
@@ -16,9 +13,8 @@ import com.oocl.web.parkingLot.service.ParkingOrderService;
 import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +55,8 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
             result.add(orderDetailDTO);
         }
 
+        sortByState(result);
+
         return result;
 
     }
@@ -74,6 +72,8 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
             OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
             result.add(orderDetailDTO);
         }
+
+        sortByState(result);
 
         return result;
 
@@ -187,6 +187,13 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         System.out.println(forecastTimeForFreeParkingSpaces);
 
         return forecastTimeForFreeParkingSpaces;
+    }
+
+
+    public void sortByState(List<OrderDetailDTO> list){
+
+        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
+
     }
 }
 
