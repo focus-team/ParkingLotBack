@@ -28,7 +28,16 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public ParkingLot saveParkingLot(ParkingLot parkingLot) {
-        return parkingLotRepository.save(parkingLot);
+        if(parkingLot.getId() == null){
+            return parkingLotRepository.save(parkingLot);
+        }else {
+            ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).get();
+            if (parkingLot1 == null) {
+                return null;
+            }
+            parkingLot1.setTag(parkingLot.getTag());
+            return parkingLotRepository.save(parkingLot1);
+        }
     }
 
     @Override
@@ -67,6 +76,4 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         return parkingLotRepository.findAllByPageableWithRemine(remine,pageNum,pageSize);
 
     }
-
-
 }

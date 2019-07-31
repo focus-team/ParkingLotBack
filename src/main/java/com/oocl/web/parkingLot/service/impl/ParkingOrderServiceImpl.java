@@ -71,8 +71,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         List<Map> list = parkingOrderRepository.findAllOrderDTOsWithSeveralTable();
         for (Map map:list) {
-            OrderDTO orderDTO = MapToOrderDTOUtils.getDTOByMap(map);
-            OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
+            OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
             result.add(orderDetailDTO);
         }
 
@@ -83,8 +82,10 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     @Override
     public OrderDetailDTO getOrderDetailDTO(Long orderId) {
-        ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderId);
-        return transferParkingOrder(parkingOrder);
+
+        Map map = parkingOrderRepository.findOrderDTOById(orderId);
+        return transferMapToOrderDetailDTO(map);
+
     }
 
 
@@ -109,6 +110,19 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         return orderDetailDTOS;
 
     }
+
+
+    /**
+     *
+     * @param map
+     * @return
+     */
+    private OrderDetailDTO transferMapToOrderDetailDTO(Map map){
+        OrderDTO orderDTO = MapToOrderDTOUtils.getDTOByMap(map);
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
+        return orderDetailDTO;
+    }
+
 
 
     /**
