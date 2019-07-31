@@ -165,9 +165,19 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     @Override
     public double getForecastTimeForFreeParkingSpaces() {
+
         String avgDurationOfCompletedOrders = parkingOrderRepository.getAvgDurationOfCompletedOrders();
         String maxDurationOfCompletedOrders = parkingOrderRepository.getMaxDurationOfCompletedOrders();
         String minDurationOfCompletedOrders = parkingOrderRepository.getMinDurationOfCompletedOrders();
+        if(avgDurationOfCompletedOrders == null){
+            avgDurationOfCompletedOrders = "0";
+        }
+        if(maxDurationOfCompletedOrders == null){
+            maxDurationOfCompletedOrders = "0";
+        }
+        if(minDurationOfCompletedOrders == null){
+            minDurationOfCompletedOrders = "0";
+        }
 
         double avgDurationOfCompletedOrdersValue = Double.parseDouble(avgDurationOfCompletedOrders);
         double maxDurationOfCompletedOrdersValue = Double.parseDouble(maxDurationOfCompletedOrders);
@@ -175,6 +185,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         double forecastTimeForFreeParkingSpaces = Math.abs(maxDurationOfCompletedOrdersValue + minDurationOfCompletedOrdersValue - 2 * avgDurationOfCompletedOrdersValue);
         System.out.println(forecastTimeForFreeParkingSpaces);
+
         return forecastTimeForFreeParkingSpaces;
     }
 }
