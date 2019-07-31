@@ -66,7 +66,7 @@ public class ParkingBoyController {
     @GetMapping(produces = {"application/json"} ,params = {"page","pageSize"})
     public ResponseEntity getByPage(@RequestParam int page, @RequestParam int pageSize){
         Page<ParkingBoy> parkingBoyPage = parkingBoyService.getByPage(page, pageSize);
-        return ResponseEntity.ok().body(parkingBoyPage.getContent());
+        return ResponseEntity.ok().body(parkingBoyPage);
     }
 
     @GetMapping(produces = {"application/json"} ,path="/{id}")
