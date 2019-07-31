@@ -122,7 +122,6 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                 System.out.println(parkingLots.size());
                 if (parkingLots.size() >= 1) {
                     for (ParkingLot itemTag : parkingLots) {
-                        itemTag.setRemine(itemTag.getRemine() - 1);
                         ParkingOrder initParkingOrder = parkingOrderRepository.save(parkingOrder);
                         String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
                         initParkingOrder.setOrderNum(yyyyMMdd + "." + initParkingOrder.getId().toString());
