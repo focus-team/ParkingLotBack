@@ -128,6 +128,7 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                         initParkingOrder.setOrderNum(yyyyMMdd + "." + initParkingOrder.getId().toString());
                         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
                         savedParkingOrder.setParkingLotId(itemTag.getId());
+                        savedParkingOrder.setParkingBoyId(boy.getId());
                         ParkingOrder save = parkingOrderRepository.save(savedParkingOrder);
                         ParkingLot parkingLot = changeParkingLotRemine(itemTag);
                         OrderDTO orderDto = createOrderDto(save, boy, parkingLot, userId);
