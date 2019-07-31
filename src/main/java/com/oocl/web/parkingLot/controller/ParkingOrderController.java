@@ -30,6 +30,11 @@ public class ParkingOrderController {
 
     }
 
+    @GetMapping
+    List<OrderDetailDTO> OrderDetailDTOs(){
+        return parkingOrderService.getOrderDetailDTOs();
+    }
+
     @ApiOperation(value = "通过订单ID获取详情")
     @GetMapping("/{orderId}")
     OrderDetailDTO getOrderDetailDTO(@PathVariable Long orderId){
