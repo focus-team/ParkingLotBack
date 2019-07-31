@@ -17,7 +17,6 @@ import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -92,20 +91,24 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     @Override
     public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, Long condition) {
 
-        List<ParkingOrder> parkingOrders = null;
+        List<Map> maps = null;
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
+
         if (condition == 0) {
-            parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
-        } else if (condition == 1) {
-            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0, parkingBoyId);
-        } else if (condition == 2) {
-            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1, parkingBoyId);
+//            parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+        }
+        else if (condition == 1) {
+            maps = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0, parkingBoyId);
+        }
+        else if (condition == 2) {
+            maps = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1, parkingBoyId);
         }
 
-        for (ParkingOrder parkingOrder : parkingOrders) {
-            orderDetailDTOS.add(transferParkingOrder(parkingOrder));
+        for (Map map : maps) {
+            orderDetailDTOS.add(transferMapToOrderDetailDTO(map));
         }
+
 
         return orderDetailDTOS;
 
