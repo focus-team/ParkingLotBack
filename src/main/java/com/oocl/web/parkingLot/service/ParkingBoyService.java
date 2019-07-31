@@ -2,6 +2,7 @@ package com.oocl.web.parkingLot.service;
 
 import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.entity.ParkingLot;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,8 @@ public interface ParkingBoyService {
     ParkingBoy resetPassword(String name, String newPassword);
 
     ServerResponse fetchOrderManually(String parkingBoyId, String orderId);
+
+    ServerResponse<List<ParkingLot>> fetchNotBelongedParkingLotList(Long parkingBoyId);
+
+    ServerResponse updateParkingBoysParkingLotList(List<ParkingLot> parkingLots, Long parkingBoyId);
 }

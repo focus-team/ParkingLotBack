@@ -7,8 +7,10 @@ import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
+import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
+import com.oocl.web.parkingLot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ParkingBoyServiceImpl implements ParkingBoyService {
 
@@ -26,6 +31,9 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 
     @Autowired
     private ParkingOrderRepository parkingOrderRepository;
+
+    @Autowired
+    private ParkingLotRepository parkingLotRepository;
 
 
     @Override
@@ -128,5 +136,36 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             }
         }
         return ServerResponse.createByErrorMessage("当前停车员所管理的停车场都处于停车饱满状态，无空位停车场可停！");
+    }
+
+    @Override
+    public ServerResponse<List<ParkingLot>> fetchNotBelongedParkingLotList(Long parkingBoyId) {
+        ParkingBoy parkingBoy = parkingBoyRepository.findById(parkingBoyId).get();
+        List<ParkingLot> initialParkingLotList = parkingLotRepository.findAll();
+        List<ParkingLot> requiredParkingLotList = new ArrayList<>();
+        for(ParkingLot parkingLot: initialParkingLotList){
+            if(!parkingBoy.getParkingLots().contains(parkingLot) && parkingBoy.getTag().equals(parkingLot.getTag())){
+                requiredParkingLotList.add(parkingLot);
+            }
+        }
+        return ServerResponse.createBySuccess(requiredParkingLotList);
+    }
+
+    @Override
+    public ServerResponse updateParkingBoysParkingLotList(List<ParkingLot> parkingLots, Long parkingBoyId) {
+//        ParkingBoy parkingBoy = parkingBoyRepository.findById(parkingBoyId).get();
+//        List<ParkingLot> parkingLotsToDelete = parkingBoy.getParkingLots().stream().filter(parkingLot -> !parkingLots.contains(parkingLot))
+//                                                .collect(Collectors.toList());
+//        List<ParkingLot> parkingLotsToAdd = parkingLots.stream().filter(parkingLot -> !parkingBoy.getParkingLots().contains(parkingLot))
+//                                                .collect(Collectors.toList());
+//        if(parkingLotsToDelete != null && parkingLotsToDelete.size() > 0){
+//            for(ParkingLot parkingLot: parkingLotsToDelete){
+//
+//            }
+//        }
+        ParkingBoy parkingBoy = parkingBoyRepository.findById(parkingBoyId).get();
+        parkingBoy.setParkingLots(parkingLots);
+        parkingBoyRepository.save(parkingBoy);
+        return ServerResponse.createBySuccess();
     }
 }

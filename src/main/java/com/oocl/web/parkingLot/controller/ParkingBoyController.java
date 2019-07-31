@@ -4,6 +4,7 @@ package com.oocl.web.parkingLot.controller;
 import com.oocl.web.parkingLot.common.ResponseStatus;
 import com.oocl.web.parkingLot.common.ServerResponse;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import com.oocl.web.parkingLot.common.IdentifyVerifycation;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/parkingboy")
 @Api(value = "ParkingBoyApi",description = "停车员相关接口")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class ParkingBoyController {
 
     @Autowired
@@ -98,5 +100,26 @@ public class ParkingBoyController {
         return parkingBoyService.fetchOrderManually(parkingBoyId, orderId);
     }
 
+    @ApiOperation(value = "停车员相关接口: 获取不属于改名停车员的但等级匹配的停车场信息列表")
+    @GetMapping(produces = {"application/json"}, params = {"parkingBoyId"})
+    public ServerResponse<List<ParkingLot>> fetchNotBelongedParkingLotList(@ApiParam("停车员Id")@RequestParam("parkingBoyId") Long parkingBoyId){
+        return parkingBoyService.fetchNotBelongedParkingLotList(parkingBoyId);
+    }
+
+    @ApiOperation(value = "停车员相关接口: 更新停车员所管理的停车场列表")
+    @PutMapping(produces = {"application/json"}, value = "/updateParkingLotList/{parkingBoyId}")
+    public ServerResponse updateParkingBoysParkingLotList(@ApiParam("当前页面存储的指定给改名停车员的停车场列表")@RequestBody List<ParkingLot> parkingLots, @ApiParam("停车员Id")@PathVariable("parkingBoyId") Long parkingBoyId){
+        return parkingBoyService.updateParkingBoysParkingLotList(parkingLots, parkingBoyId);
+    }
+
+    @ApiOperation(value = "停车员相关接口: 停车员退出登录")
+    @PostMapping("/logout")
+    public ServerResponse logout(HttpServletRequest httpServletRequest){
+        if(IdentifyVerifycation.fetchUser(httpServletRequest) != null){
+            IdentifyVerifycation.logoutUser(httpServletRequest);
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByErrorMessage("请求非法，请重新登录！");
+    }
 
 }

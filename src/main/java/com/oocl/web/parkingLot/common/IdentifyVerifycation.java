@@ -20,11 +20,21 @@ public class IdentifyVerifycation {
         return uuid;
     }
 
-    public static <T> T fetchUser(HttpServletRequest request, String uuid){
+    public static <T> T fetchUser(HttpServletRequest request){
         Cookie [] cookies = request.getCookies();
         for(Cookie cookie: cookies){
             if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
                 return (T)tokenPool.get(cookie.getValue());
+            }
+        }
+        return null;
+    }
+
+    public static <T> T logoutUser(HttpServletRequest httpServletRequest){
+        Cookie [] cookies = httpServletRequest.getCookies();
+        for(Cookie cookie: cookies){
+            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
+                return (T)tokenPool.remove(cookie.getValue());
             }
         }
         return null;
