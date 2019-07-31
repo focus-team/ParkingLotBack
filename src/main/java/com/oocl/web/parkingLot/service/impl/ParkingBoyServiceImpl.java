@@ -41,6 +41,7 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
 //        }
         try {
             parkingBoy.setPassword("123456");
+            parkingBoy.setTag("ORDINARY");
             ParkingBoy save = parkingBoyRepository.save(parkingBoy);
             return save;
         } catch (Exception e) {
