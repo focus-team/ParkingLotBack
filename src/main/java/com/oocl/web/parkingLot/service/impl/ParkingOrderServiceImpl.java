@@ -13,12 +13,14 @@ import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
+import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -63,6 +65,23 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
 
     @Override
+    public List<OrderDetailDTO> getOrderDetailDTOs(){
+
+        List<OrderDetailDTO> result = new ArrayList<>();
+
+        List<Map> list = parkingOrderRepository.findAllOrderDTOsWithSeveralTable();
+        for (Map map:list) {
+            OrderDTO orderDTO = MapToOrderDTOUtils.getDTOByMap(map);
+            OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
+            result.add(orderDetailDTO);
+        }
+
+        return result;
+
+    }
+
+
+    @Override
     public OrderDetailDTO getOrderDetailDTO(Long orderId) {
         ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderId);
         return transferParkingOrder(parkingOrder);
@@ -102,7 +121,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         OrderDTO orderDTO = new OrderDTO(parkingOrder);
 
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO, parkingOrder.getParkingBoyId());
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
 
 
         String state = orderDetailDTO.getState();
