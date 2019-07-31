@@ -21,8 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/parkingboy")
-@CrossOrigin(allowCredentials = "true")
 @Api(value = "ParkingBoyApi",description = "停车员相关接口")
+@CrossOrigin(origins = "*")
 public class ParkingBoyController {
 
     @Autowired
