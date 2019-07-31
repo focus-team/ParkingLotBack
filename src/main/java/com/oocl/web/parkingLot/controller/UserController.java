@@ -64,4 +64,14 @@ public class UserController {
         return  parkCarService.park(userId,startTime);
     }
 
+
+    @ApiOperation(value = "用户相关接口: 停车员退出登录")
+    @PostMapping("/logout")
+    public ServerResponse logout(HttpServletRequest httpServletRequest){
+        if(IdentifyVerifycation.fetchUser(httpServletRequest) != null){
+            IdentifyVerifycation.logoutUser(httpServletRequest);
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByErrorMessage("请求非法，请重新登录！");
+    }
 }
