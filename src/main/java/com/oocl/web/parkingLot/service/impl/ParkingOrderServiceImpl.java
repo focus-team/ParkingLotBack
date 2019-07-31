@@ -50,15 +50,17 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     @Override
     public List<OrderDetailDTO> getOrderDetailDTOs(int pageNum, int pageSize) {
 
-        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
+        pageNum = (pageNum - 1) * pageSize;
 
-        List<ParkingOrder> parkingOrders = parkingOrderRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+        List<OrderDetailDTO> result = new ArrayList<>();
 
-        for (ParkingOrder parkingOrder : parkingOrders) {
-            orderDetailDTOS.add(transferParkingOrder(parkingOrder));
+        List<Map> list = parkingOrderRepository.findAllByPage(pageNum,pageSize);
+        for (Map map:list) {
+            OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
+            result.add(orderDetailDTO);
         }
 
-        return orderDetailDTOS;
+        return result;
 
     }
 
@@ -68,7 +70,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         List<OrderDetailDTO> result = new ArrayList<>();
 
-        List<Map> list = parkingOrderRepository.findAllOrderDTOsWithSeveralTable();
+        List<Map> list = parkingOrderRepository.findAllOrderDTOs();
         for (Map map:list) {
             OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
             result.add(orderDetailDTO);
@@ -109,14 +111,13 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
             orderDetailDTOS.add(transferMapToOrderDetailDTO(map));
         }
 
-
         return orderDetailDTOS;
 
     }
 
 
     /**
-     *
+     * map 转 OrderDetailDTO
      * @param map
      * @return
      */
@@ -124,90 +125,6 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         OrderDTO orderDTO = MapToOrderDTOUtils.getDTOByMap(map);
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
         return orderDetailDTO;
-    }
-
-
-
-    /**
-     * 将parkingOrder转OrderDetailDTO
-     *
-     * @param parkingOrder
-     * @return
-     */
-    private OrderDetailDTO transferParkingOrder(ParkingOrder parkingOrder) {
-
-        OrderDTO orderDTO = new OrderDTO(parkingOrder);
-
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
-
-
-        String state = orderDetailDTO.getState();
-
-
-        if (state.equals(OrderStatusConst.FINISHED)) {
-
-
-            updateParkingLotName(orderDetailDTO, parkingOrder.getParkingLotId());
-
-            updateUserName(orderDetailDTO, parkingOrder.getUserId());
-
-            updateParkingBoy(orderDetailDTO, parkingOrder.getParkingBoyId());
-
-
-        } else if (state.equals(OrderStatusConst.SUBSCRIBED)) {
-
-            updateParkingLotName(orderDetailDTO, parkingOrder.getParkingLotId());
-
-            updateUserName(orderDetailDTO, parkingOrder.getUserId());
-
-            updateParkingBoy(orderDetailDTO, parkingOrder.getParkingBoyId());
-
-
-        } else {   // (state.equals(OrderStatusConst.UNHANDLED)
-
-            updateUserName(orderDetailDTO, parkingOrder.getUserId());
-
-        }
-
-        return orderDetailDTO;
-
-    }
-
-
-    /**
-     * 修改parkinglot
-     *
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateParkingLotName(OrderDetailDTO orderDetailDTO, Long id) {
-        ParkingLot parkingLot = parkingLotRepository.getOne(id);
-        orderDetailDTO.setParkingLotName(parkingLot.getName());
-    }
-
-
-    /**
-     * 修改 parkingboy
-     *
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateParkingBoy(OrderDetailDTO orderDetailDTO, Long id) {
-        ParkingBoy parkingBoy = parkingBoyRepository.getOne(id);
-        orderDetailDTO.setParkingBoyName(parkingBoy.getName());
-        orderDetailDTO.setParkingBoyTel(parkingBoy.getPhone());
-    }
-
-
-    /**
-     * 修改 user
-     *
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateUserName(OrderDetailDTO orderDetailDTO, Long id) {
-        User user = userRepository.getOne(id);
-        orderDetailDTO.setUserName(user.getUserName());
     }
 
 
