@@ -15,7 +15,6 @@ import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,13 +92,18 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     @Override
     public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, Long condition) {
 
-        List<Map> maps = null;
+        List<Map> maps = new ArrayList<>();
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
 
         if (condition == 0) {
-//            parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+            List<ParkingOrder> parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+           for(ParkingOrder parkingOrder:parkingOrders){
+               Map map = parkingOrderRepository.findOrderDTOById(parkingOrder.getId());
+               maps.add(map);
+           }
         }
+        
         else if (condition == 1) {
             maps = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0, parkingBoyId);
         }
