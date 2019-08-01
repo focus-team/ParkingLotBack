@@ -121,6 +121,15 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     }
 
+    /**
+     * 根据订单状态排序
+     * @param list
+     */
+    private void sortByState(List<OrderDetailDTO> list){
+
+        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
+
+    }
 
     /**
      * map 转 OrderDetailDTO
@@ -132,6 +141,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
         return orderDetailDTO;
     }
+
 
 
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId) {
@@ -194,12 +204,6 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         return forecastTimeForFreeParkingSpaces;
     }
 
-
-    public void sortByState(List<OrderDetailDTO> list){
-
-        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
-
-    }
 }
 
 
