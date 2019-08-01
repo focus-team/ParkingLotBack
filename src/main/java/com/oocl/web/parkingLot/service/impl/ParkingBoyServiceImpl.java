@@ -69,10 +69,8 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
         for(ParkingBoy parkingBoy : collect){
             System.out.println(JSON.toJSONString(parkingBoy));
             ParkingBoyDTO parkingBoyDTO = new ParkingBoyDTO(parkingBoy);
-            System.out.println("********************");
-//            parkingBoyDTO.setBookedOrderSum(re);
+            parkingBoyDTO.setBookedOrderSum(parkingOrderRepository.getSubscribedParkingOrdersSumByParkingBoyId(parkingBoy.getId()));
             System.out.println(JSON.toJSONString(parkingBoyDTO));
-
             parkingBoyDTOS.add(parkingBoyDTO);
         }
 

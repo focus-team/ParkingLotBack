@@ -68,7 +68,7 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
      * @param parkingBoyId
      * @return
      */
-    @Query(value ="select count(po.id) from parking_order po where is_over_date = 0 and parking_boy_id = :parkingBoyId;" ,nativeQuery = true)
+    @Query(value ="select count(po.id) from parking_order po where is_over_date = 0 and parking_boy_id = :parkingBoyId" ,nativeQuery = true)
     int getSubscribedParkingOrdersSumByParkingBoyId(@Param("parkingBoyId") Long parkingBoyId);
 
 
