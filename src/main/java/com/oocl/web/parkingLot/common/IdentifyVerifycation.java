@@ -22,11 +22,19 @@ public class IdentifyVerifycation {
 
     public static <T> T fetchUser(HttpServletRequest request){
         Cookie [] cookies = request.getCookies();
+        System.out.println(">>>>>>>>>>>>>>>>>>> if there is any cookie? " + cookies + cookies.length);
         for(Cookie cookie: cookies){
-            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
-                return (T)tokenPool.get(cookie.getValue());
-            }
+//            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
+//                return (T)tokenPool.remove(cookie.getValue());
+//            }
+            System.out.println("cookie is: >>>>>>>>>> " + cookie.getName() + ", value is: " + cookie.getValue());
         }
+//        Cookie [] cookies = request.getCookies();
+//        for(Cookie cookie: cookies){
+//            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
+//                return (T)tokenPool.get(cookie.getValue());
+//            }
+//        }
         return null;
     }
 
