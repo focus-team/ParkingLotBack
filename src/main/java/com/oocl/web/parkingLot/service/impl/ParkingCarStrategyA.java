@@ -133,7 +133,7 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                 } else {
                     Map<String, String> data = new HashMap<String, String>();
                     data.put("code", "5");
-                    data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
+                    data.put("errMessage","没有空闲位置，请"+ forecastTimeForFreeParkingSpaces + "分钟后预约，谢谢!");
                     return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
                 }
             }
@@ -152,7 +152,7 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
 
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("code", "5");
-                data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
+                data.put("errMessage","没有空闲位置，请\"+ forecastTimeForFreeParkingSpaces + \"分钟后预约，谢谢!!");
                 return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
 
             }
