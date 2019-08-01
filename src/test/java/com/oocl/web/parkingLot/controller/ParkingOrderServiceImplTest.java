@@ -28,7 +28,8 @@ public class ParkingOrderServiceImplTest {
     @Test
     public void getForecastTimeForFreeParkingSpacesTest(){
 
-        parkingOrderService.getForecastTimeForFreeParkingSpaces();
+        String dataTime = "2019-07-28 11:00:00";
+        parkingOrderService.getForecastTimeForFreeParkingSpaces(dataTime );
 
         System.out.println();
 

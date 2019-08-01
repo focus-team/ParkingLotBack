@@ -5,6 +5,7 @@ import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.entity.User;
+import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
@@ -12,7 +13,12 @@ import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -177,7 +183,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
 
     @Override
-    public double getForecastTimeForFreeParkingSpaces() {
+    public double getForecastTimeForFreeParkingSpaces(String startTime)  {
 
         String avgDurationOfCompletedOrders = parkingOrderRepository.getAvgDurationOfCompletedOrders();
         String maxDurationOfCompletedOrders = parkingOrderRepository.getMaxDurationOfCompletedOrders();
@@ -204,10 +210,26 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         }
         System.out.println(avgDurationOfCompletedOrdersValue);
 
-        double waitingTime =0L;
+        double waitingTime =avgDurationOfCompletedOrdersValue;
+        System.out.println("------------------");
+        System.out.println(startTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date parse = simpleDateFormat.parse(startTime);
+            System.out.println("-----------------++++++++++");
+            System.out.println(parse.getTime());
+            System.out.println((int)avgDurationOfCompletedOrdersValue);
+            int minute = this.bookingTimeForecast(parse.getTime(), (int) avgDurationOfCompletedOrdersValue);
+            System.out.println(minute);
+            waitingTime = waitingTime > minute ? minute: waitingTime;
 
-        
+        } catch (ParseException e) {
+            Map<String, String> data = new HashMap<String, String>();
 
+            data.put("code", "2");
+            data.put("errMessage","input startTime illegal");
+            throw new GlobalException(6, "input startTime illegal",data);
+        }
         return waitingTime;
     }
 
