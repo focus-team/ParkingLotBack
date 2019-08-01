@@ -98,6 +98,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         if (condition == 0) {
             List<ParkingOrder> parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+            System.out.println("----------------"+ parkingOrders.size());
            for(ParkingOrder parkingOrder:parkingOrders){
                Map map = parkingOrderRepository.findOrderDTOById(parkingOrder.getId());
                maps.add(map);
@@ -134,34 +135,34 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId) {
 
-        String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
-        System.out.println(tag);
-        List<User> tagUserList = userRepository.findAll();
-        System.out.println(JSON.toJSONString(tagUserList));
-        List<User> tagUserListTure = new ArrayList<>();
-        tagUserList.stream().forEach(item -> {
-            System.out.println(item.getTag());
-            System.out.println(item.getTag().endsWith(tag));
-        });
-        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
-
-
-        System.out.println(JSON.toJSONString(tagUserList));
-
-        List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
-        for (User user : tagUserList) {
-            List<ParkingOrder> collect =
-                    parkingOrderRepository.findAll().stream().filter(item ->
-                            item.getUserId().equals(user.getId())
-                                    && item.getIsOverDate() == 0
-                                    && item.getParkingBoyId() == 0)
-                            .collect(Collectors.toList());
-
-            unbookedParkingOrders.addAll(collect);
-        }
+//        String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
+//        System.out.println(tag);
+//        List<User> tagUserList = userRepository.findAll();
+//        System.out.println(JSON.toJSONString(tagUserList));
+//        List<User> tagUserListTure = new ArrayList<>();
+//        tagUserList.stream().forEach(item -> {
+//            System.out.println(item.getTag());
+//            System.out.println(item.getTag().endsWith(tag));
+//        });
+//        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+//
+//
+//        System.out.println(JSON.toJSONString(tagUserList));
 //
 //        List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
-//        unbookedParkingOrders = parkingOrderRepository.getUnbookedParkingLotsByParkingBoyId(parkingBoyId);
+//        for (User user : tagUserList) {
+//            List<ParkingOrder> collect =
+//                    parkingOrderRepository.findAll().stream().filter(item ->
+//                            item.getUserId().equals(user.getId())
+//                                    && item.getIsOverDate() == 0
+//                                    && item.getParkingBoyId() == 0)
+//                            .collect(Collectors.toList());
+//
+//            unbookedParkingOrders.addAll(collect);
+//        }
+////
+        List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
+        unbookedParkingOrders = parkingOrderRepository.getUnbookedParkingLotsByParkingBoyId(parkingBoyId);
         return unbookedParkingOrders;
     }
 
