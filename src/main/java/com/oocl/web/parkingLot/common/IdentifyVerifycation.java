@@ -33,9 +33,10 @@ public class IdentifyVerifycation {
     public static <T> T logoutUser(HttpServletRequest httpServletRequest){
         Cookie [] cookies = httpServletRequest.getCookies();
         for(Cookie cookie: cookies){
-            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
-                return (T)tokenPool.remove(cookie.getValue());
-            }
+//            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
+//                return (T)tokenPool.remove(cookie.getValue());
+//            }
+            System.out.println("cookie is: >>>>>>>>>> " + cookie.getName() + ", value is: " + cookie.getValue());
         }
         return null;
     }
