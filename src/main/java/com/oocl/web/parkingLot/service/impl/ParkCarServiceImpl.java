@@ -48,8 +48,11 @@ public class ParkCarServiceImpl implements ParkCarService {
         ParkingOrder parkingOrderTemp = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userId);
 
         if(parkingOrderTemp != null){
-            Map<Integer, String> data = new HashMap<Integer, String>();
-            data.put(4, "The parkingBoy name has exited!");
+
+            Map<String, String> data = new HashMap<String, String>();
+
+            data.put("code", "4");
+            data.put("errMessage", "The parkingBoy name has exited!");
             return  ResponseEntity.ok().body(new GlobalException(4, "The parkingBoy name has exited!",data));
         }
 

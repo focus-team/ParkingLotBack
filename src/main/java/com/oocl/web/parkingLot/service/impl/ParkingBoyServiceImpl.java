@@ -56,8 +56,11 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             return save;
         } catch (Exception e) {
 //            e.printStackTrace();
-            Map<Integer, String> data = new HashMap<Integer, String>();
-            data.put(1, "The parkingBoy name has exited!");
+
+            Map<String, String> data = new HashMap<String, String>();
+
+            data.put("code", "1");
+            data.put("errMessage","The parkingBoy name has exited!");
 //            return ResponseEntity.ok().body(new GlobalException(1, "The parkingBoy name has exited!",data));
             throw new GlobalException(1, "The parkingBoy name has exited!",data);
         } finally {

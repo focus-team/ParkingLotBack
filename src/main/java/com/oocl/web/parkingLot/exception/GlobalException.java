@@ -7,10 +7,10 @@ public class GlobalException extends RuntimeException {
 
     private Integer code;
     private String errMessage;
-    Map<Integer, String> data = new HashMap<Integer, String>();
+    Map<String, String> data = new HashMap<String, String>();
 
 
-    public GlobalException(Integer code, String errMessage,Map<Integer, String> data) {
+    public GlobalException(Integer code, String errMessage,Map<String, String> data) {
 
         this.code = code;
         this.errMessage = errMessage;
@@ -33,11 +33,11 @@ public class GlobalException extends RuntimeException {
         this.errMessage = errMessage;
     }
 
-    public Map<Integer, String> getData() {
+    public Map<String, String> getData() {
         return data;
     }
 
-    public void setData(Map<Integer, String> data) {
+    public void setData(Map<String, String> data) {
         this.data = data;
     }
 }

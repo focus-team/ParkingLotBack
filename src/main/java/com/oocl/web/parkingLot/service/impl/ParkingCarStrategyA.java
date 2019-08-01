@@ -131,8 +131,9 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                         return ResponseEntity.ok().body(orderDto);
                     }
                 } else {
-                    Map<Integer, String> data = new HashMap<Integer, String>();
-                    data.put(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!");
+                    Map<String, String> data = new HashMap<String, String>();
+                    data.put("code", "5");
+                    data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
                     return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
                 }
             }
@@ -148,14 +149,15 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                 OrderDTO orderDTO = new OrderDTO(savedParkingOrder);
                 return ResponseEntity.ok().body(orderDTO);
             } else {
-                Map<Integer, String> data = new HashMap<Integer, String>();
-//                data.put()
-                data.put(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!");
+                Map<String, String> data = new HashMap<String, String>();
+                data.put("code", "5");
+                data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
                 return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
             }
         }
-        Map<Integer, String> data = new HashMap<Integer, String>();
-        data.put(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!");
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("code", "5");
+        data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
         return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
     }
 
