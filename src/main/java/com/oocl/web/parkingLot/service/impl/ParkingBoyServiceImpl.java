@@ -16,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,7 +56,13 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             return save;
         } catch (Exception e) {
 //            e.printStackTrace();
-            throw new GlobalException(1,"The parkingBoy name has exited!");
+
+            Map<String, String> data = new HashMap<String, String>();
+
+            data.put("code", "1");
+            data.put("errMessage","The parkingBoy name has exited!");
+//            return ResponseEntity.ok().body(new GlobalException(1, "The parkingBoy name has exited!",data));
+            throw new GlobalException(1, "The parkingBoy name has exited!",data);
         } finally {
         }
 

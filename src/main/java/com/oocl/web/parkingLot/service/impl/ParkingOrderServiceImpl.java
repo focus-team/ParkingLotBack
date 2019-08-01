@@ -199,6 +199,11 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         double forecastTimeForFreeParkingSpaces = Math.abs(maxDurationOfCompletedOrdersValue + minDurationOfCompletedOrdersValue - 2 * avgDurationOfCompletedOrdersValue);
         System.out.println(forecastTimeForFreeParkingSpaces);
 
+        if(forecastTimeForFreeParkingSpaces > 30d){
+            forecastTimeForFreeParkingSpaces = 30d;
+        }
+        System.out.println(forecastTimeForFreeParkingSpaces);
+
         return forecastTimeForFreeParkingSpaces;
     }
 
