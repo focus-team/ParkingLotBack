@@ -50,7 +50,7 @@ public interface ParkingOrderService {
 
 
 
-    double getForecastTimeForFreeParkingSpaces(String startTime);
+    double getForecastTimeForFreeParkingSpaces(Date startTime);
 
     int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime);
 

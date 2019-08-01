@@ -99,7 +99,7 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
 //        OrderDTO orderDTO = new OrderDTO(savedParkingOrder);
 //        return ResponseEntity.ok().body(orderDTO);
 
-        double forecastTimeForFreeParkingSpaces  =  parkingOrderService.getForecastTimeForFreeParkingSpaces(startTime);
+        double forecastTimeForFreeParkingSpaces  =  parkingOrderService.getForecastTimeForFreeParkingSpaces(splitDateString(startTime));
 
         System.out.println(userId);
         System.out.println(JSON.toJSONString(userRepository.findById(userId).get()));

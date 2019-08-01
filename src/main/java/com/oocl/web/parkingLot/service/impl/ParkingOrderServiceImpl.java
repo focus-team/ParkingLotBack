@@ -183,7 +183,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
 
     @Override
-    public double getForecastTimeForFreeParkingSpaces(String startTime)  {
+    public double getForecastTimeForFreeParkingSpaces(Date startTime)  {
 
         String avgDurationOfCompletedOrders = parkingOrderRepository.getAvgDurationOfCompletedOrders();
         String maxDurationOfCompletedOrders = parkingOrderRepository.getMaxDurationOfCompletedOrders();
@@ -211,26 +211,23 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         System.out.println(avgDurationOfCompletedOrdersValue);
 
         double waitingTime =avgDurationOfCompletedOrdersValue;
-        System.out.println("------------------");
-        System.out.println(startTime);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date parse = simpleDateFormat.parse(startTime);
-            System.out.println("-----------------++++++++++");
-            System.out.println(parse.getTime());
+
+
+
+            System.out.println(startTime.getTime());
             System.out.println((int)avgDurationOfCompletedOrdersValue);
-            int minute = this.bookingTimeForecast(parse.getTime(), (int) avgDurationOfCompletedOrdersValue);
+            int minute = this.bookingTimeForecast(startTime.getTime(), (int) avgDurationOfCompletedOrdersValue);
             System.out.println(minute);
             waitingTime = waitingTime > minute ? minute: waitingTime;
 
-        } catch (ParseException e) {
-            Map<String, String> data = new HashMap<String, String>();
 
-            data.put("code", "2");
-            data.put("errMessage","input startTime illegal");
-            throw new GlobalException(6, "input startTime illegal",data);
-        }
+//            Map<String, String> data = new HashMap<String, String>();
+//
+//            data.put("code", "2");
+//            data.put("errMessage","input startTime illegal");
+//            throw new GlobalException(6, "input startTime illegal",data);
         return waitingTime;
+
     }
 
 
@@ -243,6 +240,9 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     @Override
     public int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime) {
         List<ParkingOrder> parkingOrderList = parkingOrderRepository.findUnFinishedOrder();
+        if(parkingOrderList == null || parkingOrderList.isEmpty()){
+            return 0;
+        }
         List<Long> orderStartTimeCollection = new ArrayList<>();
         for(ParkingOrder parkingOrder: parkingOrderList){
             orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
