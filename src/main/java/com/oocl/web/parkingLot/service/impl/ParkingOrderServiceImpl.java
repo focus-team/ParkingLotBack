@@ -243,6 +243,9 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     @Override
     public int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime) {
         List<ParkingOrder> parkingOrderList = parkingOrderRepository.findUnFinishedOrder();
+        if(parkingOrderList == null || parkingOrderList.isEmpty()){
+            return 0;
+        }
         List<Long> orderStartTimeCollection = new ArrayList<>();
         for(ParkingOrder parkingOrder: parkingOrderList){
             orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
