@@ -150,9 +150,10 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                 return ResponseEntity.ok().body(orderDTO);
             } else {
                 Map<String, String> data = new HashMap<String, String>();
-                data.put("code", "5");
-                data.put("errMessage","There has no spare parkingLot!Please wait for "+ forecastTimeForFreeParkingSpaces + " minutes,thanks!");
-                return ResponseEntity.ok().body(new GlobalException(5, "There has no spare parkingLot!Please wait for " + forecastTimeForFreeParkingSpaces + " minutes,thanks!",data));
+
+                data.put("code", "2");
+                data.put("errMessage","AvailableParkingBoys has too many order pending.System can't dispatch!Waiting for pick-uping by hand!");
+                return ResponseEntity.ok().body(new GlobalException(2, "AvailableParkingBoys has too many order pending.System can't dispatch!Waiting for pick-uping by hand!",data));
             }
         }
         Map<String, String> data = new HashMap<String, String>();
