@@ -63,7 +63,13 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
             nativeQuery = true)
     List<Map> findParkingOrdersByIsOverDateAndParkingBoyId(@Param("IsOverDate") int IsOverDate,@Param("parkingBoyId") Long parkingBoyId);
 
-
+    /**
+     * 查看对应pakingBoy已经预约的记录数
+     * @param parkingBoyId
+     * @return
+     */
+    @Query(value ="select count(po.id) from parking_order po where is_over_date = 0 and parking_boy_id = :parkingBoyId;" ,nativeQuery = true)
+    int getSubscribedParkingOrdersSumByParkingBoyId(@Param("parkingBoyId") Long parkingBoyId);
 
 
     @Query(value ="SELECT AVG(TIMESTAMPDIFF(MINUTE,start_time,end_time)) from parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
