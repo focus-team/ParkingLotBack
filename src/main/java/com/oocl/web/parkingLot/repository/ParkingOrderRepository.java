@@ -76,11 +76,11 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     @Query(value = "SELECT MIN(TIMESTAMPDIFF(MINUTE,start_time,end_time)) MinDuration FROM parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
     String getMinDurationOfCompletedOrders();
 
-    @Query(value = "\n" +
-            "SELECT * FROM parking_order WHERE parking_boy_id = 0 AND user_id IN" +
-            " (SELECT id FROM USER WHERE tag IN" +
-            " (SELECT tag FROM parking_boy WHERE id = :parkingBoyId))")
-    List<ParkingOrder> getUnbookedParkingLotsByParkingBoyId(@Param("parkingBoyId") Long parkingBoyId);
+//    @Query(value = "\n" +
+//            "SELECT * FROM parking_order WHERE parking_boy_id = 0 AND user_id IN" +
+//            " (SELECT id FROM USER WHERE tag IN" +
+//            " (SELECT tag FROM parking_boy WHERE id = :parkingBoyId))")
+//    List<ParkingOrder> getUnbookedParkingLotsByParkingBoyId(@Param("parkingBoyId") Long parkingBoyId);
 
 
 

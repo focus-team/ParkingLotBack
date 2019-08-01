@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created with IDEA
@@ -42,7 +43,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public List<ParkingLot> findParkingLots(){
-        return parkingLotRepository.findAll();
+        return parkingLotRepository.findAll().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
     }
 
 
