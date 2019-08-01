@@ -32,6 +32,7 @@ public class IdentifyVerifycation {
 
     public static <T> T logoutUser(HttpServletRequest httpServletRequest){
         Cookie [] cookies = httpServletRequest.getCookies();
+        System.out.println(">>>>>>>>>>>>>>>>>>> if there is any cookie? " + cookies + cookies.length);
         for(Cookie cookie: cookies){
 //            if(!cookie.getName().isEmpty() && cookie.getName().equals(USER_TOKEN)){
 //                return (T)tokenPool.remove(cookie.getValue());
