@@ -202,6 +202,23 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         return forecastTimeForFreeParkingSpaces;
     }
 
+
+    /**
+     *
+     * @param longTypeValueOfStartTime 当前想要预约的客户所发起的预约时间，Date类型预先处理为Long类型 (毫秒计)
+     * @param caculatedTime 基于大数据算法估算出来的预测时间 (分钟计)
+     * @return 真正适合的预估时间 (分钟计)
+     */
+    @Override
+    public int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime) {
+        List<ParkingOrder> parkingOrderList = parkingOrderRepository.findUnFinishedOrder();
+        List<Long> orderStartTimeCollection = new ArrayList<>();
+        for(ParkingOrder parkingOrder: parkingOrderList){
+            orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
+        }
+        long mixStartTime = orderStartTimeCollection.stream().mapToLong(time -> time).min().getAsLong();
+        return (int)((mixStartTime + caculatedTime * 60 * 1000 - longTypeValueOfStartTime) / 1000 / 60);
+    }
 }
 
 

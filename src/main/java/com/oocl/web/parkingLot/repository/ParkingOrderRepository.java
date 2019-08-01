@@ -42,6 +42,9 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
             "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",nativeQuery = true)
     List<Map> findAllOrderDTOs();
 
+    @Query(value = "select * from parking_order where parking_boy_id <> 0 and is_over_date = 0", nativeQuery = true)
+    List<ParkingOrder> findUnFinishedOrder();
+
 
 
 

@@ -4,6 +4,7 @@ package com.oocl.web.parkingLot.service;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,5 +51,7 @@ public interface ParkingOrderService {
 
 
     double getForecastTimeForFreeParkingSpaces();
+
+    int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime);
 
 }
