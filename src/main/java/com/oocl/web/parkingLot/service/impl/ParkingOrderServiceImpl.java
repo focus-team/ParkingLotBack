@@ -245,7 +245,12 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         }
         List<Long> orderStartTimeCollection = new ArrayList<>();
         for(ParkingOrder parkingOrder: parkingOrderList){
-            orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
+            if(longTypeValueOfStartTime - parkingOrder.getStartTime().getTime() < caculatedTime * 60 * 1000){
+                orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
+            }
+        }
+        if(orderStartTimeCollection == null || orderStartTimeCollection.isEmpty()){
+            return 0;
         }
         long mixStartTime = orderStartTimeCollection.stream().mapToLong(time -> time).min().getAsLong();
         return (int)((mixStartTime + caculatedTime * 60 * 1000 - longTypeValueOfStartTime) / 1000 / 60);
