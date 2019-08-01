@@ -21,7 +21,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins ="*", allowCredentials = "true")
 @Api(value = "UserApi",description = "用户相关接口")
 public class UserController {
 
@@ -54,7 +54,9 @@ public class UserController {
         }
         user.setType(TypeConst.CUSTOMER);
         user.setTag(TagConst.ORDINARY);
-        userServiceImpl.register(user);
+        if(userServiceImpl.register(user) == null){
+            return ServerResponse.createByErrorMessage("用户名重复，请重试！");
+        }
         return ServerResponse.createBySuccess();
     }
 

@@ -133,6 +133,8 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             if(parkingLot.getRemine() > 0){
                 parkingOrder.setParkingLotId(parkingLot.getId());
                 parkingOrderRepository.save(parkingOrder);
+                parkingLot.setRemine(parkingLot.getRemine() - 1);
+                parkingLotRepository.save(parkingLot);
                 return ServerResponse.createBySuccess();
             }
         }
