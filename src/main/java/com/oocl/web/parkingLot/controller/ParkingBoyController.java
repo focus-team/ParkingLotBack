@@ -3,6 +3,7 @@ package com.oocl.web.parkingLot.controller;
 
 import com.oocl.web.parkingLot.common.ResponseStatus;
 import com.oocl.web.parkingLot.common.ServerResponse;
+import com.oocl.web.parkingLot.dto.ParkingBoyDTO;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
@@ -65,8 +66,8 @@ public class ParkingBoyController {
 
     @GetMapping(produces = {"application/json"} ,params = {"page","pageSize"})
     public ResponseEntity getByPage(@RequestParam int page, @RequestParam int pageSize){
-        Page<ParkingBoy> parkingBoyPage = parkingBoyService.getByPage(page, pageSize);
-        return ResponseEntity.ok().body(parkingBoyPage.getContent());
+        Page<ParkingBoyDTO> parkingBoyDTOPage = parkingBoyService.getByPage(page, pageSize);
+        return ResponseEntity.ok().body(parkingBoyDTOPage.getContent());
     }
 
     @GetMapping(produces = {"application/json"} ,path="/{id}")
