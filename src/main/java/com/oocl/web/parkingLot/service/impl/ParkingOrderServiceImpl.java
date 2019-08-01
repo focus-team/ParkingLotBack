@@ -249,6 +249,9 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
                 orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
             }
         }
+        if(orderStartTimeCollection == null || orderStartTimeCollection.isEmpty()){
+            return 0;
+        }
         long mixStartTime = orderStartTimeCollection.stream().mapToLong(time -> time).min().getAsLong();
         return (int)((mixStartTime + caculatedTime * 60 * 1000 - longTypeValueOfStartTime) / 1000 / 60);
     }
