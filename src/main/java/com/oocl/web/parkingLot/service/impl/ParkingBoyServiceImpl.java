@@ -12,11 +12,9 @@ import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.service.ParkingBoyService;
 import com.oocl.web.parkingLot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,7 +62,10 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
     public Page<ParkingBoy> getByPage(int page, int pageSize) {
 
         Pageable pageable  = PageRequest.of(page - 1,pageSize);
-        return parkingBoyRepository.findAll(pageable);
+        List<ParkingBoy> collect = parkingBoyRepository.findAll(pageable).getContent().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
+        Page<ParkingBoy> pages = new PageImpl<ParkingBoy>(collect, pageable, collect.size());
+//        Page<ParkingBoy> pages = parkingBoyRepository.findAll(pageable);
+        return pages;
     }
 
     @Override

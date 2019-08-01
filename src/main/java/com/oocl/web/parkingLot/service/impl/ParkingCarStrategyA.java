@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.repository.ParkingLotRepository;
@@ -101,7 +102,14 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
 //        OrderDTO orderDTO = new OrderDTO(savedParkingOrder);
 //        return ResponseEntity.ok().body(orderDTO);
 
-        double forecastTimeForFreeParkingSpaces = parkingOrderService.getForecastTimeForFreeParkingSpaces();
+        double forecastTimeForFreeParkingSpaces  =  parkingOrderService.getForecastTimeForFreeParkingSpaces();
+
+        System.out.println(userId);
+        System.out.println(JSON.toJSONString(userRepository.findById(userId).get()));
+        if (userRepository.findById(userId).isPresent()){
+            System.out.println(userRepository.findById(userId).get().getTag());
+        }
+
 
         String tag = userRepository.findById(userId).get().getTag();
         List<ParkingBoy> availableBoys = getFilterParkingBoy(tag);
@@ -114,12 +122,12 @@ public class ParkingCarStrategyA implements ParkingCarStrategy {
                 System.out.println(parkingLots.size());
                 if (parkingLots.size() >= 1) {
                     for (ParkingLot itemTag : parkingLots) {
-                        itemTag.setRemine(itemTag.getRemine() - 1);
                         ParkingOrder initParkingOrder = parkingOrderRepository.save(parkingOrder);
                         String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
                         initParkingOrder.setOrderNum(yyyyMMdd + "." + initParkingOrder.getId().toString());
                         ParkingOrder savedParkingOrder = parkingOrderRepository.save(parkingOrder);
                         savedParkingOrder.setParkingLotId(itemTag.getId());
+                        savedParkingOrder.setParkingBoyId(boy.getId());
                         ParkingOrder save = parkingOrderRepository.save(savedParkingOrder);
                         ParkingLot parkingLot = changeParkingLotRemine(itemTag);
                         OrderDTO orderDto = createOrderDto(save, boy, parkingLot, userId);

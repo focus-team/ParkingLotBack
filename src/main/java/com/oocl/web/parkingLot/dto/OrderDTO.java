@@ -56,7 +56,6 @@ public class OrderDTO {
     @ApiModelProperty("停车员电话")
     private String parkingBoyTel;
 
-
     @NotNull
     @ApiModelProperty("停车场名字")
     private String parkingLotName;
@@ -64,6 +63,12 @@ public class OrderDTO {
     @NotNull
     @ApiModelProperty("用户名字")
     private String userName;
+
+    @ApiModelProperty("用户车牌号")
+    private String userCarNo;
+
+    @ApiModelProperty("用户手机号")
+    private String userPhoneNo;
 
     @ApiModelProperty("是否过期")
     @JsonIgnore
@@ -73,7 +78,6 @@ public class OrderDTO {
     public OrderDTO(ParkingOrder parkingOrder){
         BeanUtils.copyProperties(parkingOrder,this);
     }
-
 
 
 }
