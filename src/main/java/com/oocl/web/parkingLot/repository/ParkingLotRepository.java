@@ -23,8 +23,10 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot,Long> {
     List<ParkingLot> findAllByPageableWithRemine(@Param("remine") int remine, @Param("pageNum")int pageNum, @Param("pageSize")int pageSize);
 
 
-
     ParkingLot findParkingLotByName(String name);
+
+    @Query(value = "SELECT sum(remine) from parking_lot where tag = :tag",nativeQuery = true)
+    Integer findParkingLotsRemineByTag(@Param("tag") String tag);
 
 
 

@@ -2,7 +2,6 @@ package com.oocl.web.parkingLot.service;
 
 
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
-import com.oocl.web.parkingLot.entity.ParkingBoy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +26,12 @@ public interface ParkingOrderService {
 
 
     /**
+     * 返回所有的订单信息列表
+     * @return
+     */
+    List<OrderDetailDTO> getOrderDetailDTOs();
+
+    /**
      * 通过id返回单个订单详情
      * @param orderId
      * @return
@@ -42,5 +47,8 @@ public interface ParkingOrderService {
      */
     List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId,Long condition);
 
+
+
+    double getForecastTimeForFreeParkingSpaces();
 
 }

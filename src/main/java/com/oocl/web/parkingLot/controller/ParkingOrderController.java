@@ -25,9 +25,12 @@ public class ParkingOrderController {
     @GetMapping(params = {"page", "size"})
     List<OrderDetailDTO> OrderDetailDTOList(@RequestParam(name = "page",defaultValue = "0") int pageNum,
                                          @RequestParam(name = "size",defaultValue = "10") int pageSize){
-
         return parkingOrderService.getOrderDetailDTOs(pageNum,pageSize);
+    }
 
+    @GetMapping
+    List<OrderDetailDTO> OrderDetailDTOs(){
+        return parkingOrderService.getOrderDetailDTOs();
     }
 
     @ApiOperation(value = "通过订单ID获取详情")

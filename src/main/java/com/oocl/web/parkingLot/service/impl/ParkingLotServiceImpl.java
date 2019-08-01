@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created with IDEA
@@ -28,12 +29,23 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public ParkingLot saveParkingLot(ParkingLot parkingLot) {
-        return parkingLotRepository.save(parkingLot);
+        if(parkingLot.getId() == null){
+            return parkingLotRepository.save(parkingLot);
+        }else {
+            ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).get();
+            if (parkingLot1 == null) {
+                return null;
+            }
+            parkingLot1.setTag(parkingLot.getTag());
+            return parkingLotRepository.save(parkingLot1);
+        }
     }
 
     @Override
     public List<ParkingLot> findParkingLots(){
-        return parkingLotRepository.findAll();
+        List<ParkingLot> parkingLots =  parkingLotRepository.findAll();
+
+        return parkingLots.stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
     }
 
 
@@ -55,7 +67,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
         Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
 
-        return parkingLots.getContent();
+        List<ParkingLot> result =  parkingLots.getContent().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
+
+        return result;
 
     }
 
@@ -67,6 +81,4 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         return parkingLotRepository.findAllByPageableWithRemine(remine,pageNum,pageSize);
 
     }
-
-
 }

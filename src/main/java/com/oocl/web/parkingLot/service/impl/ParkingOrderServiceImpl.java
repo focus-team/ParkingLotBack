@@ -1,11 +1,8 @@
 package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.oocl.web.parkingLot.common.OrderStatusConst;
 import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
-import com.oocl.web.parkingLot.entity.ParkingBoy;
-import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.entity.User;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
@@ -13,12 +10,11 @@ import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
 import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
+import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +27,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class ParkingOrderServiceImpl  implements ParkingOrderService {
+public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     private ParkingOrderRepository parkingOrderRepository;
     private ParkingLotRepository parkingLotRepository;
@@ -47,46 +43,78 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     }
 
     @Override
-    public List<OrderDetailDTO> getOrderDetailDTOs(int pageNum,int pageSize) {
+    public List<OrderDetailDTO> getOrderDetailDTOs(int pageNum, int pageSize) {
 
-        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
+        pageNum = (pageNum - 1) * pageSize;
 
-        List<ParkingOrder> parkingOrders = parkingOrderRepository.findAll(PageRequest.of(pageNum,pageSize)).getContent();
+        List<OrderDetailDTO> result = new ArrayList<>();
 
-        for(ParkingOrder parkingOrder:parkingOrders){
-            orderDetailDTOS.add(transferParkingOrder(parkingOrder));
+        List<Map> list = parkingOrderRepository.findAllByPage(pageNum,pageSize);
+        for (Map map:list) {
+            OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
+            result.add(orderDetailDTO);
         }
 
-        return orderDetailDTOS;
+        sortByState(result);
+
+        return result;
 
     }
 
 
+    @Override
+    public List<OrderDetailDTO> getOrderDetailDTOs(){
+
+        List<OrderDetailDTO> result = new ArrayList<>();
+
+        List<Map> list = parkingOrderRepository.findAllOrderDTOs();
+        for (Map map:list) {
+            OrderDetailDTO orderDetailDTO = transferMapToOrderDetailDTO(map);
+            result.add(orderDetailDTO);
+        }
+
+        sortByState(result);
+
+        return result;
+
+    }
+
 
     @Override
     public OrderDetailDTO getOrderDetailDTO(Long orderId) {
-        ParkingOrder parkingOrder = parkingOrderRepository.getOne(orderId);
-        return transferParkingOrder(parkingOrder);
+
+        Map map = parkingOrderRepository.findOrderDTOById(orderId);
+        return transferMapToOrderDetailDTO(map);
+
     }
 
 
     @Override
     public List<OrderDetailDTO> getOrderDetailDTOsWithConditon(Long parkingBoyId, Long condition) {
 
-        List<ParkingOrder> parkingOrders = null;
+        List<Map> maps = new ArrayList<>();
         List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
 
-        if(condition == 0){
-            parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+
+        if (condition == 0) {
+            List<ParkingOrder> parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
+           for(ParkingOrder parkingOrder:parkingOrders){
+               Map map = parkingOrderRepository.findOrderDTOById(parkingOrder.getId());
+               if(map != null) {
+                   maps.add(map);
+               }
+           }
         }
-        else if(condition == 1){
-            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0,parkingBoyId);
-        }else if(condition == 2){
-            parkingOrders = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1,parkingBoyId);
+        
+        else if (condition == 1) {
+            maps = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(0, parkingBoyId);
+        }
+        else if (condition == 2) {
+            maps = parkingOrderRepository.findParkingOrdersByIsOverDateAndParkingBoyId(1, parkingBoyId);
         }
 
-        for(ParkingOrder parkingOrder:parkingOrders){
-            orderDetailDTOS.add(transferParkingOrder(parkingOrder));
+        for (Map map : maps) {
+            orderDetailDTOS.add(transferMapToOrderDetailDTO(map));
         }
 
         return orderDetailDTOS;
@@ -94,121 +122,84 @@ public class ParkingOrderServiceImpl  implements ParkingOrderService {
     }
 
 
-
     /**
-     * 将parkingOrder转OrderDetailDTO
-     * @param parkingOrder
+     * map 转 OrderDetailDTO
+     * @param map
      * @return
      */
-    private OrderDetailDTO transferParkingOrder(ParkingOrder parkingOrder){
-
-        OrderDTO orderDTO = new OrderDTO(parkingOrder);
-
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO,parkingOrder.getParkingBoyId());
-
-
-        String state = orderDetailDTO.getState();
-
-
-        if(state.equals(OrderStatusConst.FINISHED)){
-
-
-            updateParkingLotName(orderDetailDTO,parkingOrder.getParkingLotId());
-
-            updateUserName(orderDetailDTO,parkingOrder.getUserId());
-
-            updateParkingBoy(orderDetailDTO,parkingOrder.getParkingBoyId());
-
-
-        }else if(state.equals(OrderStatusConst.SUBSCRIBED)){
-
-            updateParkingLotName(orderDetailDTO,parkingOrder.getParkingLotId());
-
-            updateUserName(orderDetailDTO,parkingOrder.getUserId());
-
-            updateParkingBoy(orderDetailDTO,parkingOrder.getParkingBoyId());
-
-
-
-        }
-        else{   // (state.equals(OrderStatusConst.UNHANDLED)
-
-            updateUserName(orderDetailDTO,parkingOrder.getUserId());
-
-        }
-
+    private OrderDetailDTO transferMapToOrderDetailDTO(Map map){
+        OrderDTO orderDTO = MapToOrderDTOUtils.getDTOByMap(map);
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
         return orderDetailDTO;
-
     }
 
 
-    /**
-     * 修改parkinglot
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateParkingLotName(OrderDetailDTO orderDetailDTO,Long id){
-        ParkingLot parkingLot = parkingLotRepository.getOne(id);
-        orderDetailDTO.setParkingLotName(parkingLot.getName());
-    }
+    private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId) {
 
-
-    /**
-     * 修改 parkingboy
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateParkingBoy(OrderDetailDTO orderDetailDTO,Long id){
-        ParkingBoy parkingBoy = parkingBoyRepository.getOne(id);
-        orderDetailDTO.setParkingBoyName(parkingBoy.getName());
-        orderDetailDTO.setParkingBoyTel(parkingBoy.getPhone());
-    }
-
-
-    /**
-     * 修改 user
-     * @param orderDetailDTO
-     * @param id
-     */
-    private void updateUserName(OrderDetailDTO orderDetailDTO,Long id){
-        User user = userRepository.getOne(id);
-        orderDetailDTO.setUserName(user.getUserName());
-    }
-
-
-    private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId){
-
-        String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
-        System.out.println(tag);
-        List<User> tagUserList = userRepository.findAll();
-        System.out.println(JSON.toJSONString(tagUserList));
-        List<User> tagUserListTure = new ArrayList<>();
-        tagUserList.stream().forEach(item -> {
-            System.out.println(item.getTag());
-            System.out.println(item.getTag().endsWith(tag));
-        });
-        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
-
-
-
-        System.out.println(JSON.toJSONString(tagUserList));
-
+//        String tag = parkingBoyRepository.findById(parkingBoyId).get().getTag();
+//        System.out.println(tag);
+//        List<User> tagUserList = userRepository.findAll();
+//        System.out.println(JSON.toJSONString(tagUserList));
+//        List<User> tagUserListTure = new ArrayList<>();
+//        tagUserList.stream().forEach(item -> {
+//            System.out.println(item.getTag());
+//            System.out.println(item.getTag().endsWith(tag));
+//        });
+//        tagUserList = tagUserList.stream().filter(item -> item.getTag().endsWith(tag)).collect(Collectors.toList());
+//
+//
+//        System.out.println(JSON.toJSONString(tagUserList));
+//
+//        List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
+//        for (User user : tagUserList) {
+//            List<ParkingOrder> collect =
+//                    parkingOrderRepository.findAll().stream().filter(item ->
+//                            item.getUserId().equals(user.getId())
+//                                    && item.getIsOverDate() == 0
+//                                    && item.getParkingBoyId() == 0)
+//                            .collect(Collectors.toList());
+//
+//            unbookedParkingOrders.addAll(collect);
+//        }
+////
         List<ParkingOrder> unbookedParkingOrders = new ArrayList<>();
-        for(User user : tagUserList){
-            List<ParkingOrder> collect =
-                    parkingOrderRepository.findAll().stream().filter(item ->
-                    item.getUserId().equals(user.getId())
-                            && item.getIsOverDate() == 0
-                            && item.getParkingBoyId() == 0)
-                    .collect(Collectors.toList());
-
-            unbookedParkingOrders.addAll(collect);
-        }
+        unbookedParkingOrders = parkingOrderRepository.getUnbookedParkingLotsByParkingBoyId(parkingBoyId);
         return unbookedParkingOrders;
     }
 
 
+    @Override
+    public double getForecastTimeForFreeParkingSpaces() {
 
+        String avgDurationOfCompletedOrders = parkingOrderRepository.getAvgDurationOfCompletedOrders();
+        String maxDurationOfCompletedOrders = parkingOrderRepository.getMaxDurationOfCompletedOrders();
+        String minDurationOfCompletedOrders = parkingOrderRepository.getMinDurationOfCompletedOrders();
+        if(avgDurationOfCompletedOrders == null){
+            avgDurationOfCompletedOrders = "0";
+        }
+        if(maxDurationOfCompletedOrders == null){
+            maxDurationOfCompletedOrders = "0";
+        }
+        if(minDurationOfCompletedOrders == null){
+            minDurationOfCompletedOrders = "0";
+        }
+
+        double avgDurationOfCompletedOrdersValue = Double.parseDouble(avgDurationOfCompletedOrders);
+        double maxDurationOfCompletedOrdersValue = Double.parseDouble(maxDurationOfCompletedOrders);
+        double minDurationOfCompletedOrdersValue = Double.parseDouble(minDurationOfCompletedOrders);
+
+        double forecastTimeForFreeParkingSpaces = Math.abs(maxDurationOfCompletedOrdersValue + minDurationOfCompletedOrdersValue - 2 * avgDurationOfCompletedOrdersValue);
+        System.out.println(forecastTimeForFreeParkingSpaces);
+
+        return forecastTimeForFreeParkingSpaces;
+    }
+
+
+    public void sortByState(List<OrderDetailDTO> list){
+
+        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
+
+    }
 }
 
 

@@ -1,6 +1,8 @@
 package com.oocl.web.parkingLot.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oocl.web.parkingLot.common.OrderStatusConst;
+import com.oocl.web.parkingLot.common.OrderStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,17 +24,20 @@ public class OrderDetailDTO extends OrderDTO {
     @ApiModelProperty("订单状态：'已完成'，'未接单'，'已预约' ")
     private String State;
 
+    @JsonIgnore
+    private int status_code;
 
-    public OrderDetailDTO(OrderDTO orderDTO,Long parkingBoyId) {
+
+    public OrderDetailDTO(OrderDTO orderDTO) {
 
         BeanUtils.copyProperties(orderDTO, this);
-        judgeState(parkingBoyId);
+        judgeState();
 
     }
 
-    private void judgeState(Long parkingBoyId) {
+    private void judgeState() {
 
-        if(parkingBoyId == 0) {
+        if(this.getParkingBoyName().equals("")  || this.getParkingBoyName() == null) {
 
             this.State = OrderStatusConst.UNHANDLED;
 
@@ -46,5 +51,9 @@ public class OrderDetailDTO extends OrderDTO {
 
         }
 
+        status_code = OrderStatusEnum.getByStatusCode(this.State);
+
     }
+
+
 }
