@@ -21,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class ParkCarServiceImpl implements ParkCarService {
 
@@ -45,7 +48,9 @@ public class ParkCarServiceImpl implements ParkCarService {
         ParkingOrder parkingOrderTemp = parkingOrderRepository.getParkingOrderByNotIsOverDateBOrderByUserId(userId);
 
         if(parkingOrderTemp != null){
-            return  ResponseEntity.ok().body(new GlobalException(4, "There has a unfinished order!"));
+            Map<Integer, String> data = new HashMap<Integer, String>();
+            data.put(4, "The parkingBoy name has exited!");
+            return  ResponseEntity.ok().body(new GlobalException(4, "The parkingBoy name has exited!",data));
         }
 
         ParkingCarStrategy parkingCarStrategyA = new ParkingCarStrategyA(parkingBoyRepository,userRepository,parkingLotRepository,parkingOrderRepository,parkingOrderService);

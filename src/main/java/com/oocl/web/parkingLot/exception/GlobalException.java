@@ -1,13 +1,20 @@
 package com.oocl.web.parkingLot.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GlobalException extends RuntimeException {
 
     private Integer code;
     private String errMessage;
+    Map<Integer, String> data = new HashMap<Integer, String>();
 
-    public GlobalException(Integer code, String errMessage) {
+
+    public GlobalException(Integer code, String errMessage,Map<Integer, String> data) {
+
         this.code = code;
         this.errMessage = errMessage;
+        this.data = data;
     }
 
     public Integer getCode() {
@@ -24,5 +31,13 @@ public class GlobalException extends RuntimeException {
 
     public void setErrMessage(String errMessage) {
         this.errMessage = errMessage;
+    }
+
+    public Map<Integer, String> getData() {
+        return data;
+    }
+
+    public void setData(Map<Integer, String> data) {
+        this.data = data;
     }
 }

@@ -3,12 +3,14 @@ package com.oocl.web.parkingLot.dto;
 
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
+import com.oocl.web.parkingLot.entity.ParkingLot;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Copyright@xuqiubing@yeah.net
@@ -45,6 +47,9 @@ public class ParkingBoyDTO {
     @NotNull
     @ApiModelProperty("停车员性标签")
     private String tag;
+
+
+    private List<ParkingLot> parkingLots;
 
 
     public Long getId() {
@@ -101,6 +106,14 @@ public class ParkingBoyDTO {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public List<ParkingLot> getParkingLots() {
+        return parkingLots;
+    }
+
+    public void setParkingLots(List<ParkingLot> parkingLots) {
+        this.parkingLots = parkingLots;
     }
 
     public ParkingBoyDTO(ParkingBoy parkingBoy){
