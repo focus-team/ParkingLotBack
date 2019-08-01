@@ -11,9 +11,9 @@ server:
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-wz9g00250r96flyq8ro.mysql.rds.aliyuncs.com:3306/test
+    url: jdbc:mysql://localhost:3306/prod
     username: root
-    password: Aa12345!@#$%
+    password: 123456
   jpa:
     hibernate:
       ddl-auto: update

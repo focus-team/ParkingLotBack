@@ -43,7 +43,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public List<ParkingLot> findParkingLots(){
-        return parkingLotRepository.findAll().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
+        List<ParkingLot> parkingLots =  parkingLotRepository.findAll();
+
+        return parkingLots.stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
     }
 
 
@@ -65,7 +67,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
         Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
 
-        return parkingLots.getContent();
+        List<ParkingLot> result =  parkingLots.getContent().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
+
+        return result;
 
     }
 

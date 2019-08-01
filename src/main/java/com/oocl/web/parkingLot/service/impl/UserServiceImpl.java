@@ -6,6 +6,8 @@ import com.oocl.web.parkingLot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService {
 
@@ -19,6 +21,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user) {
+        List<User> userList = userRepository.findAll();
+        for(User user1: userList){
+            if(user1.getUserName().equals(user.getUserName())){
+                return null;
+            }
+        }
         return userRepository.save(user);
     }
 }

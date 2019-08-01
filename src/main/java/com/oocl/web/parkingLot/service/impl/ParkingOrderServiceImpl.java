@@ -13,9 +13,7 @@ import com.oocl.web.parkingLot.service.ParkingOrderService;
 import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created with IDEA
@@ -98,10 +96,11 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         if (condition == 0) {
             List<ParkingOrder> parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
-            System.out.println("----------------"+ parkingOrders.size());
            for(ParkingOrder parkingOrder:parkingOrders){
                Map map = parkingOrderRepository.findOrderDTOById(parkingOrder.getId());
-               maps.add(map);
+               if(map != null) {
+                   maps.add(map);
+               }
            }
         }
         
@@ -120,6 +119,15 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     }
 
+    /**
+     * 根据订单状态排序
+     * @param list
+     */
+    private void sortByState(List<OrderDetailDTO> list){
+
+        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
+
+    }
 
     /**
      * map 转 OrderDetailDTO
@@ -131,6 +139,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
         return orderDetailDTO;
     }
+
 
 
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId) {
@@ -193,12 +202,6 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         return forecastTimeForFreeParkingSpaces;
     }
 
-
-    public void sortByState(List<OrderDetailDTO> list){
-
-        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
-
-    }
 }
 
 

@@ -30,14 +30,14 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
     List<ParkingOrder> getParkingOrderByNotIsOverDateOrderByParkingBoyId(@Param("parkingBoyId")Long parkingBoyId);
 
     @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
-            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name,u.car_no,u.phone_no \n" +
             "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
             "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id limit :pageNum,:pageSize",nativeQuery = true)
     List<Map> findAllByPage(@Param("pageNum")int pageNum,@Param("pageSize") int pageSize);
 
 
     @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
-            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name,u.car_no,u.phone_no \n" +
             "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
             "where p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",nativeQuery = true)
     List<Map> findAllOrderDTOs();
@@ -46,7 +46,7 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
 
 
     @Query(value = "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
-            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name,u.car_no,u.phone_no \n" +
             "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
             "where p.id = :orderId and p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",nativeQuery = true)
     Map findOrderDTOById(@Param("orderId") Long orderId);
@@ -57,14 +57,19 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Long>
 
     @Query(value = "" +
             "select p.id,p.order_num,p.start_time,p.end_time,p.cost,p.is_over_date,\n" +
-            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name \n" +
+            "pb.`name` parking_boy_name,pb.phone parking_boy_tel,pl.`name` parking_lot_name,u.user_name,u.car_no,u.phone_no \n" +
             "from parking_order p,`user` u,`parking_lot` pl,`parking_boy` pb\n" +
             "where (p.is_over_date = :IsOverDate and p.parking_boy_id = :parkingBoyId) and p.user_id = u.id and pl.id = p.parking_lot_id and pb.id = p.parking_boy_id",
             nativeQuery = true)
     List<Map> findParkingOrdersByIsOverDateAndParkingBoyId(@Param("IsOverDate") int IsOverDate,@Param("parkingBoyId") Long parkingBoyId);
 
-
-
+    /**
+     * 查看对应pakingBoy已经预约的记录数
+     * @param parkingBoyId
+     * @return
+     */
+    @Query(value ="select count(po.id) from parking_order po where is_over_date = 0 and parking_boy_id = :parkingBoyId;" ,nativeQuery = true)
+    int getSubscribedParkingOrdersSumByParkingBoyId(@Param("parkingBoyId") Long parkingBoyId);
 
 
     @Query(value ="SELECT AVG(TIMESTAMPDIFF(MINUTE,start_time,end_time)) from parking_order po WHERE po.is_over_date = 1",nativeQuery = true)
