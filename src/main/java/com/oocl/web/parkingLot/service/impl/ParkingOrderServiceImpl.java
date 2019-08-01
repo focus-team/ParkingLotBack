@@ -98,10 +98,11 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
         if (condition == 0) {
             List<ParkingOrder> parkingOrders = getAllAvailableOrdersByPrakingBoyId(parkingBoyId);
-            System.out.println("----------------"+ parkingOrders.size());
            for(ParkingOrder parkingOrder:parkingOrders){
                Map map = parkingOrderRepository.findOrderDTOById(parkingOrder.getId());
-               maps.add(map);
+               if(map != null) {
+                   maps.add(map);
+               }
            }
         }
         
