@@ -1,6 +1,7 @@
 package com.oocl.web.parkingLot.service;
 
 import com.oocl.web.parkingLot.common.ServerResponse;
+import com.oocl.web.parkingLot.dto.ParkingBoyDTO;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,7 @@ public interface ParkingBoyService {
 
     ParkingBoy create(ParkingBoy parkingBoy);
 
-    Page<ParkingBoy> getByPage(int page, int pageSize);
+    Page<ParkingBoyDTO> getByPage(int page, int pageSize);
 
     ParkingBoy getById(Long id);
 

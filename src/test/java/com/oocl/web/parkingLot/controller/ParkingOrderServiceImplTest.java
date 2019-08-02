@@ -6,9 +6,12 @@ import com.oocl.web.parkingLot.service.ParkingOrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import java.util.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Copyright@xuqiubing@yeah.net
@@ -26,9 +29,14 @@ public class ParkingOrderServiceImplTest {
     private ParkingOrderRepository parkingOrderRepository;
 
     @Test
-    public void getForecastTimeForFreeParkingSpacesTest(){
+    public void getForecastTimeForFreeParkingSpacesTest() throws ParseException {
 
-        parkingOrderService.getForecastTimeForFreeParkingSpaces();
+        String dataTime = "2019-07-28 11:00:00";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date startDate = null;
+        startDate = sdf.parse(dataTime);
+        parkingOrderService.getForecastTimeForFreeParkingSpaces(startDate);
 
         System.out.println();
 

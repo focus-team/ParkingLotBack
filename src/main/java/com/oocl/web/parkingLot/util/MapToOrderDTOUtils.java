@@ -32,6 +32,8 @@ public class MapToOrderDTOUtils {
         orderDTO.setParkingBoyName((String) map.get("parking_boy_name"));
         orderDTO.setParkingBoyTel((String) map.get("parking_boy_tel"));
         orderDTO.setIsOverDate((Integer) map.get("is_over_date"));
+        orderDTO.setUserCarNo((String) map.get("car_no"));
+        orderDTO.setUserPhoneNo((String) map.get("phone_no"));
 
         return orderDTO;
 

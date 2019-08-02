@@ -2,6 +2,7 @@ package com.oocl.web.parkingLot.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.oocl.web.parkingLot.common.ServerResponse;
+import com.oocl.web.parkingLot.dto.ParkingBoyDTO;
 import com.oocl.web.parkingLot.entity.ParkingBoy;
 import com.oocl.web.parkingLot.entity.ParkingLot;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
@@ -15,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,18 +56,34 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             return save;
         } catch (Exception e) {
 //            e.printStackTrace();
-            throw new GlobalException(1,"The parkingBoy name has exited!");
+
+            Map<String, String> data = new HashMap<String, String>();
+
+            data.put("code", "1");
+            data.put("errMessage","The parkingBoy name has exited!");
+//            return ResponseEntity.ok().body(new GlobalException(1, "The parkingBoy name has exited!",data));
+            throw new GlobalException(1, "The parkingBoy name has exited!",data);
         } finally {
         }
 
     }
 
     @Override
-    public Page<ParkingBoy> getByPage(int page, int pageSize) {
+    public Page<ParkingBoyDTO> getByPage(int page, int pageSize) {
 
         Pageable pageable  = PageRequest.of(page - 1,pageSize);
         List<ParkingBoy> collect = parkingBoyRepository.findAll(pageable).getContent().stream().filter(item -> item.getId() != 0).collect(Collectors.toList());
-        Page<ParkingBoy> pages = new PageImpl<ParkingBoy>(collect, pageable, collect.size());
+
+        List<ParkingBoyDTO> parkingBoyDTOS = new ArrayList<>();
+        for(ParkingBoy parkingBoy : collect){
+            System.out.println(JSON.toJSONString(parkingBoy));
+            ParkingBoyDTO parkingBoyDTO = new ParkingBoyDTO(parkingBoy);
+            parkingBoyDTO.setBookedOrderSum(parkingOrderRepository.getSubscribedParkingOrdersSumByParkingBoyId(parkingBoy.getId()));
+            System.out.println(JSON.toJSONString(parkingBoyDTO));
+            parkingBoyDTOS.add(parkingBoyDTO);
+        }
+
+        Page<ParkingBoyDTO> pages = new PageImpl<ParkingBoyDTO>(parkingBoyDTOS, pageable, parkingBoyDTOS.size());
 //        Page<ParkingBoy> pages = parkingBoyRepository.findAll(pageable);
         return pages;
     }
@@ -134,6 +154,8 @@ public class ParkingBoyServiceImpl implements ParkingBoyService {
             if(parkingLot.getRemine() > 0){
                 parkingOrder.setParkingLotId(parkingLot.getId());
                 parkingOrderRepository.save(parkingOrder);
+                parkingLot.setRemine(parkingLot.getRemine() - 1);
+                parkingLotRepository.save(parkingLot);
                 return ServerResponse.createBySuccess();
             }
         }

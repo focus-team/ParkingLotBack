@@ -5,6 +5,7 @@ import com.oocl.web.parkingLot.dto.OrderDTO;
 import com.oocl.web.parkingLot.dto.OrderDetailDTO;
 import com.oocl.web.parkingLot.entity.ParkingOrder;
 import com.oocl.web.parkingLot.entity.User;
+import com.oocl.web.parkingLot.exception.GlobalException;
 import com.oocl.web.parkingLot.repository.ParkingBoyRepository;
 import com.oocl.web.parkingLot.repository.ParkingLotRepository;
 import com.oocl.web.parkingLot.repository.ParkingOrderRepository;
@@ -12,10 +13,13 @@ import com.oocl.web.parkingLot.repository.UserRepository;
 import com.oocl.web.parkingLot.service.ParkingOrderService;
 import com.oocl.web.parkingLot.util.MapToOrderDTOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created with IDEA
@@ -121,6 +125,15 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     }
 
+    /**
+     * 根据订单状态排序
+     * @param list
+     */
+    private void sortByState(List<OrderDetailDTO> list){
+
+        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
+
+    }
 
     /**
      * map 转 OrderDetailDTO
@@ -132,6 +145,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderDTO);
         return orderDetailDTO;
     }
+
 
 
     private List<ParkingOrder> getAllAvailableOrdersByPrakingBoyId(Long parkingBoyId) {
@@ -169,7 +183,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
 
     @Override
-    public double getForecastTimeForFreeParkingSpaces() {
+    public double getForecastTimeForFreeParkingSpaces(Date startTime)  {
 
         String avgDurationOfCompletedOrders = parkingOrderRepository.getAvgDurationOfCompletedOrders();
         String maxDurationOfCompletedOrders = parkingOrderRepository.getMaxDurationOfCompletedOrders();
@@ -188,17 +202,58 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         double maxDurationOfCompletedOrdersValue = Double.parseDouble(maxDurationOfCompletedOrders);
         double minDurationOfCompletedOrdersValue = Double.parseDouble(minDurationOfCompletedOrders);
 
-        double forecastTimeForFreeParkingSpaces = Math.abs(maxDurationOfCompletedOrdersValue + minDurationOfCompletedOrdersValue - 2 * avgDurationOfCompletedOrdersValue);
-        System.out.println(forecastTimeForFreeParkingSpaces);
+//        double forecastTimeForFreeParkingSpaces = Math.abs(maxDurationOfCompletedOrdersValue + minDurationOfCompletedOrdersValue - 2 * avgDurationOfCompletedOrdersValue);
+        System.out.println(avgDurationOfCompletedOrdersValue);
 
-        return forecastTimeForFreeParkingSpaces;
+        if(avgDurationOfCompletedOrdersValue > 30d){
+            avgDurationOfCompletedOrdersValue = 30d;
+        }
+        System.out.println(avgDurationOfCompletedOrdersValue);
+
+        double waitingTime =avgDurationOfCompletedOrdersValue;
+
+
+
+            System.out.println(startTime.getTime());
+            System.out.println((int)avgDurationOfCompletedOrdersValue);
+            int minute = this.bookingTimeForecast(startTime.getTime(), (int) avgDurationOfCompletedOrdersValue);
+            System.out.println(minute);
+            waitingTime = waitingTime > minute ? minute: waitingTime;
+
+
+//            Map<String, String> data = new HashMap<String, String>();
+//
+//            data.put("code", "2");
+//            data.put("errMessage","input startTime illegal");
+//            throw new GlobalException(6, "input startTime illegal",data);
+        return waitingTime;
+
     }
 
 
-    public void sortByState(List<OrderDetailDTO> list){
-
-        Collections.sort(list, Comparator.comparingInt(OrderDetailDTO::getStatus_code));
-
+    /**
+     *
+     * @param longTypeValueOfStartTime 当前想要预约的客户所发起的预约时间，Date类型预先处理为Long类型 (毫秒计)
+     * @param caculatedTime 基于大数据算法估算出来的预测时间 (分钟计)
+     * @return 真正适合的预估时间 (分钟计)
+     */
+    @Override
+    public int bookingTimeForecast(Long longTypeValueOfStartTime, Integer caculatedTime) {
+        List<ParkingOrder> parkingOrderList = parkingOrderRepository.findUnFinishedOrder();
+        if(parkingOrderList == null || parkingOrderList.isEmpty()){
+            return 0;
+        }
+        List<Long> orderStartTimeCollection = new ArrayList<>();
+        for(ParkingOrder parkingOrder: parkingOrderList){
+            if(longTypeValueOfStartTime - parkingOrder.getStartTime().getTime() < caculatedTime * 60 * 1000){
+                orderStartTimeCollection.add(parkingOrder.getStartTime().getTime());
+            }
+        }
+        if(orderStartTimeCollection == null || orderStartTimeCollection.isEmpty()){
+            return 0;
+        }
+        long mixStartTime = orderStartTimeCollection.stream().mapToLong(time -> time).min().getAsLong();
+        return (int)((mixStartTime + caculatedTime * 60 * 1000 - longTypeValueOfStartTime) / 1000 / 60);
     }
 }
 
